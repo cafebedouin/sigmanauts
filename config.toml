@@ -1,0 +1,105 @@
+baseurl = ""
+DefaultContentLanguage = "en"
+title = "Sigmanauts.com"
+theme = "beautifulhugo"
+#disqusShortname = "XXX"
+#googleAnalytics = "XXX"
+
+[Params]
+  homeTitle = "Sigmanauts"
+  subtitle = "A community to empower users of the Ergo blockchain"
+  mainSections = ["application","documents", "contact"]
+  logo = "img/sigma.png" # Expecting square dimensions
+  favicon = "img/favicon.ico"
+  dateFormat = "January 2, 2006"
+  commit = false
+  rss = true
+  comments = false
+  readingTime = true
+  wordCount = true
+  useHLJS = true
+  socialShare = false
+  delayDisqus = true
+  showRelatedPosts = true
+#  hideAuthor = true
+#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+#[[Params.bigimg]]
+#  src = "img/sphere.jpg"
+#  desc = "Sphere"
+#  # position: see values of CSS background-position.
+#  position = "center top"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
+
+[Author]
+  # Set only your "username" for default hosts and full URLs otherwise (e.g., "https://MyGitLab.org/username")
+  name = "Sigmanaut"
+  website = "https://github.com/cafebedouin/sigmanauts"
+  email = "admin@sigmanauts.com"
+#  facebook = "username"
+#  github = "username"
+#  gitlab = "username"
+#  bitbucket = "username"
+  twitter = "https://reddit.com/sigmanauts"
+  reddit = "https://reddit.com/r/ergonauts"
+#  linkedin = "username"
+#  xing = "username"
+#  stackoverflow = "users/XXXXXXX/username"
+#  snapchat = "username"
+#  instagram = "username"
+#  youtube = "user/username" # or channel/channelname
+#  soundcloud = "username"
+#  spotify = "username"
+#  bandcamp = "username"
+#  itchio = "username"
+#  vk = "username"
+#  paypal = "username"
+  telegram = "https://t.me/Ergo_Chats"
+#  500px = "username"
+#  codepen = "username"
+#  mastodon = "url"
+#  kaggle = "username"
+#  weibo = "username"
+#  slack = "username"
+  discord = "https://discord.gg/RC8M4Bkgsy"
+#  strava = "userid"
+
+
+[[menu.main]]
+    name = "Application"
+    url = "/application/"
+    weight = 1
+
+[[menu.main]]
+    identifier = "Documents"
+    name = "Documents"
+    weight = 2
+
+[[menu.main]]
+    parent = "Documents"
+    name = "Vision"
+    url = "/vision"
+    weight = 1
+
+[[menu.main]]
+    parent = "Documents"
+    name = "Minutes"
+    url = "/minutes/"
+    weight = 2
+
+[[menu.main]]
+    parent = "Documents"
+    name = "Promotion"
+    url = "/promotion"
+    weight = 3
+
+[[menu.main]]
+    name = "Contact"
+    url = "/contact/"
+    weight = 3
+

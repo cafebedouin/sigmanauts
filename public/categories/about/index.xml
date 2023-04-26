@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>about on Sigmanauts.com</title>
+    <link>/categories/about/</link>
+    <description>Recent content in about on Sigmanauts.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>admin@sigmanauts.com (Sigmanaut)</managingEditor>
+    <webMaster>admin@sigmanauts.com (Sigmanaut)</webMaster>
+    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sigmanauts</title>
+      <link>/</link>
+      <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
+      <author>admin@sigmanauts.com (Sigmanaut)</author>
+      <guid>/</guid>
+      <description>Describe the purpose of the group.</description>
+    </item>
+    
+  </channel>
+</rss>
