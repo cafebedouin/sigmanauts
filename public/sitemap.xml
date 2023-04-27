@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://github.io/cafebedouin/sigmanauts/mission/</loc>
+    <lastmod>2023-04-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://github.io/cafebedouin/sigmanauts/website/</loc>
+    <lastmod>2023-04-27T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/categories/about/</loc>
     <lastmod>2023-04-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -9,6 +15,9 @@
     <lastmod>2023-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/minutes/</loc>
+    <lastmod>2023-04-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://github.io/cafebedouin/sigmanauts/references/</loc>
     <lastmod>2023-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/categories/sigmanaut/</loc>
@@ -20,13 +29,13 @@
     <loc>https://github.io/cafebedouin/sigmanauts/</loc>
     <lastmod>2023-04-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.io/cafebedouin/sigmanauts/vision/</loc>
+    <loc>https://github.io/cafebedouin/sigmanauts/directory/</loc>
     <lastmod>2023-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-06-meeting/</loc>
     <lastmod>2023-04-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.io/cafebedouin/sigmanauts/promotion/</loc>
+    <loc>https://github.io/cafebedouin/sigmanauts/sigmanaut/</loc>
     <lastmod>2023-03-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/minutes/2023-03-12-meeting/</loc>
@@ -52,11 +61,6 @@
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/contact/</loc>
     <priority>0</priority>
-  </url><url>
-    <loc>https://github.io/cafebedouin/sigmanauts/faq/</loc>
-    <priority>0</priority>
-  </url><url>
-    <loc>https://github.io/cafebedouin/sigmanauts/about/</loc>
   </url><url>
     <loc>https://github.io/cafebedouin/sigmanauts/application/</loc>
   </url><url>

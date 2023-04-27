@@ -9,6 +9,36 @@
     <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster>
     <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://github.io/cafebedouin/sigmanauts/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Mission Statement</title>
+      <link>https://github.io/cafebedouin/sigmanauts/mission/</link>
+      <pubDate>Thu, 27 Apr 2023 00:00:00 +0000</pubDate>
+      <author>qx@sigmanauts.com (Sigmanaut)</author>
+      <guid>https://github.io/cafebedouin/sigmanauts/mission/</guid>
+      <description>Who We Are The Sigmanaut Program is an Ergo community group that advocates for the adoption of the Ergo blockchain while promoting Ergo&amp;rsquo;s values in the larger cryptocurrency space. Members volunteer their time, skills, and resources to deliver on the goals of the group and of the larger Ergonaut community.
+Vision Sigmanauts spread awareness of the Ergo blockchain while promoting avenues and platforms that help foster an ecosystem where the project&amp;rsquo;s stewardship remains with the people in a decentralized and transparent manner, aligning with the values of the community and in-line with the first principles of decentralization as outlined in the Ergo Manifesto.</description>
+    </item>
+    
+    <item>
+      <title>Sigmanauts.com</title>
+      <link>https://github.io/cafebedouin/sigmanauts/website/</link>
+      <pubDate>Thu, 27 Apr 2023 00:00:00 +0000</pubDate>
+      <author>qx@sigmanauts.com (Sigmanaut)</author>
+      <guid>https://github.io/cafebedouin/sigmanauts/website/</guid>
+      <description>As an open community, anyone can submit a pull request to make additions or corrections to the Sigmanaut.com website via this git repository.
+Provide instructions for doing so.</description>
+    </item>
+    
+    <item>
+      <title>References</title>
+      <link>https://github.io/cafebedouin/sigmanauts/references/</link>
+      <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
+      <author>qx@sigmanauts.com (Sigmanaut)</author>
+      <guid>https://github.io/cafebedouin/sigmanauts/references/</guid>
+      <description>Below are various sources for finding out about the Ergo blockchain and the Sigmanaut community.
+ Ergo Manifesto ergoplatform.org April 26, 2021. The Sigmanauts Program ergoplatform.org December 31, 2020 Ergo&amp;rsquo;s Sigmanauts Program ergoplatform.org April 25, 2023 Sigmanauts docs.ergoplatform.org  </description>
+    </item>
+    
+    <item>
       <title>Sigmanaut Meeting: April 23, 2023</title>
       <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-23-meeting/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
@@ -18,12 +48,13 @@
     </item>
     
     <item>
-      <title>Sigmanauts Vision Statement</title>
-      <link>https://github.io/cafebedouin/sigmanauts/vision/</link>
+      <title>Sigmanauts Directory</title>
+      <link>https://github.io/cafebedouin/sigmanauts/directory/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/vision/</guid>
-      <description>Copy/paste Sigmanaut vision statement</description>
+      <guid>https://github.io/cafebedouin/sigmanauts/directory/</guid>
+      <description>The Sigmanaut community is open to everyone. People use their real names, pseudonymes or are completely anonymous. Below is an alphabetical list of community members that can be contacted, if you have questions about the Ergo blockchain or ecosystem.
+| Sigmanaut | preferred contact | | q(x) | qx@sigmanaut.com | | hq3r | hq3r@sigmanaut.com | | cafebedouin | cafebedouin@gmail.com |</description>
     </item>
     
     <item>
@@ -36,12 +67,12 @@
     </item>
     
     <item>
-      <title>Promotion from Sigmanaut Candidate (SigCan) to Sigmanaut</title>
-      <link>https://github.io/cafebedouin/sigmanauts/promotion/</link>
+      <title>Becoming a Sigmanaut</title>
+      <link>https://github.io/cafebedouin/sigmanauts/sigmanaut/</link>
       <pubDate>Mon, 27 Mar 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/promotion/</guid>
-      <description>Ask to be promoted and sponsored by a current Sigmanaut Current Sigmanauts notice that a Sigmanaut candidate is active in the ecosystem and working in concert with the values of the Sigmanaut Mission Statement. They then put it to vote. Applied for sigcan but are well-known in the community so they are sponsored by a Sigmanaut to turn that vote into a Sigmanaut vote instead of sigcan.</description>
+      <guid>https://github.io/cafebedouin/sigmanauts/sigmanaut/</guid>
+      <description>The path to becoming a Sigmanaut generally involves being involved in the larger Ergo community. Most people are active in either Telegram or Discord, but you do not have to be involved in social media. The only real criteria is generally agreeing with the principles outlined in the Ergo Manifesto. If you&amp;rsquo;d like to use your unique talents to promote a decentralized, open, secure platform for contractual money that can be used by anyone, we want to hear from you.</description>
     </item>
     
     <item>
@@ -119,26 +150,6 @@ Blog Post QX forgot to post it to sigs channel but will do so asap, please feel 
       <author>qx@sigmanauts.com (Sigmanaut)</author>
       <guid>https://github.io/cafebedouin/sigmanauts/contact/</guid>
       <description>Contact example</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://github.io/cafebedouin/sigmanauts/faq/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/faq/</guid>
-      <description>Testing</description>
-    </item>
-    
-    <item>
-      <title>About me</title>
-      <link>https://github.io/cafebedouin/sigmanauts/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/about/</guid>
-      <description>My name is Inigo Montoya. I have the following qualities:
- I rock a great mustache I&amp;rsquo;m extremely loyal to my family  What else do you need?
-my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
     </item>
     
     <item>
