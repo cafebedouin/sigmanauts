@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Sigmanauts.com</title>
-    <link>https://github.io/cafebedouin/sigmanauts/tags/</link>
+    <link>https://cafebedouin.github.io/tags/</link>
     <description>Recent content in Tags on Sigmanauts.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>qx@sigmanauts.com (Sigmanaut)</managingEditor>
-    <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster><atom:link href="https://github.io/cafebedouin/sigmanauts/tags/index.xml" rel="self" type="application/rss+xml" />
+    <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster><atom:link href="https://cafebedouin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

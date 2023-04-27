@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sigmanaut on Sigmanauts.com</title>
-    <link>https://github.io/cafebedouin/sigmanauts/categories/sigmanaut/</link>
+    <link>https://cafebedouin.github.io/categories/sigmanaut/</link>
     <description>Recent content in Sigmanaut on Sigmanauts.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>qx@sigmanauts.com (Sigmanaut)</managingEditor>
     <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster>
-    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://github.io/cafebedouin/sigmanauts/categories/sigmanaut/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://cafebedouin.github.io/categories/sigmanaut/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sigmanauts</title>
-      <link>https://github.io/cafebedouin/sigmanauts/</link>
+      <link>https://cafebedouin.github.io/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/</guid>
+      <guid>https://cafebedouin.github.io/</guid>
       <description>Describe the purpose of the group.</description>
     </item>
     

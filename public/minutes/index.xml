@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Minutes on Sigmanauts.com</title>
-    <link>https://github.io/cafebedouin/sigmanauts/minutes/</link>
+    <link>https://cafebedouin.github.io/minutes/</link>
     <description>Recent content in Minutes on Sigmanauts.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>qx@sigmanauts.com (Sigmanaut)</managingEditor>
     <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster>
-    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://github.io/cafebedouin/sigmanauts/minutes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://cafebedouin.github.io/minutes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sigmanaut Meeting: April 23, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-23-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-04-23-meeting/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-23-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-04-23-meeting/</guid>
       <description>Support the community and core projects. That means watching for events announced and try your best to attend them, or, testing protocols, or, joining betas. Example: Put up a small test loan on sigmafi so you know how it works. Join the sprint with ergo/zealy! Point is, we need to support eachother as we continue to build in this market! Each of us should do our best to know the ecosystem and its public facing tools.</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: April 2, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-06-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-04-06-meeting/</link>
       <pubDate>Sun, 02 Apr 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-04-06-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-04-06-meeting/</guid>
       <description>Angie spoke about reviving and adding content to Medium. qx showed off his beast machine running a node and noted that once a new HD comes in he will convert it to be another explorer with hopefully a lot of capacity (recruiting Boris to make sure it&amp;rsquo;s tip top shape). Will announce via channels and twitter when it is live. Did a quick recap of sigmanauts voting week as well as a reminder to finish voting so qx could run the tally/results script that night (sunday) Angie has a list of needed corrections from the SEO guys, they are making them so search optimization will perform better.</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: March 3, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-03-12-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-03-12-meeting/</link>
       <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-03-12-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-03-12-meeting/</guid>
       <description>Introductions Fred/Ben mentioned that it would be great at the first sigs meeting each month we introduce ourselves and the new members
 SigmaVote Study week will take place March 25 - 31 Vote weekend will be April 1 and 2 Good turnout of applicants this month! QX has updated the application form to indicate monthly voting
 Blog Post QX forgot to post it to sigs channel but will do so asap, please feel free to add comments and changes!</description>
@@ -39,38 +39,38 @@ Blog Post QX forgot to post it to sigs channel but will do so asap, please feel 
     
     <item>
       <title>Sigmanaut Meeting: February 26, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-02-26-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-02-26-meeting/</link>
       <pubDate>Sun, 26 Feb 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-02-26-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-02-26-meeting/</guid>
       <description>No voice recording/transcript due to privacy of contracts and discussions of details of sig voting on specific candidates as well as price negotiation methods - closed session, essentially. Brief summary below
  Discussed how vote weekend was going and that we had one candidate that was held for discussion (reminder that any candidate who has yes votes will pass, a no vote means that they will be voted on and discussed in the next sig meeting).</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: February 5, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-02-05-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-02-05-meeting/</link>
       <pubDate>Sun, 05 Feb 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-02-05-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-02-05-meeting/</guid>
       <description>ERGOHACK VI Marketing Support Noah offered to get a list of dev’s to reach out to (we can possibly use the Sigmanauts twitter) to invite them to check out the i need a team channel in discord as well as submit a proposal. Signanauts twitter will post daily updates from the team channels in a single post to help with exposure (assuming teams are updating the channels with progress).</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: January 29, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-29-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-01-29-meeting/</link>
       <pubDate>Sun, 29 Jan 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-29-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-01-29-meeting/</guid>
       <description>VOTING PROCEDURES  It has been brought up many times that voting randomly is difficult to keep track of and remember to take part in. Proposal to move voting to once a month. qx() will modify the voting system to work as follows: -All new vote submissions will immediately post to the vote channel so that they can be voted on at any point in time. -One week before VOTE DAY the submission page will lock and display a notice noting such.</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: January 22, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-22-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-01-22-meeting/</link>
       <pubDate>Sun, 22 Jan 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-22-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-01-22-meeting/</guid>
       <description>Welcomed new Sigmanauts and Sigcans: rustinmyeye, kill_it_with_coffee, cheese
   Did a recap of accomplishments since the Zoom meetings started:
  SigmaVote app for sigmanaut voting and proposals Twitter account (tweetdeck) distributed among a few members to allow for tweeting Twitter account on qx()’s phone so that it can join and host spaces, which is currently being organized for our first space soon. Ambassador stewardship by Noah and Cran to be mindful of outreach and interactions from like minded chains/projects.</description>
@@ -78,19 +78,19 @@ Blog Post QX forgot to post it to sigs channel but will do so asap, please feel 
     
     <item>
       <title>Sigmanaut Meeting: January 15, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-15-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-01-15-meeting/</link>
       <pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-15-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-01-15-meeting/</guid>
       <description>Sigmanaut Meeting: January 15, 2023 VOTING PARTICIPATION  Chris furthered the discussion from last week about EF members voting on proposals as well as the agreed upon sigcan/sigmanaut member voting. qx() volunteered to write a voting proposal that would not just cover this, but all large and influential groups that could come into the ecosystem. For example, broad language to allow sigmanauts to voting power as long as they adhere to the sigmanauts mission.</description>
     </item>
     
     <item>
       <title>Sigmanaut Meeting: January 8, 2023</title>
-      <link>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-08-meeting/</link>
+      <link>https://cafebedouin.github.io/minutes/2023-01-08-meeting/</link>
       <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
       <author>qx@sigmanauts.com (Sigmanaut)</author>
-      <guid>https://github.io/cafebedouin/sigmanauts/minutes/2023-01-08-meeting/</guid>
+      <guid>https://cafebedouin.github.io/minutes/2023-01-08-meeting/</guid>
       <description>DEXY LOGO VOTE  Pushing the dexy vote to early march Campaign to end of january, logo contest in early feburary is a good place to start. Two Weeks for the log contest. Ergcube for vote. sigs take on promotion and vote. Teach new users about dexygold (no RSV)  VOTING RIGHTS OF EF MEMBERS  The EF should be able to vote on candidates for sigcans and sigmanauts.</description>
     </item>
     

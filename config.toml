@@ -1,4 +1,4 @@
-baseurl = "https://github.io/cafebedouin/sigmanauts"
+baseurl = "https://cafebedouin.github.io/"
 DefaultContentLanguage = "en"
 title = "Sigmanauts.com"
 theme = "beautifulhugo"
@@ -112,7 +112,7 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Documents"
-    name = "References"
+    name = "Website"
     url = "/website"
     weight = 6
 
