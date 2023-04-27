@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Sigmanauts.com</title>
-    <link>/categories/</link>
+    <link>https://github.io/cafebedouin/sigmanauts/categories/</link>
     <description>Recent content in Categories on Sigmanauts.com</description>
     <generator>Hugo -- gohugo.io</generator>
-    <managingEditor>admin@sigmanauts.com (Sigmanaut)</managingEditor>
-    <webMaster>admin@sigmanauts.com (Sigmanaut)</webMaster>
-    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <managingEditor>qx@sigmanauts.com (Sigmanaut)</managingEditor>
+    <webMaster>qx@sigmanauts.com (Sigmanaut)</webMaster>
+    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://github.io/cafebedouin/sigmanauts/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>about</title>
-      <link>/categories/about/</link>
+      <link>https://github.io/cafebedouin/sigmanauts/categories/about/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
-      <author>admin@sigmanauts.com (Sigmanaut)</author>
-      <guid>/categories/about/</guid>
+      <author>qx@sigmanauts.com (Sigmanaut)</author>
+      <guid>https://github.io/cafebedouin/sigmanauts/categories/about/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sigmanaut</title>
-      <link>/categories/sigmanaut/</link>
+      <link>https://github.io/cafebedouin/sigmanauts/categories/sigmanaut/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
-      <author>admin@sigmanauts.com (Sigmanaut)</author>
-      <guid>/categories/sigmanaut/</guid>
+      <author>qx@sigmanauts.com (Sigmanaut)</author>
+      <guid>https://github.io/cafebedouin/sigmanauts/categories/sigmanaut/</guid>
       <description></description>
     </item>
     
