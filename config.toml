@@ -82,21 +82,39 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Documents"
-    name = "Vision"
-    url = "/vision"
+    name = "Mission"
+    url = "/mission"
     weight = 1
+
+[[menu.main]]
+    parent = "Documents"
+    name = "Becoming a Sigmanaut"
+    url = "/sigmanaut"
+    weight = 2
+
+[[menu.main]]
+    parent = "Documents"
+    name = "Directory"
+    url = "/directory"
+    weight = 3
 
 [[menu.main]]
     parent = "Documents"
     name = "Minutes"
     url = "/minutes/"
-    weight = 2
+    weight = 4
 
 [[menu.main]]
     parent = "Documents"
-    name = "Promotion"
-    url = "/promotion"
-    weight = 3
+    name = "References"
+    url = "/references"
+    weight = 5
+
+[[menu.main]]
+    parent = "Documents"
+    name = "References"
+    url = "/website"
+    weight = 6
 
 [[menu.main]]
     name = "Contact"
