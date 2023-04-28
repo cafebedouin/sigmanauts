@@ -94,30 +94,23 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Documents"
-    name = "Directory"
-    url = "/directory"
-    weight = 3
-
-[[menu.main]]
-    parent = "Documents"
     name = "Minutes"
     url = "/minutes/"
-    weight = 4
+    weight = 3
 
 [[menu.main]]
     parent = "Documents"
     name = "References"
     url = "/references"
-    weight = 5
+    weight = 4
 
 [[menu.main]]
     parent = "Documents"
     name = "Edit Website"
     url = "/website"
-    weight = 6
+    weight = 5
 
 [[menu.main]]
     name = "Contact"
     url = "/contact/"
     weight = 3
-
