@@ -1,1 +1,2 @@
-public/
+public/**
+!/public/img/sigmanaut-logo.png
