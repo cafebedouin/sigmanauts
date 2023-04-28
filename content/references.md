@@ -10,3 +10,4 @@ Below are various sources for finding out about the Ergo blockchain and the Sigm
 * [The Sigmanauts Program](https://ergoplatform.org/en/blog/the-sigmanauts-programme/) *ergoplatform.org* December 31, 2020
 * [Ergo's Sigmanauts Program](https://ergoplatform.org/en/blog/Ergo%E2%80%99s-Sigmanauts-Program/) *ergoplatform.org* April 25, 2023
 * [Sigmanauts](https://docs.ergoplatform.com/contribute/sigmanauts/) *docs.ergoplatform.org*
+* [Sigmanaut Training Program](https://ergonaut.space/en/Ergo/Contributing/Sigmanauts) *ergonaut.space* July 2022

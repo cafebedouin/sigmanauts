@@ -8,7 +8,7 @@ This repository serves two purposes:
 
 ## Modifying the site
 
-Anyone is encouraged to add information or functionality to the website. To do so, 
+Anyone is encouraged to add information or functionality to the website. To do so:
 
 1. [Install Hugo](https://gohugo.io/installation/) on your operating system
 2. If not already installed, [install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -34,7 +34,10 @@ Anyone is encouraged to add information or functionality to the website. To do s
 	* $ git commit -m "Explain what you have done."
 	* $ git push (sends changes to your forked repo)
 	
-8. Once the changes are in your repository, you can then create a pull request to have your changes added to the original repository.
+8. Once the changes are in your repository, you can then, either: 
+
+	1. Create a pull request to have your changes added to the original repository, or
+	2. Use this template to create a new community of your own
 
 For those using this repository to create their own site, consult Hugo's [Host on Github](https://docs.github.com/en/pages/quickstart) guide for creating your own site. 
 

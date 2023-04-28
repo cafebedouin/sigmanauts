@@ -112,7 +112,7 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Documents"
-    name = "Website"
+    name = "Edit Website"
     url = "/website"
     weight = 6
 
