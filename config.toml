@@ -1,6 +1,6 @@
-baseurl = "https://sigmanauts.com"
+baseurl = "https://valorantvods.com"
 DefaultContentLanguage = "en"
-title = "Sigmanauts.com"
+title = "valorantvods.com"
 theme = "beautifulhugo"
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
