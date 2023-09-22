@@ -6,7 +6,7 @@ draft = 'false'
 
 ## Introduction
 
-The Sigmanaut pool is the first mining pool on Ergo to collect storage rent. It is a great way to support the Ergo community, and best of all, it is easy to do. If you already have a Ergo wallet, it can be set-up on a computer with a GPU video card compatible with mining Ergo in less than 5 minutes.
+The Sigmanaut pool is the first mining pool on Ergo to collect storage rent. Mining is a great way to support the Ergo community, and best of all, it is easy to do. If you already have a Ergo wallet, it can be set-up on a computer with a GPU video card compatible with mining Ergo in less than 5 minutes.
 
 ## Set-up in 5 Minutes on Microsoft Windows
 
@@ -28,7 +28,7 @@ For clarity, <YourErgoAddress>.<AnyNameYouWantToIdentifyTheComputer> should look
 C:\Users\sigmanaut\Downloads\t-rex-0.24.7-win\t-rex.exe -a autolykos2 -o stratum+ssl://74.69.128.24:3052 -u 9g1p6UU8XoAeU4yGPLpbTHYiG8aBHwfCFzQqJZrfzuLnmF3zb7P.covertmixeraddress
 ```
 
-You can find your address by going to the Receive tab in Nautilus. After you enter it in, aave the file as ERGO_mining.bat. To start mining, simply click on the file.
+You can find your address by going to the Receive tab in Nautilus. After you enter add your address, save the file as ERGO_mining.bat. To start mining, simply click on the file.
 
 
 You can then go to the [Sigmanaut mining website](http://74.69.128.24:4000/api/pools/ErgoSigmanauts/miners/9g1p6UU8XoAeU4yGPLpbTHYiG8aBHwfCFzQqJZrfzuLnmF3zb7P) and put in your addreess to verify that you are connected to the pool.
