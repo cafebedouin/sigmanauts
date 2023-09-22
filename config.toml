@@ -111,6 +111,11 @@ theme = "beautifulhugo"
     weight = 5
 
 [[menu.main]]
+    name = "Mining"
+    url = "/mining/"
+    weight = 3
+
+[[menu.main]]
     name = "Contact"
     url = "/contact/"
-    weight = 3
+    weight = 4
