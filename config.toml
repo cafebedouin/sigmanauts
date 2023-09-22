@@ -111,7 +111,7 @@ theme = "beautifulhugo"
     weight = 5
 
 [[menu.main]]
-    name = "Mining"
+    name = "Mining Pool"
     url = "/mining/"
     weight = 3
 

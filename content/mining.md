@@ -1,5 +1,5 @@
 +++
-title = 'Sigmanaut Mining'
+title = 'Mining Pool'
 date = '2023-09-21T00:00:00-00:00'
 draft = 'false'
 +++
@@ -57,7 +57,7 @@ export GPU_SINGLE_ALLOC_PERCENT=100
 export GPU_MAX_HEAP_SIZE=100
 export GPU_USE_SYNC_OBJECTS=1
 
-/home/cafebedouin/Downloads/teamredminer-v0.10.14-linux/teamredminer -a autolykos2 -o stratum+ssl://74.69.128.24:3052 -u  9g1p6UU8XoAeU4yGPLpbTHYiG8aBHwfCFzQqJZrfzuLnmF3zb7P.covertmixeraddress
+/home/sigmanaut/Downloads/teamredminer-v0.10.14-linux/teamredminer -a autolykos2 -o stratum+ssl://74.69.128.24:3052 -u  9g1p6UU8XoAeU4yGPLpbTHYiG8aBHwfCFzQqJZrfzuLnmF3zb7P.covertmixeraddress
 ```
 
 Then, save the file as ergo_miner.sh. At the command prompt: chmod 744 ergo_miner.sh and then just run it as usual, by typing: ./ergo_miner.sh at the prompt. If you want it to automatically run whenever you restart your machine, [this article](https://linuxconfig.org/how-to-run-script-on-startup-on-ubuntu-20-04-focal-fossa-server-desktop) from linuxconfig.org tells you everything you need to do to set it as a systemd service.
