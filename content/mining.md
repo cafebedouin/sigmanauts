@@ -44,6 +44,8 @@ Choose a port based on your hash rate:
 - **Temporary Backup Simple Dash**: [(SMG) Dashboard](https://my.ergoport.dev/cgi-bin/mining/mining_all.html)
 - **Self-hosted Full Featured Dash**: [marctheshark3/sigmanaut-mining-pool-ui](https://github.com/marctheshark3/sigmanaut-mining-pool-ui/tree/main)
 
+## Below are some example miner configurations
+
 ## Set-up in 5 Minutes on Microsoft Windows
 
 For Ergo, you need a card with a minimum of 4GB of RAM, ideally more. Create a Ergo wallet using Nautilus on ([Chrome/Brave](https://chrome.google.com/webstore/detail/nautilus-wallet/gjlmehlldlphhljhpnlddaodbjjcchai) or [Firefox](https://addons.mozilla.org/bs/firefox/addon/nautilus/)), if you don’t have one already. Extract the mining software file in your Download directory. Open a text editor, and type in (or copy & paste) the following, assuming in this example you are on Windows:
