@@ -46,7 +46,7 @@ Choose a port based on your hash rate:
 
 ## Below are some example miner configurations
 
-## Set-up in 5 Minutes on Microsoft Windows
+### Set-up in 5 Minutes on Microsoft Windows
 
 For Ergo, you need a card with a minimum of 4GB of RAM, ideally more. Create a Ergo wallet using Nautilus on ([Chrome/Brave](https://chrome.google.com/webstore/detail/nautilus-wallet/gjlmehlldlphhljhpnlddaodbjjcchai) or [Firefox](https://addons.mozilla.org/bs/firefox/addon/nautilus/)), if you don’t have one already. Extract the mining software file in your Download directory. Open a text editor, and type in (or copy & paste) the following, assuming in this example you are on Windows:
 
@@ -79,7 +79,7 @@ shell:startup
 
 This will bring up the Startup folder, and you can drag and drop the Ergo_mining.bat file into it. 
 
-## Set-up in Linux
+### Set-up in Linux
 
 Let’s assume that you somehow managed to get your graphics card working on Linux. Then, the process is very similar to Windows above. Open a text editor and type the following:
 
