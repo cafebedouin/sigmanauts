@@ -40,7 +40,7 @@ Choose a port based on your hash rate:
 
 ### Dashboards:
 
-- **Full Featured Dash**: [Sigma Mining Pool Dashboard](https://dash.ergo-sig-mining.net/)
+- **Full Featured Dash**: [Sigma Mining Pool Dashboard](http://dash.sigmaspace.net/)
 - **Temporary Backup Simple Dash**: [(SMG) Dashboard](https://my.ergoport.dev/cgi-bin/mining/mining_all.html)
 - **Self-hosted Full Featured Dash**: [marctheshark3/sigmanaut-mining-pool-ui](https://github.com/marctheshark3/sigmanaut-mining-pool-ui/tree/main)
 
