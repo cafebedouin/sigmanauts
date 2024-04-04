@@ -1,4 +1,4 @@
-baseurl = "https://sigmanauts.com"
+baseurl = "http://rustinmyeye.ca/sigmanauts/"
 DefaultContentLanguage = "en"
 title = "Sigmanauts.com"
 theme = "beautifulhugo"
