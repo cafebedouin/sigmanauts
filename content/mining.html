@@ -17,7 +17,7 @@ draft = 'false'
 
     <script>
         // Fetch data from the API endpoint
-        fetch('http://15.204.211.130:4000/api/pools/ErgoSigmanauts/performance')
+        fetch('https://api.codetabs.com/v1/proxy/?quest=http://15.204.211.130:4000/api/pools/ErgoSigmanauts/performance')
           .then(response => response.json())
           .then(data => {
             // Extract the most recent pool hashrate
