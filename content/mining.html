@@ -11,11 +11,10 @@ draft = 'false'
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mining Pool</title>
 </head>
-    <p id="poolHashrate" style="text-align: center;"></p>
-
-    <script>
+<p id="poolHashrate" style="text-align: center;"></p>
+<script>
         // Fetch data from the API endpoint
-        fetch('https://api.codetabs.com/v1/proxy/?quest=http://15.204.211.130:4000/api/pools/ErgoSigmanauts/performance')
+        fetch('http://15.204.211.130:4000/api/pools/ErgoSigmanauts/performance')
           .then(response => response.json())
           .then(data => {
             // Extract the most recent pool hashrate
@@ -29,7 +28,6 @@ draft = 'false'
             console.error('Error fetching data:', error);
           });
     </script>
-    
 <body>
     <h1>Introduction</h1>
     <p>The Sigmanaut pool is the first mining pool on Ergo to collect storage rent. Mining is a great way to support the Ergo community, and best of all, it is easy to do. If you already have a Ergo wallet, it can be set-up on a computer with a GPU video card compatible with mining Ergo in less than 5 minutes.</p>
