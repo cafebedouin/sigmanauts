@@ -4,8 +4,6 @@ date: 2024-04-15
 draft: false
 ---
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,72 +46,119 @@ draft: false
 
 <body>
     <!-- Introduction -->
-    <div id="introduction">
-        <h1>Welcome to The Sigmacast!</h1>
-        <p>The Sigmacast is an audio podcast dedicated to content created by the Ergo community and the Ergo Foundation. Bringing you the audio from the latest videos published on the EF YouTube channel, such as the weekly AMAs and dev updates. Additionally, you'll find content from shows like the Ergo Sigmanauts YouTube channel and Hash it Out W/CW.</p>
-        <p>Listen on <a href="https://podcasters.spotify.com/pod/show/ergopodcast" target="_blank">Spotify</a>, <a href="https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451" target="_blank">Apple Podcasts</a>, or add this RSS feed:  <code>https://anchor.fm/s/f21c6414/podcast/rss</code> to your preferred podcast app.</p>
-        <p>Episodes are available to listen to or download (by right-clicking and saving) right on this page.</p>
-    </div>
+<div id="introduction">
+    <h1>Welcome to The Sigmacast!</h1>
+    <p>The Sigmacast is the home to both the Ergo Podcast and The Sigmacast podcast. It brings you the audio from the latest videos published on the EF YouTube channel, such as the weekly AMAs and dev updates, on the Ergo Podcast. Additionally, on The Sigmacast podcast, you'll find shows like the Ergo Sigmanauts YouTube channel and Hash it Out w/CW, along with Ergo-related Twitter spaces.</p>
+    
+    <h2>Ergo Podcast</h2>
+    <p>Listen on <a href="https://podcasters.spotify.com/pod/show/ergopodcast" target="_blank">Spotify</a> or <a href="https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451" target="_blank">Apple Podcasts</a>, or add this RSS feed to your preferred podcast app:</p>
+    <code>https://anchor.fm/s/f21c6414/podcast/rss</code>
+
+    <h2>The Sigmacast</h2>
+    <p>Listen on <a href="https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659" target="_blank">Apple Podcasts</a> or <a href="https://podcasters.spotify.com/pod/show/thesigmacast" target="_blank">Spotify</a>, or add this RSS feed to your preferred podcast app:</p>
+    <code>https://anchor.fm/s/d094dce0/podcast/rss</code>
+    
+    <br>
+    <br>
+
+    <p>Episodes are available to listen to or download (by right-clicking and saving) right on this page.</p>
+</div>
+
 
     <!-- Display Episodes -->
     <div id="episodes"></div>
 
     <script>
-        fetch('https://anchor.fm/s/f21c6414/podcast/rss')
-            .then(response => response.text())
-            .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-            .then(data => {
-                const items = data.querySelectorAll('item');
-                const episodesDiv = document.getElementById('episodes');
-
-                items.forEach(item => {
-                    const title = item.querySelector('title').textContent;
-                    const description = item.querySelector('description').textContent;
-                    const listenLink = item.querySelector('link').textContent;
-                    const enclosureUrl = item.querySelector('enclosure').getAttribute('url');
-
-                    const episodeDiv = document.createElement('div');
-                    
-                    // Episode Title
-                    const titleElem = document.createElement('h2');
-                    titleElem.textContent = title;
-
-                    // Episode Description
-                    const descriptionElem = document.createElement('p');
-                    descriptionElem.textContent = description;
-
-                    // Listen and Download Buttons
-                    const listenButton = document.createElement('a');
-                    listenButton.className = 'button spotify';
-                    listenButton.href = listenLink;
-                    listenButton.target = '_blank';
-
-                    const appleButton = document.createElement('a');
-                    appleButton.className = 'button apple';
-                    appleButton.href = 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451';
-                    appleButton.target = '_blank';
-
-                    const downloadButton = document.createElement('a');
-                    downloadButton.className = 'button';
-                    downloadButton.textContent = 'Download';
-                    downloadButton.href = enclosureUrl;
-                    downloadButton.download = title + '.mp3'; // Specify filename for the download
-
-                    const buttonContainer = document.createElement('div');
-                    buttonContainer.appendChild(listenButton);
-                    buttonContainer.appendChild(appleButton);
-                    buttonContainer.appendChild(downloadButton);
-
-                    // Append Elements
-                    episodeDiv.appendChild(titleElem);
-                    episodeDiv.appendChild(descriptionElem);
-                    episodeDiv.appendChild(buttonContainer);
-
-                    episodesDiv.appendChild(episodeDiv);
+        // Function to fetch RSS feed and display episodes
+        function fetchAndDisplayEpisodes(feedUrl) {
+            return fetch(feedUrl)
+                .then(response => response.text())
+                .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+                .then(data => {
+                    return Array.from(data.querySelectorAll('item')).map(item => {
+                        return {
+                            title: item.querySelector('title').textContent,
+                            description: item.querySelector('description').textContent,
+                            listenLink: item.querySelector('link').textContent,
+                            enclosureUrl: item.querySelector('enclosure').getAttribute('url'),
+                            pubDate: new Date(item.querySelector('pubDate').textContent)
+                        };
+                    });
                 });
-            })
-            .catch(error => console.error('Error:', error));
+        }
+
+       // Function to extract podcast name from RSS feed URL
+function extractPodcastName(feedUrl) {
+    if (feedUrl.includes('ergopodcast')) {
+        return 'Ergo Podcast';
+    } else if (feedUrl.includes('thesigmacast')) {
+        return 'The Sigmacast';
+    } else {
+        return 'Unknown Podcast'; // Default to 'Unknown Podcast' if the feed URL doesn't match expected patterns
+    }
+}
+
+// Fetch both RSS feeds
+Promise.all([
+    fetchAndDisplayEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'), // Ergo Podcast
+    fetchAndDisplayEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')  // The Sigmacast
+]).then(([ergoEpisodes, sigmaEpisodes]) => {
+    // Combine episodes and sort by pubDate (assuming each episode has a pubDate)
+    const allEpisodes = ergoEpisodes.concat(sigmaEpisodes);
+    allEpisodes.sort((a, b) => b.pubDate - a.pubDate);
+
+    // Display episodes
+    const episodesDiv = document.getElementById('episodes');
+
+    allEpisodes.forEach(episode => {
+        const episodeDiv = document.createElement('div');
+                
+        // Episode Title
+        const titleElem = document.createElement('h2');
+        titleElem.textContent = episode.title;
+
+        // Episode Description
+        const descriptionElem = document.createElement('p');
+        descriptionElem.textContent = episode.description;
+
+        // Listen and Download Buttons
+        const listenButton = document.createElement('a');
+        listenButton.className = 'button spotify';
+        listenButton.href = episode.listenLink;
+        listenButton.target = '_blank';
+
+        const appleButton = document.createElement('a');
+        appleButton.className = 'button apple';
+        appleButton.target = '_blank';
+        // Set the correct Apple Podcasts link based on the podcast name
+        const podcastName = extractPodcastName(episode.listenLink);
+        if (podcastName === 'Ergo Podcast') {
+            appleButton.href = 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451';
+        } else if (podcastName === 'The Sigmacast') {
+            appleButton.href = 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
+        } else {
+            // Default to Sigmacast if podcast name is unknown
+            appleButton.href = 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
+        }
+
+        const downloadButton = document.createElement('a');
+        downloadButton.className = 'button';
+        downloadButton.textContent = 'Download';
+        downloadButton.href = episode.enclosureUrl;
+        downloadButton.download = episode.title + '.mp3'; // Specify filename for the download
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.appendChild(listenButton);
+        buttonContainer.appendChild(appleButton);
+        buttonContainer.appendChild(downloadButton);
+
+        // Append Elements
+        episodeDiv.appendChild(titleElem);
+        episodeDiv.appendChild(descriptionElem);
+        episodeDiv.appendChild(buttonContainer);
+
+        episodesDiv.appendChild(episodeDiv);
+    });
+}).catch(error => console.error('Error:', error));
     </script>
 </body>
-</html>
-
