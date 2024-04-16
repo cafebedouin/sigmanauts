@@ -1,0 +1,119 @@
+---
+title: "The Sigmacast"
+date: 2024-04-15
+draft: false
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sigmacast</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            background-color: #1DB954;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .button.spotify, .button.apple {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            padding: 0;
+            margin-right: 5px;
+            background-color: transparent;
+        }
+        .button.spotify {
+            background-image: url('https://www.freepnglogos.com/uploads/spotify-logo-png/file-spotify-logo-png-4.png');
+            width: 24px; /* Reduced size by 20% */
+            height: 24px; /* Reduced size by 20% */
+        }
+        .button.apple {
+            background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
+            width: 37.5px; /* Increased size by 25% */
+            height: 37.5px; /* Increased size by 25% */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Introduction -->
+    <div id="introduction">
+        <h1>Welcome to The Sigmacast!</h1>
+        <p>The Sigmacast is an audio podcast dedicated to content created by the Ergo community and the Ergo Foundation. Bringing you the audio from the latest videos published on the EF YouTube channel, such as the weekly AMAs and dev updates. Additionally, you'll find content from shows like the Ergo Sigmanauts YouTube channel and Hash it Out W/CW.</p>
+        <p>Listen to us on <a href="https://podcasters.spotify.com/pod/show/ergopodcast" target="_blank">Spotify</a>, <a href="https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451" target="_blank">Apple Podcasts</a>, or add this RSS feed:  <code>https://anchor.fm/s/f21c6414/podcast/rss</code> to your preferred podcast app.</p>
+        <p>Episodes are available to listen to or download (by right-clicking and saving) right on this page.</p>
+    </div>
+
+    <!-- Display Episodes -->
+    <div id="episodes"></div>
+
+    <script>
+        fetch('https://anchor.fm/s/f21c6414/podcast/rss')
+            .then(response => response.text())
+            .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+            .then(data => {
+                const items = data.querySelectorAll('item');
+                const episodesDiv = document.getElementById('episodes');
+
+                items.forEach(item => {
+                    const title = item.querySelector('title').textContent;
+                    const description = item.querySelector('description').textContent;
+                    const listenLink = item.querySelector('link').textContent;
+                    const enclosureUrl = item.querySelector('enclosure').getAttribute('url');
+
+                    const episodeDiv = document.createElement('div');
+                    
+                    // Episode Title
+                    const titleElem = document.createElement('h2');
+                    titleElem.textContent = title;
+
+                    // Episode Description
+                    const descriptionElem = document.createElement('p');
+                    descriptionElem.textContent = description;
+
+                    // Listen and Download Buttons
+                    const listenButton = document.createElement('a');
+                    listenButton.className = 'button spotify';
+                    listenButton.href = listenLink;
+                    listenButton.target = '_blank';
+
+                    const appleButton = document.createElement('a');
+                    appleButton.className = 'button apple';
+                    appleButton.href = 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451';
+                    appleButton.target = '_blank';
+
+                    const downloadButton = document.createElement('a');
+                    downloadButton.className = 'button';
+                    downloadButton.textContent = 'Download';
+                    downloadButton.href = enclosureUrl;
+                    downloadButton.download = title + '.mp3'; // Specify filename for the download
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.appendChild(listenButton);
+                    buttonContainer.appendChild(appleButton);
+                    buttonContainer.appendChild(downloadButton);
+
+                    // Append Elements
+                    episodeDiv.appendChild(titleElem);
+                    episodeDiv.appendChild(descriptionElem);
+                    episodeDiv.appendChild(buttonContainer);
+
+                    episodesDiv.appendChild(episodeDiv);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
+
