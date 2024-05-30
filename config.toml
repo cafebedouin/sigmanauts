@@ -66,7 +66,7 @@ theme = "beautifulhugo"
 #  kaggle = "username"
 #  weibo = "username"
 #  slack = "username"
-  discord = "https://discord.gg/RC8M4Bkgsy"
+  discord = "https://discord.com/invite/ergo-platform-668903786361651200"
 #  strava = "userid"
 
 
@@ -76,9 +76,37 @@ theme = "beautifulhugo"
     weight = 1
 
 [[menu.main]]
+    name = "Mining Pool"
+    url = "/mining/"
+    weight = 2
+
+[[menu.main]]
+    name = "Media"
+    weight = 3
+
+[[menu.main]]
+    parent = "Media"
+    name = "Podcast"
+    url = "/podcast"
+    weight = 1
+    
+[[menu.main]]
+    parent = "Media"
+    name = "Ergo Sigmanauts YouTube"
+    url = "https://www.youtube.com/@ergosigmanauts"
+    weight = 2
+
+[[menu.main]]
+    parent = "Media"
+    name = "Hash it Out W/CW"
+    url = "https://www.youtube.com/c/HashitOutwCW"
+    weight = 2
+
+[[menu.main]]
     identifier = "Documents"
     name = "Documents"
-    weight = 2
+    url = "/documents/"
+    weight = 4
 
 [[menu.main]]
     parent = "Documents"
@@ -111,11 +139,6 @@ theme = "beautifulhugo"
     weight = 5
 
 [[menu.main]]
-    name = "Mining Pool"
-    url = "/mining/"
-    weight = 3
-
-[[menu.main]]
     name = "Contact"
     url = "/contact/"
-    weight = 4
+    weight = 5
