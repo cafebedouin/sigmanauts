@@ -100,6 +100,24 @@ draft = 'false'
 <div>
 
 <!--    
+
+this only works on the old server. needs to be fixed for the new server address. http://37.27.198.175:8000/
+
+from Marc the shark:
+
+hey man here are the api's:
+
+
+"/" (GET): Welcome message
+"/tables" (GET): List all database tables
+"/test_db_connection" (GET): Check database connectivity
+"/miningcore/{table_name}" (GET): Retrieve all data from a specified table
+"/miningcore/{table_name}/{address}" (GET): Get filtered data by address for a table
+"/sigscore/miners" (GET): List miners with latest hashrates (paginated)
+"/sigscore/miners/top" (GET): Get top 20 miners by hashrate
+"/sigscore/miners/{address}" (GET): Detailed info for a specific miner
+"/sigscore/miners/{address}/workers" (GET): 24-hour worker data for a miner
+
 <style>
     @keyframes spin {
         0% { transform: rotate(0deg); }
