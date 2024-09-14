@@ -215,7 +215,7 @@ draft = 'false'
         let htmlContent = '<h2>Worker Stats</h2>';
 
         if (address) {
-            htmlContent += `<h3>Address: ${address}</h3>`;
+            htmlContent += `<!---h3>Address: ${address}</h3--->`;
         }
 
         Object.entries(data).forEach(([workerName, stats]) => {
