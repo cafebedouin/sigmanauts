@@ -107,25 +107,6 @@ draft = 'false'
     </ul>
 <div>
 
-<!--    
-
-this only works on the old server. needs to be fixed for the new server address. http://37.27.198.175:8000/
-
-from Marc the shark:
-
-hey man here are the api's:
-
-
-"/" (GET): Welcome message
-"/tables" (GET): List all database tables
-"/test_db_connection" (GET): Check database connectivity
-"/miningcore/{table_name}" (GET): Retrieve all data from a specified table
-"/miningcore/{table_name}/{address}" (GET): Get filtered data by address for a table
-"/sigscore/miners" (GET): List miners with latest hashrates (paginated)
-"/sigscore/miners/top" (GET): Get top 20 miners by hashrate
-"/sigscore/miners/{address}" (GET): Detailed info for a specific miner
-"/sigscore/miners/{address}/workers" (GET): 24-hour worker data for a miner
---->
 <style>
     @keyframes spin {
         0% { transform: rotate(0deg); }
@@ -143,8 +124,8 @@ hey man here are the api's:
     }
 </style>
 
-<div id="input-title">To check your connection to the pool, enter your wallet address below:</div>
-<input type="text" id="wallet-input" placeholder="Enter wallet address" style="color: black;">
+<div id="input-title">To check your connection to the pool, enter your wallet address or worker name below:</div>
+<input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
 <button onclick="fetchMiningStats()">Go</button>
 <div id="mining-stats"></div>
 <div id="loading-spinner" class="spinner" style="display: none;"></div>
@@ -152,13 +133,62 @@ hey man here are the api's:
 <script>
     // Function to fetch mining stats
     function fetchMiningStats() {
-        const walletAddress = document.getElementById('wallet-input').value.trim();
-        if (walletAddress) {
-            const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
-            fetchAndDisplayStats(url);
+        const input = document.getElementById('wallet-input').value.trim();
+        if (input.length > 0) {
+            if (input.length > 25) {
+                // Assume it's a wallet address
+                fetchMiningStatsForWallet(input);
+            } else {
+                // Assume it's a worker name
+                fetchMiningStatsForWorker(input);
+            }
         } else {
-            alert('Please enter a wallet address.');
+            alert('Please enter a wallet address or worker name.');
         }
+    }
+
+    // Function to fetch mining stats for a wallet address
+    function fetchMiningStatsForWallet(walletAddress) {
+        const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
+        fetchAndDisplayStats(url);
+    }
+
+    // Function to fetch the list of all miners and their associated worker stats
+    function fetchMiningStatsForWorker(workerName) {
+        const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners';
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(miners => {
+                let found = false;
+
+                // Iterate through all miners and fetch their worker stats
+                const fetchWorkerStatsForAddress = (address) => {
+                    const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${address}/workers`;
+                    return fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data[workerName]) {
+                                found = true;
+                                displayStats(data, address);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching worker stats:', error);
+                        });
+                };
+
+                // Check all miners
+                const promises = miners.map(miner => fetchWorkerStatsForAddress(miner.address));
+                Promise.all(promises).then(() => {
+                    if (!found) {
+                        alert('Worker name not found. Please check the input.');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching miners list:', error);
+                alert('Error fetching miners list. Please try again later.');
+            });
     }
 
     // Function to fetch mining stats and display them
@@ -180,9 +210,13 @@ hey man here are the api's:
     }
 
     // Function to display mining stats
-    function displayStats(data) {
+    function displayStats(data, address = '') {
         const miningStatsElement = document.getElementById('mining-stats');
         let htmlContent = '<h2>Worker Stats</h2>';
+
+        if (address) {
+            htmlContent += `<h3>Address: ${address}</h3>`;
+        }
 
         Object.entries(data).forEach(([workerName, stats]) => {
             // Get the most recent stat
