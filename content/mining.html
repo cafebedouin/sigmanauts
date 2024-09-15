@@ -147,9 +147,11 @@ draft = 'false'
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
             const spinner = document.getElementById('loading-spinner');
+            const miningStatsElement = document.getElementById('mining-stats');
 
             if (input.length > 0) {
                 spinner.style.display = 'block'; // Show loading spinner
+                miningStatsElement.innerHTML = ''; // Clear previous stats
 
                 if (input.length > 25) {
                     // Assume it's a wallet address
@@ -165,8 +167,24 @@ draft = 'false'
 
         // Function to fetch mining stats for a wallet address
         function fetchMiningStatsForWallet(walletAddress) {
-            const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
-            fetchAndDisplayStats(url, walletAddress);
+            const statsUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
+            const additionalInfoUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}`;
+
+            Promise.all([
+                fetch(statsUrl).then(response => response.json()),
+                fetch(additionalInfoUrl).then(response => response.json())
+            ])
+            .then(([statsData, additionalData]) => {
+                displayAdditionalInfo(additionalData, walletAddress);
+                displayStats(statsData);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('Error fetching mining stats. Please try again later.');
+            })
+            .finally(() => {
+                document.getElementById('loading-spinner').style.display = 'none';
+            });
         }
 
         // Function to fetch the list of all miners and their associated worker stats
@@ -180,17 +198,22 @@ draft = 'false'
                     // Iterate through all miners and fetch their worker stats
                     const fetchWorkerStatsForAddress = (address) => {
                         const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${address}/workers`;
-                        return fetch(url)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data[workerName]) {
-                                    found = true;
-                                    displayStats(data, address);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching worker stats:', error);
-                            });
+                        const additionalInfoUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${address}`;
+
+                        return Promise.all([
+                            fetch(url).then(response => response.json()),
+                            fetch(additionalInfoUrl).then(response => response.json())
+                        ])
+                        .then(([workerData, additionalData]) => {
+                            if (workerData[workerName]) {
+                                found = true;
+                                displayAdditionalInfo(additionalData, address);
+                                displayStats(workerData);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
                     };
 
                     // Check all miners
@@ -209,31 +232,32 @@ draft = 'false'
                 });
         }
 
-        // Function to fetch mining stats and display them
-        function fetchAndDisplayStats(url, address = '') {
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    displayStats(data, address);
-                })
-                .catch(error => {
-                    console.error('Error fetching mining stats:', error);
-                    alert('Error fetching mining stats. Please try again later.');
-                })
-                .finally(() => {
-                    // Hide the loading spinner
-                    document.getElementById('loading-spinner').style.display = 'none';
-                });
+        // Function to display additional information
+        function displayAdditionalInfo(data, address) {
+            const miningStatsElement = document.getElementById('mining-stats');
+            let additionalInfoContent = '<h2>Overall Miner Info</h2>';
+
+            additionalInfoContent += `
+                Address: ${formatAddress(address)}<br>
+                Current Hashrate: ${formatHashrate(data.current_hashrate)}<br>
+                Worker Count: ${data.worker_count}<br>
+                ${data.last_block_found.block_height && data.last_block_found.timestamp ? 
+                    `Last Block Found: Block ${data.last_block_found.block_height} at ${formatDate(data.last_block_found.timestamp)}<br>` : 
+                    'Last Block Found: No blocks found yet<br>'
+                }
+                Balance: ${data.balance.toFixed(8)} ERG<br>
+                Last Payment: ${formatDate(data.last_payment.date)}<br>
+                Payment Amount: ${data.last_payment.amount.toFixed(8)} ERG<br>
+                <br>
+            `;
+
+            miningStatsElement.innerHTML += additionalInfoContent;
         }
 
         // Function to display mining stats
-        function displayStats(data, address = '') {
+        function displayStats(data) {
             const miningStatsElement = document.getElementById('mining-stats');
             let htmlContent = '<h2>Worker Stats</h2>';
-
-            if (address) {
-                htmlContent += `<h3>Address: ${formatAddress(address)}</h3>`;
-            }
 
             Object.entries(data).forEach(([workerName, stats]) => {
                 // Get the most recent stat
@@ -252,7 +276,7 @@ draft = 'false'
                 `;
             });
 
-            miningStatsElement.innerHTML = htmlContent;
+            miningStatsElement.innerHTML += htmlContent;
         }
 
         // Function to format address
