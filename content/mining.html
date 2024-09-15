@@ -113,6 +113,11 @@ draft = 'false'
             100% { transform: rotate(360deg); }
         }
 
+        .spinner-container {
+            text-align: center; /* Center the spinner horizontally */
+            margin-top: 10px; /* Space between input and spinner */
+        }
+
         .spinner {
             border: 4px solid #f3f3f3; /* Light grey */
             border-top: 4px solid #3498db; /* Blue */
@@ -120,8 +125,11 @@ draft = 'false'
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
-            margin: auto;
             display: none; /* Initially hidden */
+        }
+
+        #mining-stats {
+            margin-top: 20px; /* Space between spinner and stats */
         }
     </style>
 </head>
@@ -129,15 +137,20 @@ draft = 'false'
     <div id="input-title">To check your connection to the pool, enter your wallet address or worker name below:</div>
     <input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
     <button onclick="fetchMiningStats()">Go</button>
+    <div class="spinner-container">
+        <div id="loading-spinner" class="spinner"></div>
+    </div>
     <div id="mining-stats"></div>
-    <div id="loading-spinner" class="spinner"></div>
 
     <script>
         // Function to fetch mining stats
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
+            const spinner = document.getElementById('loading-spinner');
+
             if (input.length > 0) {
-                document.getElementById('loading-spinner').style.display = 'block'; // Show loading spinner
+                spinner.style.display = 'block'; // Show loading spinner
+
                 if (input.length > 25) {
                     // Assume it's a wallet address
                     fetchMiningStatsForWallet(input);
@@ -153,7 +166,7 @@ draft = 'false'
         // Function to fetch mining stats for a wallet address
         function fetchMiningStatsForWallet(walletAddress) {
             const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
-            fetchAndDisplayStats(url);
+            fetchAndDisplayStats(url, walletAddress);
         }
 
         // Function to fetch the list of all miners and their associated worker stats
@@ -197,11 +210,11 @@ draft = 'false'
         }
 
         // Function to fetch mining stats and display them
-        function fetchAndDisplayStats(url) {
+        function fetchAndDisplayStats(url, address = '') {
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    displayStats(data);
+                    displayStats(data, address);
                 })
                 .catch(error => {
                     console.error('Error fetching mining stats:', error);
@@ -219,7 +232,7 @@ draft = 'false'
             let htmlContent = '<h2>Worker Stats</h2>';
 
             if (address) {
-                htmlContent += `<!---h3>Address: ${address}</h3--->`;
+                htmlContent += `<h3>Address: ${formatAddress(address)}</h3>`;
             }
 
             Object.entries(data).forEach(([workerName, stats]) => {
@@ -240,6 +253,14 @@ draft = 'false'
             });
 
             miningStatsElement.innerHTML = htmlContent;
+        }
+
+        // Function to format address
+        function formatAddress(address) {
+            if (address.length > 8) {
+                return `${address.slice(0, 4)}...${address.slice(-4)}`;
+            }
+            return address;
         }
 
         // Function to format date
