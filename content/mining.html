@@ -239,7 +239,7 @@ draft = 'false'
 
             additionalInfoContent += `
                 Address: ${formatAddress(address)}<br>
-                Current Hashrate: ${formatHashrate(data.current_hashrate)}<br>
+             <!---   Current Hashrate: ${formatHashrate(data.current_hashrate)}<br> --->
                 Worker Count: ${data.worker_count}<br>
                 ${data.last_block_found.block_height && data.last_block_found.timestamp ? 
                     `Last Block Found: Block ${data.last_block_found.block_height} at ${formatDate(data.last_block_found.timestamp)}<br>` : 
