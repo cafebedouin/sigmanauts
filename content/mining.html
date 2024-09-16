@@ -108,30 +108,30 @@ draft = 'false'
 <div>
 
     <style>
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 
-        .spinner-container {
-            text-align: center; /* Center the spinner horizontally */
-            margin-top: 10px; /* Space between input and spinner */
-        }
+    .spinner-container {
+        text-align: center; /* Center the spinner horizontally */
+        margin-top: 10px; /* Space between input and spinner */
+    }
 
-        .spinner {
-            border: 4px solid #f3f3f3; /* Light grey */
-            border-top: 4px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            display: none; /* Initially hidden */
-        }
+    .spinner {
+        border: 4px solid #f3f3f3; /* Light grey */
+        border-top: 4px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        display: none; /* Initially hidden */
+    }
 
-        #mining-stats {
-            margin-top: 20px; /* Space between spinner and stats */
-        }
-    </style>
+    #mining-stats {
+        margin-top: 20px; /* Space between spinner and stats */
+    }
+</style>
 </head>
 <body>
     <div id="input-title">To check your connection to the pool, enter your wallet address or worker name below:</div>
@@ -175,8 +175,7 @@ draft = 'false'
                 fetch(additionalInfoUrl).then(response => response.json())
             ])
             .then(([statsData, additionalData]) => {
-                displayAdditionalInfo(additionalData, walletAddress);
-                displayStats(statsData);
+                displayAdditionalInfo(additionalData, walletAddress, statsData);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -207,8 +206,7 @@ draft = 'false'
                         .then(([workerData, additionalData]) => {
                             if (workerData[workerName]) {
                                 found = true;
-                                displayAdditionalInfo(additionalData, address);
-                                displayStats(workerData);
+                                displayAdditionalInfo(additionalData, address, workerData);
                             }
                         })
                         .catch(error => {
@@ -232,26 +230,35 @@ draft = 'false'
                 });
         }
 
-        // Function to display additional information
-        function displayAdditionalInfo(data, address) {
+        // Function to display additional information, including Total Hashrate
+        function displayAdditionalInfo(data, address, statsData) {
             const miningStatsElement = document.getElementById('mining-stats');
             let additionalInfoContent = '<h2>Overall Miner Info</h2>';
 
+            // Calculate total hashrate
+            let totalHashrate = 0;
+            Object.entries(statsData).forEach(([workerName, stats]) => {
+                const mostRecentStat = stats.reduce((latest, current) => {
+                    return new Date(current.created) > new Date(latest.created) ? current : latest;
+                });
+                totalHashrate += mostRecentStat.hashrate;
+            });
+
             additionalInfoContent += `
                 Address: ${formatAddress(address)}<br>
-             <!---   Current Hashrate: ${formatHashrate(data.current_hashrate)}<br> --->
+                Total Hashrate: ${formatHashrate(totalHashrate)}<br>
                 Worker Count: ${data.worker_count}<br>
                 ${data.last_block_found.block_height && data.last_block_found.timestamp ? 
                     `Last Block Found: Block ${data.last_block_found.block_height} at ${formatDate(data.last_block_found.timestamp)}<br>` : 
                     'Last Block Found: No blocks found yet<br>'
                 }
                 Balance: ${data.balance.toFixed(8)} ERG<br>
-                Last Payment: ${formatDate(data.last_payment.date)}<br>
-                Payment Amount: ${data.last_payment.amount.toFixed(8)} ERG<br>
-                <br>
+                Last Payment: ${data.last_payment.amount.toFixed(8)} ERG at ${formatDate(data.last_payment.date)}  <br>
+                
             `;
 
             miningStatsElement.innerHTML += additionalInfoContent;
+            displayStats(statsData); // Call the displayStats function to show individual worker stats
         }
 
         // Function to display mining stats
