@@ -222,6 +222,7 @@ draft = 'false'
                 Total Hashrate: ${formatHashrate(totalHashrate)}<br>
                 Total Workers: ${totalWorkers}<br>
                 Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
+                Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
                 Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
                 <a class="toggle-performance" onclick="togglePerformanceChart('${statsUrl}', this)">Show 24hr Performance</a><br>
                 <div id="chart-container" class="chart-container" style="display: none;"></div>
