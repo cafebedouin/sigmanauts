@@ -33,22 +33,22 @@ draft = 'false'
 
 <br>
 
-<script>
-  // Fetch data from the API endpoint
-  fetch('https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/miningcore/poolstats')
-    .then(response => response.json())
-    .then(data => {
-      // Extract the most recent pool hashrate
-      const latestStats = data[data.length - 1];
-      const poolHashrate = latestStats.poolhashrate / 1000000000; // Convert to GH/s
-
-      // Update the HTML element with the pool hashrate
-      document.getElementById('poolHashrate').textContent = `Pool Hashrate: ${poolHashrate.toFixed(2)} GH/s`;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-</script>
+    <script>
+        // Fetch data from the API endpoint
+        fetch('https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/performance')
+          .then(response => response.json())
+          .then(data => {
+            // Extract the most recent pool hashrate
+            const latestStats = data.stats[data.stats.length - 1];
+            const poolHashrate = latestStats.poolHashrate / 1000000000; // Convert to GH/s
+            
+            // Update the HTML element with the pool hashrate
+            document.getElementById('poolHashrate').textContent = `Pool Hashrate: ${poolHashrate.toFixed(2)} GH/s`;
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+    </script>
 
 <body>
     <h1>Introduction</h1>
@@ -102,18 +102,12 @@ draft = 'false'
     <h2>Dashboards:</h2>
 
 <div>
-
-    <style>
+<style>
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-
-    .spinner-container {
-        text-align: center; /* Center the spinner horizontally */
-        margin-top: 10px; /* Space between input and spinner */
-    }
-
+    
     .spinner {
         border: 4px solid #f3f3f3; /* Light grey */
         border-top: 4px solid #3498db; /* Blue */
@@ -121,205 +115,149 @@ draft = 'false'
         width: 30px;
         height: 30px;
         animation: spin 1s linear infinite;
-        display: none; /* Initially hidden */
-    }
-
-    #mining-stats {
-        margin-top: 20px; /* Space between spinner and stats */
+        margin: auto;
     }
 </style>
-</head>
-<body>
-    <div id="input-title">Enter your wallet address or worker name in the field below, or explore one of the dashboards linked beneath.</div>
-    <input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
-    <button onclick="fetchMiningStats()">Go</button>
-    <div class="spinner-container">
-        <div id="loading-spinner" class="spinner"></div>
-    </div>
-    <div id="mining-stats"></div>
 
-    <script>
-        // Function to fetch mining stats
-        function fetchMiningStats() {
-            const input = document.getElementById('wallet-input').value.trim();
-            const spinner = document.getElementById('loading-spinner');
-            const miningStatsElement = document.getElementById('mining-stats');
+<div id="input-title">To check your connection to the pool, use one of the dashboards listed above or enter your wallet address or worker name below:</div>
+<input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
+<button onclick="fetchMiningStats()">Go</button>
+<div id="mining-stats"></div>
+<div id="loading-spinner" class="spinner" style="display: none;"></div>
 
-            if (input.length > 0) {
-                spinner.style.display = 'block'; // Show loading spinner
-                miningStatsElement.innerHTML = ''; // Clear previous stats
-
-                if (input.length > 25) {
-                    // Assume it's a wallet address
-                    fetchMiningStatsForWallet(input);
-                } else {
-                    // Assume it's a worker name
-                    fetchMiningStatsForWorker(input);
-                }
-            } else {
-                alert('Please enter a wallet address or worker name.');
-            }
+<script>
+    // Function to fetch mining stats
+    function fetchMiningStats() {
+        const input = document.getElementById('wallet-input').value.trim();
+        if (input.length > 25) {
+            fetchMiningStatsForWallet(input);
+        } else {
+            fetchWorker(input);
         }
+    }
 
-        // Function to fetch mining stats for a wallet address
-        function fetchMiningStatsForWallet(walletAddress) {
-            const statsUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}/workers`;
-            const additionalInfoUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${walletAddress}`;
+    // Function to fetch mining stats for a wallet address
+    function fetchMiningStatsForWallet(walletAddress) {
+        const url = `https://api.codetabs.com/v1/proxy/?quest=65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
+        fetchAndDisplayStats(url);
+    }
 
-            Promise.all([
-                fetch(statsUrl).then(response => response.json()),
-                fetch(additionalInfoUrl).then(response => response.json())
-            ])
-            .then(([statsData, additionalData]) => {
-                displayAdditionalInfo(additionalData, walletAddress, statsData);
+    // Function to fetch the list of workers and their associated wallet addresses
+    function fetchWorker(workerName) {
+        document.getElementById('loading-spinner').style.display = 'block'; // Show loading spinner
+        const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners?pageSize=5000';
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                let found = false;
+                const fetchWorkerWithDelay = (miner, index) => {
+                    const minerAddress = miner.miner.replace('"', '').replace('"', ''); // Extract the miner address
+                    const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${minerAddress}`;
+                    setTimeout(() => {
+                        fetchAndCheckWorker(url, workerName);
+                    }, index * 250);
+                };
+                data.forEach((miner, index) => {
+                    fetchWorkerWithDelay(miner, index);
+                });
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
-                alert('Error fetching mining stats. Please try again later.');
-            })
-            .finally(() => {
-                document.getElementById('loading-spinner').style.display = 'none';
+                console.error('Error fetching worker list:', error);
+                alert('Error fetching worker list. Please try again later.');
             });
-        }
+    }
 
-        // Function to fetch the list of all miners and their associated worker stats
-        function fetchMiningStatsForWorker(workerName) {
-            const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners';
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(miners => {
-                    let found = false;
-
-                    // Iterate through all miners and fetch their worker stats
-                    const fetchWorkerStatsForAddress = (address) => {
-                        const url = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${address}/workers`;
-                        const additionalInfoUrl = `https://api.codetabs.com/v1/proxy/?quest=http://37.27.198.175:8000/sigscore/miners/${address}`;
-
-                        return Promise.all([
-                            fetch(url).then(response => response.json()),
-                            fetch(additionalInfoUrl).then(response => response.json())
-                        ])
-                        .then(([workerData, additionalData]) => {
-                            if (workerData[workerName]) {
-                                found = true;
-                                displayAdditionalInfo(additionalData, address, workerData);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-                        });
-                    };
-
-                    // Check all miners
-                    const promises = miners.map(miner => fetchWorkerStatsForAddress(miner.address));
-                    Promise.all(promises).then(() => {
-                        if (!found) {
-                            alert('Worker name not found. Please check the input.');
-                        }
-                        document.getElementById('loading-spinner').style.display = 'none'; // Hide loading spinner
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching miners list:', error);
-                    alert('Error fetching miners list. Please try again later.');
-                    document.getElementById('loading-spinner').style.display = 'none'; // Hide loading spinner
-                });
-        }
-
-        // Function to display additional information, including Total Hashrate
-        function displayAdditionalInfo(data, address, statsData) {
-            const miningStatsElement = document.getElementById('mining-stats');
-            let additionalInfoContent = '<h2>Miner Stats</h2>';
-
-            // Calculate total hashrate
-            let totalHashrate = 0;
-            Object.entries(statsData).forEach(([workerName, stats]) => {
-                const mostRecentStat = stats.reduce((latest, current) => {
-                    return new Date(current.created) > new Date(latest.created) ? current : latest;
-                });
-                totalHashrate += mostRecentStat.hashrate;
-            });
-
-            additionalInfoContent += `
-                Address: ${formatAddress(address)}<br>
-                Total Hashrate: ${formatHashrate(totalHashrate)}<br>
-                Worker Count: ${data.worker_count}<br>
-                ${data.last_block_found.block_height && data.last_block_found.timestamp ? 
-                    `Last Block Found: Block ${data.last_block_found.block_height} at ${formatDate(data.last_block_found.timestamp)}<br>` : 
-                    'Last Block Found: No blocks found yet<br>'
+    // Function to fetch mining stats and check for the worker name
+    function fetchAndCheckWorker(url, workerName) {
+        fetch(url)
+            .then(response => response.json())
+            .then(stats => {
+                const workers = Object.keys(stats.performance.workers);
+                if (workers.includes(workerName)) {
+                    displayStats(stats);
                 }
-                Balance: ${data.balance.toFixed(8)} ERG<br>
-                Last Payment: ${data.last_payment.amount.toFixed(8)} ERG at ${formatDate(data.last_payment.date)}  <br>
-                
-            `;
-
-            miningStatsElement.innerHTML += additionalInfoContent;
-            displayStats(statsData); // Call the displayStats function to show individual worker stats
-        }
-
-        // Function to display mining stats
-        function displayStats(data) {
-            const miningStatsElement = document.getElementById('mining-stats');
-            let htmlContent = '<h2>Worker Stats</h2>';
-
-            Object.entries(data).forEach(([workerName, stats]) => {
-                // Get the most recent stat
-                const mostRecentStat = stats.reduce((latest, current) => {
-                    return new Date(current.created) > new Date(latest.created) ? current : latest;
-                });
-
-                htmlContent += `<h3>${workerName}</h3>`;
-                htmlContent += `
-                    Updated: ${formatDate(mostRecentStat.created)}
-                    <br>
-                    Hashrate: ${formatHashrate(mostRecentStat.hashrate)}
-                    <br>
-                    Shares Per Second: ${mostRecentStat.sharesPerSecond.toFixed(3)}
-                    <br><br>
-                `;
+            })
+            .catch(error => {
+                console.error('Error fetching mining stats:', error);
             });
+    }
 
-            miningStatsElement.innerHTML += htmlContent;
+    // Function to fetch mining stats and display them
+    function fetchAndDisplayStats(url) {
+        fetch(url)
+            .then(response => response.json())
+            .then(stats => {
+                displayStats(stats);
+            })
+            .catch(error => {
+                console.error('Error fetching mining stats:', error);
+                alert('Error fetching mining stats. Please try again later.');
+            });
+    }
+
+    // Function to display mining stats
+    function displayStats(stats) {
+        const workers = stats.performance.workers;
+        const totalWorkers = Object.keys(workers).length;
+        const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
+
+        const miningStatsElement = document.getElementById('mining-stats');
+        miningStatsElement.innerHTML = `
+            <h2>Summary</h2>
+            Total Hashrate: ${formatHashrate(totalHashrate)}<br>
+            Total Workers: ${totalWorkers}<br>
+            Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
+            Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
+            Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
+            <h2>Worker Stats</h2>
+            ${Object.entries(workers).map(([workerName, workerData]) => `
+                <h3>${workerName}</h3>
+                Hashrate: ${formatHashrate(workerData.hashrate)}<br>
+                Shares Per Second: ${workerData.sharesPerSecond}<br>
+            `).join('')}
+        `;
+
+        // Hide the loading spinner
+        document.getElementById('loading-spinner').style.display = 'none';
+    }
+
+    // Function to format last payment time
+    function formatLastPayment(lastPayment) {
+        const date = new Date(lastPayment);
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    }
+
+    // Function to format hashrate
+    function formatHashrate(hashrate) {
+        if (hashrate >= 1000000000) {
+            return `${(hashrate / 1000000000).toFixed(1)} GH/s`;
+        } else {
+            return `${(hashrate / 1000000).toFixed(1)} MH/s`;
         }
+    }
 
-        // Function to format address
-        function formatAddress(address) {
-            if (address.length > 8) {
-                return `${address.slice(0, 4)}...${address.slice(-4)}`;
-            }
-            return address;
+    // Function to save user input to localStorage
+    function saveInput() {
+        const userInput = document.getElementById("wallet-input").value;
+        localStorage.setItem("lastInput", userInput);
+    }
+
+    // Function to load last input from localStorage
+    function loadLastInput() {
+        const lastInput = localStorage.getItem("lastInput");
+        if (lastInput) {
+            document.getElementById("wallet-input").value = lastInput;
+            fetchMiningStats(); // Automatically fetch stats based on the saved input
         }
+    }
 
-        // Function to format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-        }
+    // Load last input when the page loads
+    window.onload = function() {
+        loadLastInput();
+    }
+</script>
 
-        // Function to format hashrate
-        function formatHashrate(hashrate) {
-            if (hashrate >= 1000000000) {
-                return `${(hashrate / 1000000000).toFixed(1)} GH/s`;
-            } else {
-                return `${(hashrate / 1000000).toFixed(1)} MH/s`;
-            }
-        }
-
-        // Load last input when the page loads
-        window.onload = function() {
-            const lastInput = localStorage.getItem("lastInput");
-            if (lastInput) {
-                document.getElementById("wallet-input").value = lastInput;
-                fetchMiningStats(); // Automatically fetch stats based on the saved input
-            }
-        }
-
-        // Save user input to localStorage on input change
-        document.getElementById("wallet-input").addEventListener("input", function() {
-            const userInput = document.getElementById("wallet-input").value;
-            localStorage.setItem("lastInput", userInput);
-        });
-    </script>
+<br> </br>
 <ul>
     <li><strong>Shark Pool Dash</strong>: <a href="http://sharkpool.ergominers.com">SharkPoolCyberpunkMonitor</a></li>
     <li><strong>Simple Dash</strong>: <a href="https://my.ergoport.dev/cgi-bin/mining/mining_SR_mts.html">(SMG) Dashboard</a></li>
