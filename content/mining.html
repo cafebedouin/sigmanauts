@@ -138,7 +138,6 @@ draft = 'false'
     <script>
         let isChartVisible = false;
 
-        // Load saved input on page load
         window.onload = function() {
             const savedInput = localStorage.getItem('walletInput');
             if (savedInput) {
@@ -148,7 +147,7 @@ draft = 'false'
 
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
-            localStorage.setItem('walletInput', input); // Save input to local storage
+            localStorage.setItem('walletInput', input);
             if (input.length > 25) {
                 fetchMiningStatsForWallet(input);
             } else {
@@ -158,7 +157,7 @@ draft = 'false'
 
         function fetchMiningStatsForWallet(walletAddress) {
             const url = `https://api.codetabs.com/v1/proxy/?quest=65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
-            fetchAndDisplayStats(url, walletAddress); // Pass the walletAddress directly
+            fetchAndDisplayStats(url, walletAddress);
         }
 
         function fetchWorker(workerName) {
@@ -181,7 +180,7 @@ draft = 'false'
                 .then(response => response.json())
                 .then(stats => {
                     if (Object.keys(stats.performance.workers).includes(workerName)) {
-                        displayStats(stats, url, minerAddress); // Use resolved minerAddress
+                        displayStats(stats, url, minerAddress);
                     }
                 })
                 .catch(error => console.error('Error fetching mining stats:', error));
@@ -190,7 +189,7 @@ draft = 'false'
         function fetchAndDisplayStats(url, walletAddress) {
             fetch(url)
                 .then(response => response.json())
-                .then(stats => displayStats(stats, url, walletAddress)) // Pass the walletAddress directly
+                .then(stats => displayStats(stats, url, walletAddress))
                 .catch(error => console.error('Error fetching mining stats:', error));
         }
 
@@ -198,9 +197,8 @@ draft = 'false'
             const workers = stats.performance.workers;
             const totalWorkers = Object.keys(workers).length;
             const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
-            const formattedAddress = formatMinerAddress(walletAddress); // Use the correct address here
+            const formattedAddress = formatMinerAddress(walletAddress);
 
-            // Fetch last payment information
             fetchLastPayment(walletAddress).then(lastPaymentInfo => {
                 const miningStatsElement = document.getElementById('mining-stats');
                 miningStatsElement.innerHTML = `
@@ -258,15 +256,15 @@ draft = 'false'
         }
 
         function toggle24hrPerformance(event, statsUrl) {
-            event.preventDefault(); // Prevents scrolling to the top
+            event.preventDefault();
             const chartContainer = document.getElementById('chart-container');
             const toggleLink = document.getElementById('toggle-performance');
 
             if (isChartVisible) {
-                chartContainer.innerHTML = ''; // Hide the chart
+                chartContainer.innerHTML = '';
                 toggleLink.textContent = 'Show 24hr Performance';
             } else {
-                show24hrPerformance(statsUrl); // Show the chart
+                show24hrPerformance(statsUrl);
                 toggleLink.textContent = 'Hide 24hr Performance';
             }
             isChartVisible = !isChartVisible;
@@ -280,11 +278,19 @@ draft = 'false'
                     const labels = data.map(item => new Date(item.created).toLocaleTimeString());
                     const datasets = [];
                     const workers = new Set();
+                    const colors = [
+                        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+                        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+                        '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5',
+                        '#c49c94', '#f7b6d2', '#dbdb8d', '#9edae5', '#f5b041',
+                        '#e67e22', '#e74c3c', '#3498db', '#2ecc71', '#1abc9c',
+                        '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9'
+                    ];
 
                     data.forEach(item => Object.keys(item.workers).forEach(worker => workers.add(worker)));
                     const workerArray = Array.from(workers);
 
-                    workerArray.forEach(worker => {
+                    workerArray.forEach((worker, index) => {
                         datasets.push({
                             x: data.map(item => new Date(item.created)),
                             y: data.map(item => item.workers[worker]?.hashrate || 0),
@@ -292,7 +298,7 @@ draft = 'false'
                             type: 'scatter',
                             name: worker,
                             line: { shape: 'linear' },
-                            marker: { color: '#1f77b4' },
+                            marker: { color: colors[index % colors.length] },
                             text: data.map(item => formatHashrate(item.workers[worker]?.hashrate || 0)),
                             textposition: 'top center',
                             hoverinfo: 'x+y+text'
@@ -300,13 +306,13 @@ draft = 'false'
                     });
 
                     const layout = {
-                        title: { text: '24hr Hashrate Performance', font: { color: '#fff' } },
-                        xaxis: { title: 'Time', type: 'date', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
-                        yaxis: { title: 'Hashrate', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
-                        plot_bgcolor: '#000',
-                        paper_bgcolor: '#000',
+                        title: { text: '24hr Hashrate Performance', font: { color: '#000' } },
+                        xaxis: { title: 'Time', type: 'date', titlefont: { color: '#000' }, tickfont: { color: '#000' } },
+                        yaxis: { title: 'Hashrate', titlefont: { color: '#000' }, tickfont: { color: '#000' } },
+                        plot_bgcolor: '#fff',
+                        paper_bgcolor: '#fff',
                         hovermode: 'x',
-                        hoverlabel: { namelength: 0, bgcolor: '#333' }
+                        hoverlabel: { namelength: 0, bgcolor: '#ccc' }
                     };
 
                     Plotly.newPlot('chart-container', datasets, layout);
