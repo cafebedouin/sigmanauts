@@ -102,162 +102,235 @@ draft = 'false'
     <h2>Dashboards:</h2>
 
 <div>
-<style>
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .spinner {
-        border: 4px solid #f3f3f3; /* Light grey */
-        border-top: 4px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: auto;
-    }
-</style>
 
-<div id="input-title">Enter your worker name or wallet address below, or visit one of the dashboards linked beneath.</div>
-<input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
-<button onclick="fetchMiningStats()">Go</button>
-<div id="mining-stats"></div>
-<div id="loading-spinner" class="spinner" style="display: none;"></div>
-
-<script>
-    // Function to fetch mining stats
-    function fetchMiningStats() {
-        const input = document.getElementById('wallet-input').value.trim();
-        if (input.length > 25) {
-            fetchMiningStatsForWallet(input);
-        } else {
-            fetchWorker(input);
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-    }
+        .spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 20px;
+        }
+        a.toggle-performance {
+            color: #3498db;
+            cursor: pointer;
+        }
+        #mining-stats {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="input-title">Enter your worker name or wallet address below, or visit one of the dashboards linked beneath.</div>
+    <input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
+    <button onclick="fetchMiningStats()">Go</button>
+    <div id="mining-stats"></div>
+    <div id="loading-spinner" class="spinner" style="display: none;"></div>
 
-    // Function to fetch mining stats for a wallet address
-    function fetchMiningStatsForWallet(walletAddress) {
-        const url = `https://api.codetabs.com/v1/proxy/?quest=65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
-        fetchAndDisplayStats(url);
-    }
+    <script>
+        function fetchMiningStats() {
+            const input = document.getElementById('wallet-input').value.trim();
+            if (input.length > 25) {
+                fetchMiningStatsForWallet(input);
+            } else {
+                fetchWorker(input);
+            }
+        }
 
-    // Function to fetch the list of workers and their associated wallet addresses
-    function fetchWorker(workerName) {
-        document.getElementById('loading-spinner').style.display = 'block'; // Show loading spinner
-        const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners?pageSize=5000';
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                let found = false;
-                const fetchWorkerWithDelay = (miner, index) => {
-                    const minerAddress = miner.miner.replace('"', '').replace('"', ''); // Extract the miner address
-                    const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${minerAddress}`;
-                    setTimeout(() => {
-                        fetchAndCheckWorker(url, workerName);
-                    }, index * 250);
-                };
-                data.forEach((miner, index) => {
-                    fetchWorkerWithDelay(miner, index);
+        function fetchMiningStatsForWallet(walletAddress) {
+            const url = `https://api.codetabs.com/v1/proxy/?quest=65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
+            fetchAndDisplayStats(url);
+        }
+
+        function fetchWorker(workerName) {
+            document.getElementById('loading-spinner').style.display = 'block';
+            const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners?pageSize=5000';
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    let found = false;
+                    const fetchWorkerWithDelay = (miner, index) => {
+                        const minerAddress = miner.miner.replace('"', '').replace('"', '');
+                        const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${minerAddress}`;
+                        setTimeout(() => {
+                            fetchAndCheckWorker(url, workerName);
+                        }, index * 250);
+                    };
+                    data.forEach((miner, index) => {
+                        fetchWorkerWithDelay(miner, index);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching worker list:', error);
+                    alert('Error fetching worker list. Please try again later.');
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching worker list:', error);
-                alert('Error fetching worker list. Please try again later.');
-            });
-    }
-
-    // Function to fetch mining stats and check for the worker name
-    function fetchAndCheckWorker(url, workerName) {
-        fetch(url)
-            .then(response => response.json())
-            .then(stats => {
-                const workers = Object.keys(stats.performance.workers);
-                if (workers.includes(workerName)) {
-                    displayStats(stats);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching mining stats:', error);
-            });
-    }
-
-    // Function to fetch mining stats and display them
-    function fetchAndDisplayStats(url) {
-        fetch(url)
-            .then(response => response.json())
-            .then(stats => {
-                displayStats(stats);
-            })
-            .catch(error => {
-                console.error('Error fetching mining stats:', error);
-                alert('Error fetching mining stats. Please try again later.');
-            });
-    }
-
-    // Function to display mining stats
-    function displayStats(stats) {
-        const workers = stats.performance.workers;
-        const totalWorkers = Object.keys(workers).length;
-        const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
-
-        const miningStatsElement = document.getElementById('mining-stats');
-        miningStatsElement.innerHTML = `
-            <h2>Summary</h2>
-            Total Hashrate: ${formatHashrate(totalHashrate)}<br>
-            Total Workers: ${totalWorkers}<br>
-            Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
-            Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
-            Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
-            <h2>Worker Stats</h2>
-            ${Object.entries(workers).map(([workerName, workerData]) => `
-                <h3>${workerName}</h3>
-                Hashrate: ${formatHashrate(workerData.hashrate)}<br>
-                Shares Per Second: ${workerData.sharesPerSecond}<br>
-            `).join('')}
-        `;
-
-        // Hide the loading spinner
-        document.getElementById('loading-spinner').style.display = 'none';
-    }
-
-    // Function to format last payment time
-    function formatLastPayment(lastPayment) {
-        const date = new Date(lastPayment);
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-    }
-
-    // Function to format hashrate
-    function formatHashrate(hashrate) {
-        if (hashrate >= 1000000000) {
-            return `${(hashrate / 1000000000).toFixed(1)} GH/s`;
-        } else {
-            return `${(hashrate / 1000000).toFixed(1)} MH/s`;
         }
-    }
 
-    // Function to save user input to localStorage
-    function saveInput() {
-        const userInput = document.getElementById("wallet-input").value;
-        localStorage.setItem("lastInput", userInput);
-    }
-
-    // Function to load last input from localStorage
-    function loadLastInput() {
-        const lastInput = localStorage.getItem("lastInput");
-        if (lastInput) {
-            document.getElementById("wallet-input").value = lastInput;
-            fetchMiningStats(); // Automatically fetch stats based on the saved input
+        function fetchAndCheckWorker(url, workerName) {
+            fetch(url)
+                .then(response => response.json())
+                .then(stats => {
+                    const workers = Object.keys(stats.performance.workers);
+                    if (workers.includes(workerName)) {
+                        displayStats(stats, url);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching mining stats:', error);
+                });
         }
-    }
 
-    // Load last input when the page loads
-    window.onload = function() {
-        loadLastInput();
-    }
-</script>
+        function fetchAndDisplayStats(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(stats => {
+                    displayStats(stats, url);
+                })
+                .catch(error => {
+                    console.error('Error fetching mining stats:', error);
+                    alert('Error fetching mining stats. Please try again later.');
+                });
+        }
 
-<br> </br>
+        function displayStats(stats, statsUrl) {
+            const workers = stats.performance.workers;
+            const totalWorkers = Object.keys(workers).length;
+            const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
+
+            const miningStatsElement = document.getElementById('mining-stats');
+            miningStatsElement.innerHTML = `
+                <h2>Summary</h2>
+                Total Hashrate: ${formatHashrate(totalHashrate)}<br>
+                Total Workers: ${totalWorkers}<br>
+                Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
+                Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
+                <a class="toggle-performance" onclick="togglePerformanceChart('${statsUrl}', this)">Show 24hr Performance</a><br>
+                <div id="chart-container" class="chart-container" style="display: none;"></div>
+                <h2>Worker Stats</h2>
+                ${Object.entries(workers).map(([workerName, workerData]) => `
+                    <h3>${workerName}</h3>
+                    Hashrate: ${formatHashrate(workerData.hashrate)}<br>
+                    Shares Per Second: ${workerData.sharesPerSecond}<br>
+                `).join('')}
+            `;
+
+            document.getElementById('loading-spinner').style.display = 'none';
+        }
+
+        function formatLastPayment(lastPayment) {
+            const date = new Date(lastPayment);
+            return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+        }
+
+        function formatHashrate(hashrate) {
+            if (hashrate >= 1000000000) {
+                return `${(hashrate / 1000000000).toFixed(1)} GH/s`;
+            } else {
+                return `${(hashrate / 1000000).toFixed(1)} MH/s`;
+            }
+        }
+
+        function togglePerformanceChart(statsUrl, linkElement) {
+            const chartContainer = document.getElementById('chart-container');
+
+            if (chartContainer.style.display === 'none') {
+                chartContainer.style.display = 'block';
+                linkElement.textContent = 'Hide 24hr Performance';
+                fetchAndDisplayChart(statsUrl + '/performance');
+            } else {
+                chartContainer.style.display = 'none';
+                linkElement.textContent = 'Show 24hr Performance';
+            }
+        }
+
+        function fetchAndDisplayChart(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const chartContainer = document.getElementById('chart-container');
+                    chartContainer.innerHTML = ''; // Clear any previous chart
+
+                    const labels = data.map(item => new Date(item.created).toLocaleTimeString());
+                    const datasets = [];
+                    const workers = new Set();
+
+                    data.forEach(item => Object.keys(item.workers).forEach(worker => workers.add(worker)));
+                    const workerArray = Array.from(workers);
+
+                    workerArray.forEach(worker => {
+                        datasets.push({
+                            x: data.map(item => new Date(item.created)),
+                            y: data.map(item => item.workers[worker]?.hashrate || 0),
+                            mode: 'lines+markers',
+                            type: 'scatter',
+                            name: worker,
+                            line: { shape: 'linear' },
+                            marker: { color: '#1f77b4' },
+                            text: data.map(item => formatHashrate(item.workers[worker]?.hashrate || 0)),
+                            textposition: 'top center',
+                            hoverinfo: 'x+y+text'
+                        });
+                    });
+
+                    const maxHashrate = Math.max(...data.flatMap(item => Object.values(item.workers).map(w => w.hashrate)));
+                    const minHashrate = Math.min(...data.flatMap(item => Object.values(item.workers).map(w => w.hashrate)));
+                    const tickInterval = 100000000;
+
+                    const tickVals = [];
+                    const tickText = [];
+                    for (let i = minHashrate; i <= maxHashrate; i += tickInterval) {
+                        tickVals.push(i);
+                        tickText.push(formatYaxisTick(i));
+                    }
+
+                    const layout = {
+                        title: { text: '24hr Hashrate Performance', font: { color: '#fff' } },
+                        xaxis: { title: 'Time', type: 'date', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
+                        yaxis: { title: 'Hashrate', tickvals: tickVals, ticktext: tickText, titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
+                        plot_bgcolor: '#000',
+                        paper_bgcolor: '#000',
+                        hovermode: 'x',
+                        hoverlabel: { namelength: 0, bgcolor: '#333', bordercolor: '#fff', font: { color: '#fff' } },
+                        margin: { t: 40, b: 50, l: 70, r: 20 }
+                    };
+
+                    Plotly.newPlot(chartContainer, datasets, layout);
+                })
+                .catch(error => console.error('Error fetching 24hr performance:', error));
+        }
+
+        function formatYaxisTick(value) {
+            if (value >= 1000000000) {
+                return `${(value / 1000000000).toFixed(1)} GH/s`;
+            } else {
+                return `${(value / 1000000).toFixed(1)} MH/s`;
+            }
+        }
+
+        window.onload = function() {
+            loadLastInput();
+        }
+    </script>
+ </br>
 <ul>
     <li><strong>Shark Pool Dash</strong>: <a href="http://sharkpool.ergominers.com">SharkPoolCyberpunkMonitor</a></li>
     <li><strong>Simple Dash</strong>: <a href="https://my.ergoport.dev/cgi-bin/mining/mining_SR_mts.html">(SMG) Dashboard</a></li>
