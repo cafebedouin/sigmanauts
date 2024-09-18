@@ -138,8 +138,24 @@ draft = 'false'
     <script>
         let isChartVisible = false;
 
+        // Load saved input on page load
+        window.onload = function() {
+            const savedInput = localStorage.getItem('walletInput');
+            if (savedInput) {
+                document.getElementById('wallet-input').value = savedInput;
+            }
+        };
+
+        // Add event listener for Enter key
+        document.getElementById('wallet-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                fetchMiningStats();
+            }
+        });
+
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
+            localStorage.setItem('walletInput', input); // Save input to local storage
             if (input.length > 25) {
                 fetchMiningStatsForWallet(input);
             } else {
@@ -191,24 +207,50 @@ draft = 'false'
             const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
             const formattedAddress = formatMinerAddress(walletAddress); // Use the correct address here
 
-            const miningStatsElement = document.getElementById('mining-stats');
-            miningStatsElement.innerHTML = `
-                <h2>Summary</h2>
-                Address: ${formattedAddress}<br>
-                Total Hashrate: ${formatHashrate(totalHashrate)}<br>
-                Total Workers: ${totalWorkers}<br>
-                Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
-                Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
-                <a href="#" id="toggle-performance" onclick="toggle24hrPerformance(event, '${statsUrl}')">Show 24hr Performance</a><br>
-                <div id="chart-container" class="chart-container"></div>
-                <h2>Worker Stats</h2>
-                ${Object.entries(workers).map(([workerName, workerData]) => `
-                    <h3>${workerName}</h3>
-                    Hashrate: ${formatHashrate(workerData.hashrate)}<br>
-                    Shares Per Second: ${workerData.sharesPerSecond}<br>
-                `).join('')}
-            `;
-            document.getElementById('loading-spinner').style.display = 'none';
+            // Fetch last payment information
+            fetchLastPayment(walletAddress).then(lastPaymentInfo => {
+                const miningStatsElement = document.getElementById('mining-stats');
+                miningStatsElement.innerHTML = `
+                    <h2>Summary</h2>
+                    Address: ${formattedAddress}<br>
+                    Total Hashrate: ${formatHashrate(totalHashrate)}<br>
+                    Total Workers: ${totalWorkers}<br>
+                    Last Payment: ${lastPaymentInfo.date} - Amount: ${lastPaymentInfo.amount} ERG 
+                    <a href="${lastPaymentInfo.transactionLink}" target="_blank">View Transaction</a><br>
+                    Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
+                    <a href="#" id="toggle-performance" onclick="toggle24hrPerformance(event, '${statsUrl}')">Show 24hr Performance</a><br>
+                    <div id="chart-container" class="chart-container"></div>
+                    <h2>Worker Stats</h2>
+                    ${Object.entries(workers).map(([workerName, workerData]) => `
+                        <h3>${workerName}</h3>
+                        Hashrate: ${formatHashrate(workerData.hashrate)}<br>
+                        Shares Per Second: ${workerData.sharesPerSecond}<br>
+                    `).join('')}
+                `;
+                document.getElementById('loading-spinner').style.display = 'none';
+            });
+        }
+
+        function fetchLastPayment(walletAddress) {
+            const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}/payments`;
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const lastPayment = data[0];
+                    return {
+                        date: new Date(lastPayment.created).toLocaleString(),
+                        amount: lastPayment.amount.toFixed(6),
+                        transactionLink: lastPayment.transactionInfoLink
+                    };
+                })
+                .catch(error => {
+                    console.error('Error fetching last payment data:', error);
+                    return {
+                        date: 'N/A',
+                        amount: '0.000000',
+                        transactionLink: '#'
+                    };
+                });
         }
 
         function formatMinerAddress(address) {
@@ -218,30 +260,24 @@ draft = 'false'
             return address;
         }
 
-        function formatLastPayment(lastPayment) {
-            const date = new Date(lastPayment);
-            return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-        }
-
         function formatHashrate(hashrate) {
             return hashrate >= 1000000000 ? `${(hashrate / 1000000000).toFixed(1)} GH/s` : `${(hashrate / 1000000).toFixed(1)} MH/s`;
         }
 
         function toggle24hrPerformance(event, statsUrl) {
-    event.preventDefault(); // Prevents scrolling to the top
-    const chartContainer = document.getElementById('chart-container');
-    const toggleLink = document.getElementById('toggle-performance');
+            event.preventDefault(); // Prevents scrolling to the top
+            const chartContainer = document.getElementById('chart-container');
+            const toggleLink = document.getElementById('toggle-performance');
 
-    if (isChartVisible) {
-        chartContainer.innerHTML = ''; // Hide the chart
-        toggleLink.textContent = 'Show 24hr Performance';
-    } else {
-        show24hrPerformance(statsUrl); // Show the chart
-        toggleLink.textContent = 'Hide 24hr Performance';
-    }
-    isChartVisible = !isChartVisible;
-}
-
+            if (isChartVisible) {
+                chartContainer.innerHTML = ''; // Hide the chart
+                toggleLink.textContent = 'Show 24hr Performance';
+            } else {
+                show24hrPerformance(statsUrl); // Show the chart
+                toggleLink.textContent = 'Hide 24hr Performance';
+            }
+            isChartVisible = !isChartVisible;
+        }
 
         function show24hrPerformance(statsUrl) {
             const url = `${statsUrl}/performance`;
@@ -274,13 +310,11 @@ draft = 'false'
                         title: { text: '24hr Hashrate Performance', font: { color: '#fff' } },
                         xaxis: { title: 'Time', type: 'date', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
                         yaxis: { title: 'Hashrate', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
-                        plot_bgcolor: '#000',
-                        paper_bgcolor: '#000',
-                        hovermode: 'x',
-                        hoverlabel: { namelength: 0, bgcolor: '#333' }
+                        paper_bgcolor: 'rgba(0,0,0,0.5)',
+                        plot_bgcolor: 'rgba(0,0,0,0.5)'
                     };
 
-                    Plotly.newPlot('chart-container', datasets, layout);
+                    Plotly.newPlot(chartContainer, datasets, layout);
                 })
                 .catch(error => console.error('Error fetching 24hr performance data:', error));
         }
