@@ -148,7 +148,7 @@ draft = 'false'
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
             localStorage.setItem('walletInput', input);
-            if (input.length > 25) {
+            if (input.length > 45) {
                 fetchMiningStatsForWallet(input);
             } else {
                 fetchWorker(input);
@@ -305,15 +305,28 @@ draft = 'false'
                         });
                     });
 
+                    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                     const layout = {
-                        title: { text: '24hr Hashrate Performance', font: { color: '#000' } },
-                        xaxis: { title: 'Time', type: 'date', titlefont: { color: '#000' }, tickfont: { color: '#000' } },
-                        yaxis: { title: 'Hashrate', titlefont: { color: '#000' }, tickfont: { color: '#000' } },
-                        plot_bgcolor: '#fff',
-                        paper_bgcolor: '#fff',
+                        title: { text: '24hr Hashrate Performance', font: { color: isDarkMode ? '#fff' : '#000' } },
+                        xaxis: { title: 'Time', type: 'date', titlefont: { color: isDarkMode ? '#fff' : '#000' }, tickfont: { color: isDarkMode ? '#fff' : '#000' } },
+                        yaxis: { 
+                            title: 'Hashrate', 
+                            titlefont: { color: isDarkMode ? '#fff' : '#000' }, 
+                            tickfont: { color: isDarkMode ? '#fff' : '#000' },
+                            tickvals: [], 
+                            ticktext: [] 
+                        },
+                        plot_bgcolor: isDarkMode ? '#000' : '#fff',
+                        paper_bgcolor: isDarkMode ? '#000' : '#fff',
                         hovermode: 'x',
-                        hoverlabel: { namelength: 0, bgcolor: '#ccc' }
+                        hoverlabel: { namelength: 0, bgcolor: isDarkMode ? '#333' : '#ccc' }
                     };
+
+                    // Format y-axis ticks at 100 MH intervals
+                    const maxHashrate = Math.max(...data.map(item => Math.max(...Object.values(item.workers).map(w => w.hashrate || 0))));
+                    const yTickInterval = 100000000; // 100 MH
+                    layout.yaxis.tickvals = Array.from({length: Math.floor(maxHashrate / yTickInterval) + 1}, (_, i) => i * yTickInterval);
+                    layout.yaxis.ticktext = layout.yaxis.tickvals.map(val => formatHashrate(val));
 
                     Plotly.newPlot('chart-container', datasets, layout);
                 })
@@ -321,6 +334,7 @@ draft = 'false'
         }
     </script>
 </body>
+
 
  </br>
 <ul>
