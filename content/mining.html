@@ -146,13 +146,6 @@ draft = 'false'
             }
         };
 
-        // Add event listener for Enter key
-        document.getElementById('wallet-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                fetchMiningStats();
-            }
-        });
-
         function fetchMiningStats() {
             const input = document.getElementById('wallet-input').value.trim();
             localStorage.setItem('walletInput', input); // Save input to local storage
@@ -310,11 +303,13 @@ draft = 'false'
                         title: { text: '24hr Hashrate Performance', font: { color: '#fff' } },
                         xaxis: { title: 'Time', type: 'date', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
                         yaxis: { title: 'Hashrate', titlefont: { color: '#fff' }, tickfont: { color: '#fff' } },
-                        paper_bgcolor: 'rgba(0,0,0,0.5)',
-                        plot_bgcolor: 'rgba(0,0,0,0.5)'
+                        plot_bgcolor: '#000',
+                        paper_bgcolor: '#000',
+                        hovermode: 'x',
+                        hoverlabel: { namelength: 0, bgcolor: '#333' }
                     };
 
-                    Plotly.newPlot(chartContainer, datasets, layout);
+                    Plotly.newPlot('chart-container', datasets, layout);
                 })
                 .catch(error => console.error('Error fetching 24hr performance data:', error));
         }
