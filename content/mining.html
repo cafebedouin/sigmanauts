@@ -102,7 +102,6 @@ draft = 'false'
     <h2>Dashboards:</h2>
 
 <div>
-
     <style>
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -122,10 +121,6 @@ draft = 'false'
             background-color: #000;
             color: #fff;
             margin: 20px;
-        }
-        a.toggle-performance {
-            color: #3498db;
-            cursor: pointer;
         }
         #mining-stats {
             max-width: 800px;
@@ -222,10 +217,10 @@ draft = 'false'
                 Total Hashrate: ${formatHashrate(totalHashrate)}<br>
                 Total Workers: ${totalWorkers}<br>
                 Last Payment: ${formatLastPayment(stats.lastPayment)}<br>
-                Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
                 Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
-                <a class="toggle-performance" onclick="togglePerformanceChart('${statsUrl}', this)">Show 24hr Performance</a><br>
-                <div id="chart-container" class="chart-container" style="display: none;"></div>
+                Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
+                <button onclick="show24hrPerformance('${statsUrl}')">Show 24hr Performance</button><br>
+                <div id="chart-container" class="chart-container"></div>
                 <h2>Worker Stats</h2>
                 ${Object.entries(workers).map(([workerName, workerData]) => `
                     <h3>${workerName}</h3>
@@ -250,20 +245,8 @@ draft = 'false'
             }
         }
 
-        function togglePerformanceChart(statsUrl, linkElement) {
-            const chartContainer = document.getElementById('chart-container');
-
-            if (chartContainer.style.display === 'none') {
-                chartContainer.style.display = 'block';
-                linkElement.textContent = 'Hide 24hr Performance';
-                fetchAndDisplayChart(statsUrl + '/performance');
-            } else {
-                chartContainer.style.display = 'none';
-                linkElement.textContent = 'Show 24hr Performance';
-            }
-        }
-
-        function fetchAndDisplayChart(url) {
+        function show24hrPerformance(statsUrl) {
+            const url = `${statsUrl}/performance`; // Construct the URL for 24-hour performance data
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -310,13 +293,14 @@ draft = 'false'
                         plot_bgcolor: '#000',
                         paper_bgcolor: '#000',
                         hovermode: 'x',
-                        hoverlabel: { namelength: 0, bgcolor: '#333', bordercolor: '#fff', font: { color: '#fff' } },
-                        margin: { t: 40, b: 50, l: 70, r: 20 }
+                        hoverlabel: { namelength: 0, bgcolor: '#333' }
                     };
 
-                    Plotly.newPlot(chartContainer, datasets, layout);
+                    Plotly.newPlot('chart-container', datasets, layout);
                 })
-                .catch(error => console.error('Error fetching 24hr performance:', error));
+                .catch(error => {
+                    console.error('Error fetching 24hr performance data:', error);
+                });
         }
 
         function formatYaxisTick(value) {
@@ -324,6 +308,19 @@ draft = 'false'
                 return `${(value / 1000000000).toFixed(1)} GH/s`;
             } else {
                 return `${(value / 1000000).toFixed(1)} MH/s`;
+            }
+        }
+
+        function saveInput() {
+            const userInput = document.getElementById("wallet-input").value;
+            localStorage.setItem("lastInput", userInput);
+        }
+
+        function loadLastInput() {
+            const lastInput = localStorage.getItem("lastInput");
+            if (lastInput) {
+                document.getElementById("wallet-input").value = lastInput;
+                fetchMiningStats();
             }
         }
 
