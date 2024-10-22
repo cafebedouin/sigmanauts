@@ -1,5 +1,5 @@
 +++
-title = 'Mining Pool'
+title = 'Sigmanaut Mining Pool DAO'
 date = '2024-03-18T00:00:00-00:00'
 draft = 'false'
 +++
@@ -8,8 +8,8 @@ draft = 'false'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mining Pool</title>
-    
+    <title>Sigmanaut Mining Pool DAO</title>
+
 </head>
 
 <body>
@@ -35,13 +35,13 @@ draft = 'false'
 
     <script>
         // Fetch data from the API endpoint
-        fetch('https://api.codetabs.com/v1/proxy/?quest=http://15.204.211.130:4000/api/pools/ErgoSigmanauts/performance')
+        fetch('https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/performance')
           .then(response => response.json())
           .then(data => {
             // Extract the most recent pool hashrate
             const latestStats = data.stats[data.stats.length - 1];
             const poolHashrate = latestStats.poolHashrate / 1000000000; // Convert to GH/s
-            
+
             // Update the HTML element with the pool hashrate
             document.getElementById('poolHashrate').textContent = `Pool Hashrate: ${poolHashrate.toFixed(2)} GH/s`;
           })
@@ -52,9 +52,13 @@ draft = 'false'
 
 <body>
     <h1>Introduction</h1>
-    <p>Welcome to the Sigmanauts pool, a DAO-driven, community-run mining pool dedicated to supporting the Ergo ecosystem. Joining us not only contributes to the Ergo community (fees go to Sigmanauts treasury) but also offers hourly bonus token payments. Setting up mining on your computer with a compatible GPU and an Ergo wallet takes less than 5 minutes. Our pool boasts a minimal 0.9% fee, a payout threshold of 0.5 ERG, and operates on the PPLNS payment method (Pay Per Last N Shares, with N set to 0.5).</p>
-<!-- Add Telegram link here -->
-<!-- Add Telegram link here -->
+            <p> Welcome to the Sigmanauts pool, a <a href="https://app.paideia.im/sigmanautsminingdao" target="_blank">DAO-driven</a>, community-run mining pool dedicated to supporting the Ergo ecosystem. 
+            Joining us not only contributes to the Ergo community (fees go to DAO treasury) but also offers hourly bonus token payments. </p>
+           <p> The Sigmanauts ERGO mining pool is the first to implement Storage Rent on blocks over 4 years old, aka Demurrage. 
+            Read more about <a href="https://docs.ergoplatform.com/mining/rent/" target="_blank">Ergo's Implementation of Demmurage</a>, which was included since the 2019 Genesis Block.
+            Setting up mining on your computer with a compatible GPU and an Ergo wallet takes less than 5 minutes. 
+            Our pool boasts a minimal 0.9% fee, a payout threshold of 0.5 ERG, and operates on the PPLNS payment method (Pay Per Last N Shares, with N set to 0.5).
+        </p>
 <p>
     Join the conversation on Telegram: 
     <a href="https://t.me/+TPc9MRparGFjZjYx" target="_blank">
@@ -63,6 +67,10 @@ draft = 'false'
     or Discord: 
     <a href="https://discord.gg/cZMwX347Dx" target="_blank">
         Sig-Mining Discord
+    </a>
+    and review current and past votes on Paideia:
+    <a href="https://app.paideia.im/sigmanautsminingdao" target="_blank">
+        Sig-Mining DAO
     </a>
 </p>
 
@@ -82,29 +90,23 @@ draft = 'false'
     <p>Choose a port based on your hash rate:</p>
     <h3>Under 10g/h:</h3>
     <ul>
-        <li><strong>No TLS</strong>: <code>15.204.211.130:3052</code></li>
-        <li><strong>TLS</strong>: <code>pool.ergo-sig-mining.net:3054</code> or for things like lolminer: <code>ssl://pool.ergo-sig-mining.net:3054</code></li>
+        <li><strong>No TLS</strong>: <code>65.108.57.232:3052</code></li>
+       <!-- <li><strong>TLS</strong>: <code>pool.ergo-sig-mining.net:3054</code> or for things like lolminer: <code>ssl://pool.ergo-sig-mining.net:3054</code></li> -->
     </ul>
     <h3>Over 10g/h:</h3>
     <ul>
-        <li><strong>No TLS</strong>: <code>15.204.211.130:3053</code></li>
-        <li><strong>TLS</strong>: <code>pool.ergo-sig-mining.net:3055</code> or for things like lolminer: <code>ssl://pool.ergo-sig-mining.net:3055</code></li>
+        <li><strong>No TLS</strong>: <code>65.108.57.232:3053</code></li>
+      <!--  <li><strong>TLS</strong>: <code>pool.ergo-sig-mining.net:3055</code> or for things like lolminer: <code>ssl://pool.ergo-sig-mining.net:3055</code></li> -->
     </ul>
 
     <h2>Dashboards:</h2>
-    <ul>
-        <li><strong>Full Featured Dash</strong>: <a href="http://dash.sigmaspace.net/">Sigma Mining Pool Dashboard</a></li>
-        <li><strong>Temporary Backup Simple Dash</strong>: <a href="https://my.ergoport.dev/cgi-bin/mining/mining_all.html">(SMG) Dashboard</a></li>
-        <li><strong>Self-hosted Full Featured Dash</strong>: <a href="https://github.com/marctheshark3/sigmanaut-mining-pool-ui/tree/main">marctheshark3/sigmanaut-mining-pool-ui</a></li>
-    </ul>
+
 <div>
-    
-<style>
+  <style>
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
     .spinner {
         border: 4px solid #f3f3f3; /* Light grey */
         border-top: 4px solid #3498db; /* Blue */
@@ -114,150 +116,243 @@ draft = 'false'
         animation: spin 1s linear infinite;
         margin: auto;
     }
+    #mining-stats {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .chart-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
 </style>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<div id="input-title">To check your connection to the pool, use one of the dashboards listed above or enter your wallet address or worker name below:</div>
-<input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
-<button onclick="fetchMiningStats()">Go</button>
-<div id="mining-stats"></div>
-<div id="loading-spinner" class="spinner" style="display: none;"></div>
+<body>
+    <div id="input-title">Enter your worker name or wallet address below, or visit one of the dashboards linked beneath.</div>
+    <input type="text" id="wallet-input" placeholder="Enter wallet address or worker name" style="color: black;">
+    <button onclick="fetchMiningStats()">Go</button>
+    <div id="mining-stats"></div>
+    <div id="loading-spinner" class="spinner" style="display: none;"></div>
 
-<script>
-    // Function to fetch mining stats
-    function fetchMiningStats() {
-        const input = document.getElementById('wallet-input').value.trim();
-        if (input.length > 25) {
-            fetchMiningStatsForWallet(input);
-        } else {
-            fetchWorker(input);
+    <script>
+        let isChartVisible = false;
+
+        window.onload = function() {
+            const savedInput = localStorage.getItem('walletInput');
+            if (savedInput) {
+                document.getElementById('wallet-input').value = savedInput;
+            }
+        };
+
+        function fetchMiningStats() {
+            const input = document.getElementById('wallet-input').value.trim();
+            localStorage.setItem('walletInput', input);
+            if (input.length > 45) {
+                fetchMiningStatsForWallet(input);
+            } else {
+                fetchWorker(input);
+            }
         }
-    }
 
-    // Function to fetch mining stats for a wallet address
-    function fetchMiningStatsForWallet(walletAddress) {
-        const url = `https://api.codetabs.com/v1/proxy/?quest=http://pool.ergo-sig-mining.net:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
-        fetchAndDisplayStats(url);
-    }
+        function fetchMiningStatsForWallet(walletAddress) {
+            const url = `https://api.codetabs.com/v1/proxy/?quest=65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}`;
+            fetchAndDisplayStats(url, walletAddress);
+        }
 
-    // Function to fetch the list of workers and their associated wallet addresses
-    function fetchWorker(workerName) {
-        document.getElementById('loading-spinner').style.display = 'block'; // Show loading spinner
-        const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://15.204.211.130:4000/api/pools/ErgoSigmanauts/miners?pageSize=5000';
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                let found = false;
-                // Define a function to fetch and check worker with delay
-                const fetchWorkerWithDelay = (miner, index) => {
-                    const minerAddress = miner.miner.replace('"', '').replace('"', ''); // Extract the miner address
-                    const url = `https://api.codetabs.com/v1/proxy/?quest=http://pool.ergo-sig-mining.net:4000/api/pools/ErgoSigmanauts/miners/${minerAddress}`;
-                    // Introduce a delay of 250 milliseconds (adjust as needed)
-                    setTimeout(() => {
-                        fetchAndCheckWorker(url, workerName);
-                    }, index * 250);
-                };
-                // Iterate through miners and fetch with delay
-                data.forEach((miner, index) => {
-                    fetchWorkerWithDelay(miner, index);
+        function fetchWorker(workerName) {
+            document.getElementById('loading-spinner').style.display = 'block';
+            const apiUrl = 'https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners?pageSize=5000';
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((miner, index) => {
+                        const minerAddress = miner.miner.replace('"', '').replace('"', '');
+                        const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${minerAddress}`;
+                        setTimeout(() => fetchAndCheckWorker(url, workerName, minerAddress), index * 250);
+                    });
+                })
+                .catch(error => console.error('Error fetching worker list:', error));
+        }
+
+        function fetchAndCheckWorker(url, workerName, minerAddress) {
+            fetch(url)
+                .then(response => response.json())
+                .then(stats => {
+                    if (Object.keys(stats.performance.workers).includes(workerName)) {
+                        displayStats(stats, url, minerAddress);
+                    }
+                })
+                .catch(error => console.error('Error fetching mining stats:', error));
+        }
+
+        function fetchAndDisplayStats(url, walletAddress) {
+            fetch(url)
+                .then(response => response.json())
+                .then(stats => displayStats(stats, url, walletAddress))
+                .catch(error => console.error('Error fetching mining stats:', error));
+        }
+
+        function displayStats(stats, statsUrl, walletAddress) {
+            const workers = stats.performance.workers;
+            const totalWorkers = Object.keys(workers).length;
+            const totalHashrate = Object.values(workers).reduce((sum, workerData) => sum + workerData.hashrate, 0);
+            const formattedAddress = formatMinerAddress(walletAddress);
+
+            fetchLastPayment(walletAddress).then(lastPaymentInfo => {
+                const miningStatsElement = document.getElementById('mining-stats');
+                miningStatsElement.innerHTML = `
+                    <h2>Summary</h2>
+                    Address: ${formattedAddress}<br>
+                    Total Hashrate: ${formatHashrate(totalHashrate)}<br>
+                    Total Workers: ${totalWorkers}<br>
+                    Last Payment: ${lastPaymentInfo.date} - Amount: ${lastPaymentInfo.amount} ERG 
+                    <a href="${lastPaymentInfo.transactionLink}" target="_blank">View Transaction</a><br>
+                    Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
+                    <a href="#" id="toggle-performance" onclick="toggle24hrPerformance(event, '${statsUrl}')">Show 24hr Performance</a><br>
+                    <div id="chart-container" class="chart-container"></div>
+                    <h2>Worker Stats</h2>
+                    ${Object.entries(workers).map(([workerName, workerData]) => `
+                        <h3>${workerName}</h3>
+                        Hashrate: ${formatHashrate(workerData.hashrate)}<br>
+                        Shares Per Second: ${workerData.sharesPerSecond}<br>
+                    `).join('')}
+                `;
+                document.getElementById('loading-spinner').style.display = 'none';
+            });
+        }
+
+        function fetchLastPayment(walletAddress) {
+            const url = `https://api.codetabs.com/v1/proxy/?quest=http://65.108.57.232:4000/api/pools/ErgoSigmanauts/miners/${walletAddress}/payments`;
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const lastPayment = data[0];
+                    return {
+                        date: new Date(lastPayment.created).toLocaleString(),
+                        amount: lastPayment.amount.toFixed(6),
+                        transactionLink: lastPayment.transactionInfoLink
+                    };
+                })
+                .catch(error => {
+                    console.error('Error fetching last payment data:', error);
+                    return {
+                        date: 'N/A',
+                        amount: '0.000000',
+                        transactionLink: '#'
+                    };
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching worker list:', error);
-                alert('Error fetching worker list. Please try again later.');
-            });
-    }
-
-    // Function to fetch mining stats and check for the worker name
-    function fetchAndCheckWorker(url, workerName) {
-        fetch(url)
-            .then(response => response.json())
-            .then(stats => {
-                const workers = Object.keys(stats.performance.workers);
-                if (workers.includes(workerName)) {
-                    displayStats(stats);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching mining stats:', error);
-            });
-    }
-
-    // Function to fetch mining stats and display them
-    function fetchAndDisplayStats(url) {
-        fetch(url)
-            .then(response => response.json())
-            .then(stats => {
-                displayStats(stats);
-            })
-            .catch(error => {
-                console.error('Error fetching mining stats:', error);
-                alert('Error fetching mining stats. Please try again later.');
-            });
-    }
-
-    // Function to display mining stats
-    function displayStats(stats) {
-        const miningStatsElement = document.getElementById('mining-stats');
-        miningStatsElement.innerHTML = `
-            <h2>Worker Stats</h2>
-            ${Object.entries(stats.performance.workers).map(([workerName, workerData]) => `
-                <h3>${workerName}</h3>
-                Hashrate: ${formatHashrate(workerData.hashrate)}
-                <br>
-                Shares Per Second: ${workerData.sharesPerSecond}<br>
-            `).join('')}
-            <h2>Summary</h2>
-            Last Payment: ${formatLastPayment(stats.lastPayment)}
-            <br>
-            Pending Balance: ${stats.pendingBalance.toFixed(3)} ERG<br>
-            Pending Shares: ${stats.pendingShares.toFixed(3)}<br>
-        `;
-
-        // Hide the loading spinner
-        document.getElementById('loading-spinner').style.display = 'none';
-    }
-
-    // Function to format last payment time
-    function formatLastPayment(lastPayment) {
-        const date = new Date(lastPayment);
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-    }
-
-    // Function to format hashrate
-    function formatHashrate(hashrate) {
-        if (hashrate >= 1000000000) {
-            return `${(hashrate / 1000000000).toFixed(1)} GH/s`;
-        } else {
-            return `${(hashrate / 1000000).toFixed(1)} MH/s`;
         }
-    }
 
-    // Function to save user input to localStorage
-    function saveInput() {
-        const userInput = document.getElementById("wallet-input").value;
-        localStorage.setItem("lastInput", userInput);
-    }
-
-    // Function to load last input from localStorage
-    function loadLastInput() {
-        const lastInput = localStorage.getItem("lastInput");
-        if (lastInput) {
-            document.getElementById("wallet-input").value = lastInput;
-            fetchMiningStats(); // Automatically fetch stats based on the saved input
+        function formatMinerAddress(address) {
+            if (address && address.length > 8) {
+                return `${address.slice(0, 4)}...${address.slice(-4)}`;
+            }
+            return address;
         }
-    }
 
-    // Load last input when the page loads
-    window.onload = function() {
-        loadLastInput();
-    }
+        function formatHashrate(hashrate) {
+            return hashrate >= 1000000000 ? `${(hashrate / 1000000000).toFixed(1)} GH/s` : `${(hashrate / 1000000).toFixed(1)} MH/s`;
+        }
 
-    // Refresh the page every 2 minutes
-    setInterval(function() {
-        fetchMiningStats(); // Automatically fetch stats every 2 minutes
-    }, 120000); // 2 minutes in milliseconds
-</script>
+        function toggle24hrPerformance(event, statsUrl) {
+            event.preventDefault();
+            const chartContainer = document.getElementById('chart-container');
+            const toggleLink = document.getElementById('toggle-performance');
 
+            if (isChartVisible) {
+                chartContainer.innerHTML = '';
+                toggleLink.textContent = 'Show 24hr Performance';
+            } else {
+                show24hrPerformance(statsUrl);
+                toggleLink.textContent = 'Hide 24hr Performance';
+            }
+            isChartVisible = !isChartVisible;
+        }
+
+        function show24hrPerformance(statsUrl) {
+            const url = `${statsUrl}/performance`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => new Date(item.created).toLocaleTimeString());
+                    const datasets = [];
+                    const workers = new Set();
+                    const colors = [
+                        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+                        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+                        '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5',
+                        '#c49c94', '#f7b6d2', '#dbdb8d', '#9edae5', '#f5b041',
+                        '#e67e22', '#e74c3c', '#3498db', '#2ecc71', '#1abc9c',
+                        '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9'
+                    ];
+
+                    data.forEach(item => Object.keys(item.workers).forEach(worker => workers.add(worker)));
+                    const workerArray = Array.from(workers);
+
+                    workerArray.forEach((worker, index) => {
+                        datasets.push({
+                            x: data.map(item => new Date(item.created)),
+                            y: data.map(item => item.workers[worker]?.hashrate || 0),
+                            mode: 'lines+markers',
+                            type: 'scatter',
+                            name: worker,
+                            line: { shape: 'linear' },
+                            marker: { color: colors[index % colors.length] },
+                            text: data.map(item => formatHashrate(item.workers[worker]?.hashrate || 0)),
+                            textposition: 'top center',
+                            hoverinfo: 'x+y+text'
+                        });
+                    });
+
+                    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    const layout = {
+                        title: { text: '24hr Hashrate Performance', font: { color: isDarkMode ? '#fff' : '#000' } },
+                        xaxis: { title: 'Time', type: 'date', titlefont: { color: isDarkMode ? '#fff' : '#000' }, tickfont: { color: isDarkMode ? '#fff' : '#000' } },
+                        yaxis: { 
+                            title: 'Hashrate', 
+                            titlefont: { color: isDarkMode ? '#fff' : '#000' }, 
+                            tickfont: { color: isDarkMode ? '#fff' : '#000' },
+                            tickvals: [], 
+                            ticktext: [] 
+                        },
+                        plot_bgcolor: isDarkMode ? '#000' : '#fff',
+                        paper_bgcolor: isDarkMode ? '#000' : '#fff',
+                        hovermode: 'x',
+                        hoverlabel: { namelength: 0, bgcolor: isDarkMode ? '#333' : '#ccc' }
+                    };
+
+                    // Format y-axis ticks at 100 MH intervals
+                    const maxHashrate = Math.max(...data.map(item => Math.max(...Object.values(item.workers).map(w => w.hashrate || 0))));
+                    const yTickInterval = 100000000; // 100 MH
+                    layout.yaxis.tickvals = Array.from({length: Math.floor(maxHashrate / yTickInterval) + 1}, (_, i) => i * yTickInterval);
+                    layout.yaxis.ticktext = layout.yaxis.tickvals.map(val => formatHashrate(val));
+
+                    Plotly.newPlot('chart-container', datasets, layout);
+                })
+                .catch(error => console.error('Error fetching 24hr performance data:', error));
+        }
+    </script>
+</body>
+
+
+ </br>
+<ul>
+    <li>
+        <strong>Shark Pool Dash</strong>: 
+        <a href="http://sharkpool.ergominers.com/">sharkpool.ergominers.com</a> | 
+        <a href="https://github.com/marctheshark3/sigmanaut-mining-pool-ui/tree/main">GitHub page</a>
+    </li>
+    <li>
+        <strong>Simple Dash</strong>: 
+        <a href="https://my.ergoport.dev/cgi-bin/mining/mining_SR_mts.html">(SMG) Dashboard</a>
+    </li>
+    <li>
+        <strong>Sigmamining</strong>: 
+        <a href="http://sigmamining.xyz">sigmamining.xyz</a> | 
+        <a href="https://github.com/65787978/smp-fs">GitHub page</a>
+    </li>
+</ul>
 
     <h2>Example miner configurations</h2>
 
@@ -305,4 +400,3 @@ export GPU_USE_SYNC_OBJECTS=1
 
     <p>Then, save the file as ergo_miner.sh. At the command prompt: chmod 744 ergo_miner.sh and then just run it as usual, by typing: ./ergo_miner.sh at the prompt. If you want it to automatically run whenever you restart your machine, <a href="https://linuxconfig.org/how-to-run-script-on-startup-on-ubuntu-20-04-focal-fossa-server-desktop">this article</a> from linuxconfig.org tells you everything you need to do to set it as a systemd service.</p>
 </body>
-
