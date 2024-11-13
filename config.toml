@@ -98,6 +98,12 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Media"
+    name = "Ergo Platform YouTube"
+    url = "https://www.youtube.com/@ErgoPlatform"
+    weight = 2
+
+[[menu.main]]
+    parent = "Media"
     name = "Hash it Out W/CW"
     url = "https://www.youtube.com/c/HashitOutwCW"
     weight = 2
