@@ -1,0 +1,55 @@
++++
+title = 'Contact Us'
+date = '2023-04-23T00:00:00-00:00'
+draft = 'false'
++++
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+</head>
+<body>
+    <p>
+        The Sigmanaut community is open to everyone. People use their real names, pseudonyms, or remain completely anonymous. The best place to ask questions is on Telegram or Discord. Below is an alphabetical list of community members who can be contacted if you are having trouble getting a question answered about the Ergo blockchain or ecosystem.
+    </p>
+    <br>
+
+    <p>
+        The best way to contact Sigmanauts is simply to join 
+        <a href="https://t.me/Ergo_Chats" target="_blank">Telegram</a>, 
+        <a href="https://discord.com/invite/ergo-platform-668903786361651200" target="_blank">Discord</a>, 
+        or send a DM on <a href="https://twitter.com/sigmanauts" target="_blank">Twitter</a>. 
+        Alternatively, you could send an email to 
+        <a href="mailto:qx@sigmanauts.com">qx@sigmanauts.com</a>.
+    </p>
+    <br>
+
+    <div id="content">
+        <p>Loading...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const markdownUrl = "https://raw.githubusercontent.com/sigmanauts/docs/refs/heads/main/member_directory.md";
+
+        async function fetchAndRenderMarkdown() {
+            try {
+                const response = await fetch(markdownUrl);
+                if (!response.ok) throw new Error("Failed to fetch Markdown file");
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+                document.getElementById("content").innerHTML = html;
+            } catch (error) {
+                console.error(error);
+                document.getElementById("content").innerHTML = "<p>Failed to load content. Please try again later.</p>";
+            }
+        }
+
+        fetchAndRenderMarkdown();
+    </script>
+</body>
+</html>
+
