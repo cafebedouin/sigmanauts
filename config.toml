@@ -148,6 +148,3 @@ theme = "beautifulhugo"
     name = "Contact"
     url = "/contact/"
     weight = 5
-
-# Suppress raw HTML warnings
-ignoreLogs = ['warning-goldmark-raw-html']
