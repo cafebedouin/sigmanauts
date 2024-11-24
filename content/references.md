@@ -6,6 +6,7 @@ draft = 'false'
 
 Below are various sources for finding out about the Ergo blockchain and the Sigmanaut community.
 
+* [Sigmanauts DAO on Paideia](https://app.paideia.im/sigmanauts)
 * [Ergo Manifesto](https://ergoplatform.org/en/blog/2021-04-26-the-ergo-manifesto/) *ergoplatform.org* April 26, 2021.
 * [The Sigmanauts Program](https://ergoplatform.org/en/blog/the-sigmanauts-programme/) *ergoplatform.org* December 31, 2020
 * [Ergo's Sigmanauts Program](https://ergoplatform.org/en/blog/Ergo%E2%80%99s-Sigmanauts-Program/) *ergoplatform.org* April 25, 2023
