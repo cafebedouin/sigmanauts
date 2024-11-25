@@ -9,8 +9,8 @@ Sigmanauts is a community that believes in a decentralized, open, permissionless
 
 The Sigmanauts make use of Paideia for treasury management, governance, and membership votes. Please take a look at current or past proposals and discussions at the links below:
 
-[Sigmanauts DAO](https://app.paideia.im/sigmanauts) | The current DAO in use.
-[Beta Sigmanauts DAO](https://beta.paideia.im/Sigmanauts) | No longer in use.
+[Sigmanauts DAO](https://app.paideia.im/sigmanauts) | The current DAO in use.<br>
+[Beta Sigmanauts DAO](https://beta.paideia.im/Sigmanauts) | No longer in use.<br>
 [ErgoPort Voting System](https://my.ergoport.dev/cgi-bin/ergo/archived_votes.pl?a=) | Archive of votes, before Paideia.
 
 If you would like to donate to the treasury, you can send erg, NFT's, or tokens to [this multisig wallet address](https://ergo.aap.cornell.edu/en/addresses/2WB8dMUZpeBa2zSQ84o896Z356snjRkqSxyc263C6R4Vn4DuNcQPvwxw4VgTAbMcPdbre2CzBc189Cf18sJJnZTaLyi9wF1yh5n9oTfoLtRLHWixJNXhLp3zQFDLkaSdSBJgbvCJ8DtE53K3Bz7UHbrG4zJ4HwWihX7mJDDzwHoLwBvSsjgYrcZup6JxHizFnqtp6BziyRQaU7qkhRuw7trVcjscka4F1pBpNz1tQUEjCJDJUF7reWu5BRdbCkLBgZeTyazuGDpTHugToYgqCaFH3LWE9GVcbYgSgsE2BDDM8iWkuJ1cRThC4kjtqKy5X5kfeDvugW1eBH51Q1Wj9zSxCpMZ224CftWZ7NrXQDoYuo1HCBzTcs).
