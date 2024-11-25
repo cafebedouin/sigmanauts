@@ -9,9 +9,9 @@ Sigmanauts is a community that believes in a decentralized, open, permissionless
 
 The Sigmanauts make use of Paideia for treasury management, governance, and membership votes. Please take a look at current or past proposals and discussions at the links below:
 
-[Sigmanauts DAO](https://app.paideia.im/sigmanauts) | The current DAO in use.<br>
+[Sigmanauts DAO](https://app.paideia.im/sigmanauts) | The current DAO in use.
 
-[Beta Sigmanauts DAO](https://beta.paideia.im/Sigmanauts) | No longer in use.<br>
+[Beta Sigmanauts DAO](https://beta.paideia.im/Sigmanauts) | No longer in use.
 
 [ErgoPort Voting System](https://my.ergoport.dev/cgi-bin/ergo/archived_votes.pl?a=) | Archive of votes, before Paideia.
 
