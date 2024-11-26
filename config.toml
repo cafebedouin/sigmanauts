@@ -8,7 +8,7 @@ theme = "beautifulhugo"
 [Params]
   homeTitle = "Sigmanauts"
   subtitle = "A community to empower users of the Ergo blockchain"
-  mainSections = ["application","documents", "contact"]
+  mainSections = ["application", "documents", "contact"]
   logo = "img/sigmanaut-logo.png" # Expecting square dimensions
   favicon = "img/sigmanaut-logo.png"
   dateFormat = "January 2, 2006"
@@ -21,54 +21,15 @@ theme = "beautifulhugo"
   socialShare = false
   delayDisqus = true
   showRelatedPosts = true
-#  hideAuthor = true
-#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
-
-#[[Params.bigimg]]
-#  src = "img/triangle.jpg"
-#  desc = "Triangle"
-#[[Params.bigimg]]
-#  src = "img/sphere.jpg"
-#  desc = "Sphere"
-#  # position: see values of CSS background-position.
-#  position = "center top"
-#[[Params.bigimg]]
-#  src = "img/hexagon.jpg"
-#  desc = "Hexagon"
 
 [Author]
-  # Set only your "username" for default hosts and full URLs otherwise (e.g., "https://MyGitLab.org/username")
   name = "Sigmanaut"
   website = "https://github.com/cafebedouin/sigmanauts"
   email = "qx@sigmanauts.com"
-#  facebook = "username"
   github = "https://github.com/cafebedouin/sigmanauts"
-#  gitlab = "username"
-#  bitbucket = "username"
   twitter = "https://twitter.com/sigmanauts"
-  reddit = "https://reddit.com/r/ergonauts"
-#  linkedin = "username"
-#  xing = "username"
-#  stackoverflow = "users/XXXXXXX/username"
-#  snapchat = "username"
-#  instagram = "username"
-#  youtube = "user/username" # or channel/channelname
-#  soundcloud = "username"
-#  spotify = "username"
-#  bandcamp = "username"
-#  itchio = "username"
-#  vk = "username"
-#  paypal = "username"
   telegram = "https://t.me/Ergo_Chats"
-#  500px = "username"
-#  codepen = "username"
-#  mastodon = "url"
-#  kaggle = "username"
-#  weibo = "username"
-#  slack = "username"
   discord = "https://discord.com/invite/ergo-platform-668903786361651200"
-#  strava = "userid"
-
 
 [[menu.main]]
     name = "Application"
@@ -89,7 +50,7 @@ theme = "beautifulhugo"
     name = "Podcast"
     url = "/podcast"
     weight = 1
-    
+
 [[menu.main]]
     parent = "Media"
     name = "Ergo Sigmanauts YouTube"
@@ -100,13 +61,13 @@ theme = "beautifulhugo"
     parent = "Media"
     name = "Ergo Platform YouTube"
     url = "https://www.youtube.com/@ErgoPlatform"
-    weight = 2
+    weight = 3
 
 [[menu.main]]
     parent = "Media"
     name = "Hash it Out W/CW"
     url = "https://www.youtube.com/c/HashitOutwCW"
-    weight = 2
+    weight = 4
 
 [[menu.main]]
     identifier = "Documents"
@@ -145,6 +106,41 @@ theme = "beautifulhugo"
     weight = 5
 
 [[menu.main]]
+    parent = "Documents"
+    name = "Paideia DAO"
+    url = "https://app.paideia.im/sigmanauts"
+    weight = 6  # Adjust the weight as needed to ensure it's in the right order
+
+[[menu.main]]
     name = "Contact"
-    url = "/contact/"
+    weight = 6  # Set a distinct weight to avoid conflicts with child items
+
+[[menu.main]]
+    parent = "Contact"
+    name = "Contact a Sig"
+    url = "https://sigmanauts.com/contact/"
+    weight = 1
+    
+[[menu.main]]
+    parent = "Contact"
+    name = "GitHub Organization"
+    url = "https://github.com/sigmanauts"
+    weight = 2
+
+[[menu.main]]
+    parent = "Contact"
+    name = "Bluesky"
+    url = "https://bsky.app/profile/sigmanauts.bsky.social"  # Corrected the Bluesky URL
+    weight = 3
+
+[[menu.main]]
+    parent = "Contact"
+    name = "Nostr"
+    url = "https://iris.to/npub124dlseverk4st6swjw9rnzrt67htgn734skmnv5tg5cfk36rv2jq585arv"
+    weight = 4
+
+[[menu.main]]
+    parent = "Contact"
+    name = "Twitter"
+    url = "https://x.com/Sigmanauts/"
     weight = 5
