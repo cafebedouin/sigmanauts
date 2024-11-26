@@ -141,6 +141,6 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     parent = "Contact"
-    name = "Twitter"
+    name = "X.com"
     url = "https://x.com/Sigmanauts/"
     weight = 5
