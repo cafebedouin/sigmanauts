@@ -109,11 +109,11 @@ theme = "beautifulhugo"
     parent = "Documents"
     name = "Paideia DAO"
     url = "https://app.paideia.im/sigmanauts"
-    weight = 6  # Adjust the weight as needed to ensure it's in the right order
+    weight = 6  
 
 [[menu.main]]
     name = "Contact"
-    weight = 6  # Set a distinct weight to avoid conflicts with child items
+    weight = 6  
 
 [[menu.main]]
     parent = "Contact"
@@ -130,7 +130,7 @@ theme = "beautifulhugo"
 [[menu.main]]
     parent = "Contact"
     name = "Bluesky"
-    url = "https://bsky.app/profile/sigmanauts.bsky.social"  # Corrected the Bluesky URL
+    url = "https://bsky.app/profile/sigmanauts.com"
     weight = 3
 
 [[menu.main]]
