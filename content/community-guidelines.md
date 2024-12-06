@@ -1,5 +1,5 @@
 +++
-title = 'Community Guidelines for Sigmanauts DAO Communication Channels'
+title = 'Community Guidelines for Sigmanauts DAO'
 date = '2024-12-05T00:00:00-00:00'
 draft = 'false'
 +++
