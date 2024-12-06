@@ -112,6 +112,12 @@ theme = "beautifulhugo"
     weight = 6  
 
 [[menu.main]]
+    parent = "Documents"
+    name = "Community Guidelines for Sigmanauts DAO"
+    url = "https://github.com/sigmanauts/docs/blob/main/Community%20Guidelines%20for%20Sigmanauts%20DAO%20Communication%20Channels.md"
+    weight = 7 
+
+[[menu.main]]
     name = "Contact"
     weight = 6  
 
