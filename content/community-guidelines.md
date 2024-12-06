@@ -4,7 +4,7 @@ date = '2024-12-05T00:00:00-00:00'
 draft = 'false'
 +++
 
-##Welcome to the Sigmanauts DAO Community!
+## Welcome to the Sigmanauts DAO Community!
 
 We’re thrilled to have you here! Our channels are built to foster a friendly, inclusive, and constructive environment where everyone can collaborate and explore the potential of the Ergo blockchain. Together, let’s ensure this remains a welcoming space for all. Here’s how we do that:
 
