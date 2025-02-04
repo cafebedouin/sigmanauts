@@ -55,6 +55,8 @@ jobs:
         with:
           name: hugo-pages-artifact
           path: ./public
+      - name: Debug uploaded artifacts
+        run: ls -R ./public
 
   deploy:
     environment:
@@ -68,6 +70,10 @@ jobs:
         with:
           name: hugo-pages-artifact
           path: ./public
+      - name: Debug downloaded artifacts
+        run: ls -R ./public
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          artifact_path: ./public
