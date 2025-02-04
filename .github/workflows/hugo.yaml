@@ -65,13 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4   # Updated to v4 for downloading artifact
-        with:
-          name: hugo-site                    # Match artifact name from build job
-          
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
         with:
-          artifact_path: ./hugo-site         # Path to the downloaded artifact
+          artifact_name: hugo-site   # Artifact name must match the upload artifact's name
