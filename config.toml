@@ -41,13 +41,13 @@ theme = "beautifulhugo"
     weight = 2
 
 [[menu.main]]
-    parent = "Mining pool"
+    parent = "Mining Pool"
     name = "Mining Pool"
     url = "/mining/"
     weight = 1
 
 [[menu.main]]
-    parent = "Mining pool"
+    parent = "Mining Pool"
     name = "Dashboard"
     url = "/dash/"
     weight = 2
