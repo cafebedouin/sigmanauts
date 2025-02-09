@@ -54,32 +54,39 @@ theme = "beautifulhugo"
     weight = 2
 
 [[menu.main]]
+    identifier = "media"
     name = "Media"
     weight = 3
 
 [[menu.main]]
-    parent = "Media"
+    parent = "media"
     name = "Podcast"
     url = "/podcast"
     weight = 1
 
 [[menu.main]]
-    parent = "Media"
+    parent = "media"
     name = "Ergo Sigmanauts YouTube"
     url = "https://www.youtube.com/@ergosigmanauts"
     weight = 2
 
 [[menu.main]]
-    parent = "Media"
+    parent = "media"
     name = "Ergo Platform YouTube"
     url = "https://www.youtube.com/@ErgoPlatform"
     weight = 3
 
 [[menu.main]]
-    parent = "Media"
+    parent = "media"
     name = "Hash it Out W/CW"
     url = "https://www.youtube.com/c/HashitOutwCW"
     weight = 4
+
+[[menu.main]]
+    parent = "media"
+    name = "P2Pod"
+    url = "https://www.youtube.com/@P2Pod"
+    weight = 5
 
 [[menu.main]]
     identifier = "Documents"
