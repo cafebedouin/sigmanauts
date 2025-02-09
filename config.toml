@@ -54,6 +54,12 @@ theme = "beautifulhugo"
     weight = 2
 
 [[menu.main]]
+    parent = "mining-pool"
+    name = "Mining DAO"
+    url = "https://app.paideia.im/sigmanautsminingdao"
+    weight = 3
+
+[[menu.main]]
     identifier = "media"
     name = "Media"
     weight = 3
