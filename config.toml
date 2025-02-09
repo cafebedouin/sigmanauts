@@ -38,9 +38,20 @@ theme = "beautifulhugo"
 
 [[menu.main]]
     name = "Mining Pool"
-    url = "/mining/"
     weight = 2
 
+[[menu.main]]
+    parent = "Mining pool"
+    name = "Mining Pool"
+    url = "/mining/"
+    weight = 1
+
+[[menu.main]]
+    parent = "Mining pool"
+    name = "Dashboard"
+    url = "/dash/"
+    weight = 2
+    
 [[menu.main]]
     name = "Media"
     weight = 3
