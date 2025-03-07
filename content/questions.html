@@ -5,8 +5,9 @@
     <title>Google Form</title>
     <style>
         :root {
-            --background: #ffffff; /* Default Light Mode */
+            --background: #ffffff; /* Light Mode Background */
             --shadow-color: rgba(0, 0, 0, 0.3);
+            --frame-background: #ffffff; /* White in Light Mode */
         }
 
         body {
@@ -15,41 +16,52 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            padding: 0;
             font-family: sans-serif;
             text-align: center;
-            overflow: hidden; /* No scrollbars */
+            overflow: hidden;
             background-color: var(--background);
             transition: background-color 0.3s ease;
         }
 
-        iframe {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 20px var(--shadow-color);
+        .frame-wrapper {
             width: 90%;
             max-width: 640px;
             height: 90vh;
+            background-color: var(--frame-background);
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--shadow-color);
+            display: flex;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --background: #121212; /* Dark Mode */
+                --background: #121212; /* Dark Background */
                 --shadow-color: rgba(0, 0, 0, 0.6);
+                --frame-background: #9786b5; /* Muted Lavender */
             }
         }
     </style>
     <script>
-        // Force light mode if the browser doesn't support prefers-color-scheme
+        // Force light mode if prefers-color-scheme is unsupported
         if (!window.matchMedia("(prefers-color-scheme)").matches) {
             document.documentElement.style.setProperty("--background", "#ffffff");
             document.documentElement.style.setProperty("--shadow-color", "rgba(0, 0, 0, 0.3)");
+            document.documentElement.style.setProperty("--frame-background", "#ffffff");
         }
     </script>
 </head>
 <body>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
-        Loading…
-    </iframe>
+    <div class="frame-wrapper">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
+            Loading…
+        </iframe>
+    </div>
 </body>
 </html>
