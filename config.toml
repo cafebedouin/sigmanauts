@@ -179,5 +179,5 @@ theme = "beautifulhugo"
 [[menu.main]]
     parent = "Contact"
     name = "Submit a Question"
-    url = "/questions/"
+    url = "/questions"
     weight = 6
