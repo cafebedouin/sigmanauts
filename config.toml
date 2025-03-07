@@ -175,3 +175,9 @@ theme = "beautifulhugo"
     name = "X.com"
     url = "https://x.com/Sigmanauts/"
     weight = 5
+
+[[menu.main]]
+    parent = "Contact"
+    name = "Submit a Question"
+    url = "/questions"
+    weight = 6
