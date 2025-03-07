@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,8 +5,7 @@
     <title>Google Form</title>
     <style>
         :root {
-            --background-light: #ffffff; /* White for light mode */
-            --background-dark: #121212; /* Black for dark mode */
+            --background: #ffffff; /* Default Light Mode */
             --shadow-color: rgba(0, 0, 0, 0.3);
         }
 
@@ -21,7 +19,7 @@
             font-family: sans-serif;
             text-align: center;
             overflow: hidden; /* No scrollbars */
-            background-color: var(--background-light);
+            background-color: var(--background);
             transition: background-color 0.3s ease;
         }
 
@@ -35,12 +33,19 @@
         }
 
         @media (prefers-color-scheme: dark) {
-            body {
-                background-color: var(--background-dark);
+            :root {
+                --background: #121212; /* Dark Mode */
                 --shadow-color: rgba(0, 0, 0, 0.6);
             }
         }
     </style>
+    <script>
+        // Force light mode if the browser doesn't support prefers-color-scheme
+        if (!window.matchMedia("(prefers-color-scheme)").matches) {
+            document.documentElement.style.setProperty("--background", "#ffffff");
+            document.documentElement.style.setProperty("--shadow-color", "rgba(0, 0, 0, 0.3)");
+        }
+    </script>
 </head>
 <body>
     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
