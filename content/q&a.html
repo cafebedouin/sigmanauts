@@ -3,31 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ergo Meeting Questions</title>
+    <title>Google Form</title>
     <style>
+        :root {
+            --background-light: #ffffff; /* White for light mode */
+            --background-dark: #121212; /* Black for dark mode */
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
         body {
-            background-color: #121212; /* Dark background */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full viewport height */
+            height: 100vh;
             margin: 0;
             padding: 0;
             font-family: sans-serif;
             text-align: center;
-            overflow: hidden; /* Prevent weird scrollbars */
+            overflow: hidden; /* No scrollbars */
+            background-color: var(--background-light);
+            transition: background-color 0.3s ease;
         }
+
         iframe {
             border: none;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-            width: 90%; /* Make it more responsive on smaller screens */
-            max-width: 640px; /* Keep desktop size sane */
-            height: 90vh; /* Automatically fill most of the screen height */
+            box-shadow: 0 0 20px var(--shadow-color);
+            width: 90%;
+            max-width: 640px;
+            height: 90vh;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: var(--background-dark);
+                --shadow-color: rgba(0, 0, 0, 0.6);
+            }
         }
     </style>
 </head>
 <body>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>Loading…</iframe>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
+        Loading…
+    </iframe>
 </body>
 </html>
