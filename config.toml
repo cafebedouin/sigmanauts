@@ -47,11 +47,11 @@ theme = "beautifulhugo"
     url = "/mining/"
     weight = 1
 
-[[menu.main]]
-    parent = "mining-pool"
-    name = "Dashboard"
-    url = "/dash/"
-    weight = 2
+#[[menu.main]] #dash is fucked, need to fix so removed the link for now
+ #   parent = "mining-pool"
+  #  name = "Dashboard"
+   # url = "/dash/"
+    #weight = 2
 
 [[menu.main]]
     parent = "mining-pool"
