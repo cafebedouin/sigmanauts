@@ -8,7 +8,8 @@ draft = 'false'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit a Question</title>
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}/styles.css"> <!-- Link to your Hugo theme's styles -->
     <style>
         :root {
             --background: #ffffff; /* Light Mode Background */
@@ -17,16 +18,10 @@ draft = 'false'
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: sans-serif;
             text-align: center;
-            overflow: hidden;
             background-color: var(--background);
-            transition: background-color 0.3s ease;
+            padding: 20px;
         }
 
         .frame-wrapper {
@@ -38,6 +33,7 @@ draft = 'false'
             box-shadow: 0 0 20px var(--shadow-color);
             display: flex;
             overflow: hidden;
+            margin: 20px auto;
         }
 
         iframe {
@@ -53,27 +49,18 @@ draft = 'false'
                 --frame-background: #ffffff;
             }
         }
-
-        /* Add more specificity to override theme styles */
-        .google-form-wrapper {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
     </style>
 </head>
 
 <body>
+    <h1>{{ .Title }}</h1> <!-- The title will use Hugo's theme -->
     <p>This Google Form allows you to submit questions for future Ergo Townhalls, AMAs, Dev Updates, or anything else related to Ergo. 
        If you can't attend live Zoom meetings or livestreams, this form ensures you still have a chance to ask your questions.</p>
 
-    <div class="google-form-wrapper">
-        <div class="frame-wrapper">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
-                Loading…
-            </iframe>
-        </div>
+    <div class="frame-wrapper">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
+            Loading…
+        </iframe>
     </div>
 </body>
 </html>
