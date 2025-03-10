@@ -9,12 +9,12 @@ draft = 'false'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
-    <link rel="stylesheet" href="{{ .Site.BaseURL }}/styles.css"> <!-- Link to your Hugo theme's styles -->
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}/styles.css"> 
     <style>
         :root {
-            --background: #ffffff; /* Light Mode Background */
+            --background: #ffffff;
             --shadow-color: rgba(0, 0, 0, 0.3);
-            --frame-background: #ffffff; /* White in Light Mode */
+            --frame-background: #ffffff;
         }
 
         body {
@@ -44,7 +44,7 @@ draft = 'false'
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --background: #121212; /* Dark Background */
+                --background: #000000;
                 --shadow-color: rgba(0, 0, 0, 0.6);
                 --frame-background: #ffffff;
             }
