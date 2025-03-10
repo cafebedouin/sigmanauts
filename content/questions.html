@@ -8,86 +8,28 @@ draft = 'false'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Form</title>
-    <style>
-        :root {
-            --background: #ffffff;
-            --text-color: #000000;
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --frame-background: #ffffff;
-            --font-family: 'Lora', 'Times New Roman', serif;
-        }
-
-        /* Ensures scrolling and prevents overlap from fixed headers */
-        html {
-            scroll-padding-top: 70px; /* Adjust based on the height of your fixed menu */
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Allows content to expand properly */
-            margin: 0;
-            font-family: var(--font-family);
-            font-size: 18px;
-            color: var(--text-color);
-            text-align: center;
-            background-color: var(--background);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            padding: 80px 20px 20px; /* Adjust padding-top to account for fixed menu */
-            box-sizing: border-box;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            max-width: 640px;
-            margin-bottom: 20px;
-        }
-
-        .frame-wrapper {
-            width: 90%;
-            max-width: 640px;
-            height: 80vh;
-            background-color: var(--frame-background);
-            border-radius: 10px;
-            box-shadow: 0 0 20px var(--shadow-color);
-            display: flex;
-            overflow: hidden;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --background: #000000;
-                --text-color: #ffffff;
-                --shadow-color: rgba(0, 0, 0, 0.6);
-                --frame-background: #ffffff;
-            }
-        }
-    </style>
-    <script>
-        if (!window.matchMedia("(prefers-color-scheme)").matches) {
-            document.documentElement.style.setProperty("--background", "#ffffff");
-            document.documentElement.style.setProperty("--text-color", "#000000");
-            document.documentElement.style.setProperty("--shadow-color", "rgba(0, 0, 0, 0.3)");
-            document.documentElement.style.setProperty("--frame-background", "#ffffff");
-        }
-    </script>
+    <title>Submit a Question</title>
 </head>
+
 <body>
     <p>This Google Form allows you to submit questions for future Ergo Townhalls, AMAs, Dev Updates, or anything else related to Ergo. 
        If you can't attend live Zoom meetings or livestreams, this form ensures you still have a chance to ask your questions.</p>
-    <div class="frame-wrapper">
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="position: relative; top: -12px; margin-right: 23px;">
+            <a href="https://t.me/+TPc9MRparGFjZjYx" target="_blank">
+                <i class="fab fa-telegram fa-stack-1x" style="color: #0088cc; transform: scale(1.1);"></i>
+            </a>
+        </div>
+        <div style="margin-left: 23px;">
+            <a href="https://discord.gg/cZMwX347Dx" target="_blank">
+                <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-1-1.png" alt="Discord Logo" style="width: 20px; height: 20px;">
+            </a>
+        </div>
+    </div>
+    <br>
+
+    <div class="frame-wrapper" style="width: 90%; max-width: 640px; height: 80vh; background-color: var(--frame-background); border-radius: 10px; box-shadow: 0 0 20px var(--shadow-color); display: flex; overflow: hidden;">
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqryYvimcYRXQLqRSMRnf3ieVuSX5_5buWwZ5Ve5OKBRvPNw/viewform?embedded=true" allowfullscreen>
             Loading…
         </iframe>
