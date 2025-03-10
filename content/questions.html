@@ -18,21 +18,25 @@ draft = 'false'
             --font-family: 'Lora', 'Times New Roman', serif;
         }
 
+        /* Ensures scrolling and prevents overlap from fixed headers */
+        html {
+            scroll-padding-top: 70px; /* Adjust based on the height of your fixed menu */
+        }
+
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Allows content to expand properly */
             margin: 0;
             font-family: var(--font-family);
             font-size: 18px;
             color: var(--text-color);
             text-align: center;
-            overflow: hidden;
             background-color: var(--background);
             transition: background-color 0.3s ease, color 0.3s ease;
-            padding: 20px;
+            padding: 80px 20px 20px; /* Adjust padding-top to account for fixed menu */
             box-sizing: border-box;
         }
 
