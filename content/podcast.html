@@ -117,8 +117,6 @@ Promise.all([
         titleElem.textContent = episode.title;
 
         // Episode Description
-const descriptionElem = document.createElement('div');
-// Clean up excessive empty tags and spacing
 let cleanedDescription = episode.description
     // remove multiple consecutive <br> tags
     .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
