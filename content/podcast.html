@@ -117,8 +117,9 @@ Promise.all([
         titleElem.textContent = episode.title;
 
         // Episode Description
-        const descriptionElem = document.createElement('p');
-        descriptionElem.textContent = episode.description;
+const descriptionElem = document.createElement('p');
+descriptionElem.innerHTML = episode.description;
+
 
         // Listen and Download Buttons
         const listenButton = document.createElement('a');
