@@ -48,7 +48,7 @@ draft: false
     <!-- Introduction -->
 <div id="introduction">
     <p>Your hub for Ergo content across two channels. The Ergo Podcast delivers audio from the Ergo Platform YouTube channel, featuring weekly AMAs and dev updates. The Sigmacast brings you community content, including the Peer 2 Peer podcast on YouTube and Twitter spaces - all focused on the Ergo ecosystem.</p>
-    
+
     <h2>Ergo Podcast</h2>
     <p>Listen on <a href="https://podcasters.spotify.com/pod/show/ergopodcast" target="_blank">Spotify</a> or <a href="https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451" target="_blank">Apple Podcasts</a>, or add this RSS feed to your preferred podcast app:</p>
     <code>https://anchor.fm/s/f21c6414/podcast/rss</code>
@@ -56,7 +56,7 @@ draft: false
     <h2>The Sigmacast</h2>
     <p>Listen on <a href="https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659" target="_blank">Apple Podcasts</a> or <a href="https://podcasters.spotify.com/pod/show/thesigmacast" target="_blank">Spotify</a>, or add this RSS feed to your preferred podcast app:</p>
     <code>https://anchor.fm/s/d094dce0/podcast/rss</code>
-    
+
     <br>
     <br>
 
@@ -111,14 +111,24 @@ Promise.all([
 
     allEpisodes.forEach(episode => {
         const episodeDiv = document.createElement('div');
-                
+
         // Episode Title
         const titleElem = document.createElement('h2');
         titleElem.textContent = episode.title;
 
         // Episode Description
-        const descriptionElem = document.createElement('p');
-        descriptionElem.textContent = episode.description;
+const descriptionElem = document.createElement('div');
+
+let cleanedDescription = episode.description
+    // Remove completely empty <p> tags (like <p><br></p> or <p> </p>)
+    .replace(/<p>\s*(<br\s*\/?>\s*)*\s*<\/p>/gi, '')
+    // Collapse multiple consecutive <br> tags into a single one
+    .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
+    // Trim leading/trailing whitespace or <br> tags
+    .replace(/^(\s|<br\s*\/?>)+|(\s|<br\s*\/?>)+$/gi, '')
+    .trim();
+
+descriptionElem.innerHTML = cleanedDescription;
 
         // Listen and Download Buttons
         const listenButton = document.createElement('a');
