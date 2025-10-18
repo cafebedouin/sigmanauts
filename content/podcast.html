@@ -118,8 +118,19 @@ Promise.all([
 
         // Episode Description
 const descriptionElem = document.createElement('div');
-descriptionElem.innerHTML = episode.description;
+// Clean up excessive empty tags and spacing
+let cleanedDescription = episode.description
+    // remove multiple consecutive <br> tags
+    .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
+    // remove empty <p> tags
+    .replace(/<p>\s*<\/p>/gi, '')
+    // collapse multiple <p>...<br> sequences
+    .replace(/(<\/p>\s*<p>\s*)+/gi, '</p><p>')
+    // trim leading/trailing whitespace and breaks
+    .replace(/^(<br\s*\/?>|\s)+|(<br\s*\/?>|\s)+$/gi, '');
 
+const descriptionElem = document.createElement('div');
+descriptionElem.innerHTML = cleanedDescription;
 
         // Listen and Download Buttons
         const listenButton = document.createElement('a');
