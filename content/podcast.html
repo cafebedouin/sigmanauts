@@ -141,14 +141,22 @@ function fetchAndDisplayEpisodes(feedUrl) {
         .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
         .then(data => {
             return Array.from(data.querySelectorAll('item')).map(item => {
-                const transcriptTag = item.querySelector('podcast\\:transcript');
+
+                // Get the transcript tag properly via namespace
+                const transcriptTags = item.getElementsByTagNameNS(
+                    "https://podcastindex.org/namespace/1.0",
+                    "transcript"
+                );
+                const transcriptUrl = transcriptTags.length > 0
+                    ? transcriptTags[0].getAttribute('url')
+                    : null;
 
                 return {
                     title: item.querySelector('title').textContent,
                     description: item.querySelector('description').textContent,
                     listenLink: item.querySelector('link').textContent,
                     enclosureUrl: item.querySelector('enclosure').getAttribute('url'),
-                    transcriptUrl: transcriptTag ? transcriptTag.getAttribute('url') : null,
+                    transcriptUrl: transcriptUrl,
                     pubDate: new Date(item.querySelector('pubDate').textContent)
                 };
             });
