@@ -62,6 +62,7 @@ draft: false
             overflow-y: auto;
             border-radius: 8px;
             padding: 20px;
+            white-space: pre-wrap;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -105,7 +106,7 @@ draft: false
 <!-- Transcript Modal -->
 <div class="modal-overlay" id="transcriptModal">
     <div class="modal">
-        <span class="modal-close" onclick="closeModal()">✖</span>
+        <span class="modal-close" id="closeModalBtn">✖</span>
         <div id="transcriptContent"></div>
     </div>
 </div>
@@ -118,15 +119,15 @@ function openTranscriptModal(srtUrl) {
         .then(response => response.text())
         .then(data => {
             const cleaned = data
-                .replace(/\d+\n/g, '')
-                .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*?\n/g, '')
+                .replace(/^\d+\s*$/gm, '')
+                .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm, '')
                 .replace(/\n{2,}/g, '\n')
                 .trim();
 
             document.getElementById('transcriptContent').textContent = cleaned;
             document.getElementById('transcriptModal').style.display = 'flex';
         })
-        .catch(err => {
+        .catch(() => {
             document.getElementById('transcriptContent').textContent = 'Transcript unavailable.';
             document.getElementById('transcriptModal').style.display = 'flex';
         });
@@ -135,6 +136,8 @@ function openTranscriptModal(srtUrl) {
 function closeModal() {
     document.getElementById('transcriptModal').style.display = 'none';
 }
+
+document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
 function fetchAndDisplayEpisodes(feedUrl) {
     return fetch(feedUrl)
@@ -208,10 +211,11 @@ Promise.all([
         const transcriptButton = document.createElement('button');
         transcriptButton.className = 'button transcript-button';
         transcriptButton.textContent = 'Transcript';
-        transcriptButton.onclick = function() {
+
+        transcriptButton.addEventListener('click', function() {
             const srtUrl = episode.enclosureUrl.replace('.mp3', '.srt');
             openTranscriptModal(srtUrl);
-        };
+        });
 
         const buttonContainer = document.createElement('div');
         buttonContainer.appendChild(listenButton);
