@@ -63,6 +63,7 @@ draft: false
     color: white;
     background: #1DB954;
     transition: opacity 0.2s ease;
+    vertical-align: middle; /* fix Apple button alignment */
 }
 .button:hover { opacity: 0.85; }
 .button.spotify, .button.apple {
@@ -135,7 +136,6 @@ draft: false
 </style>
 
 <script>
-
 /* ---------- RSS ---------- */
 function fetchAndDisplayEpisodes(feedUrl) {
     return fetch(feedUrl)
@@ -181,7 +181,7 @@ Promise.all([
         spotifyBtn.target='_blank';
         btnWrap.appendChild(spotifyBtn);
 
-        // Apple link
+        // Apple link button (aligned properly)
         const appleBtn = document.createElement('a');
         appleBtn.className='button apple';
         appleBtn.target='_blank';
@@ -251,11 +251,34 @@ document.getElementById('transcriptModal').addEventListener('click',function(e){
     if(e.target===this) closeTranscript();
 });
 
+/* Clean and merge SRT into readable paragraphs */
 function formatSRT(data){
-    return data.replace(/\r/g,'')
-               .replace(/^\d+$/gm,'')
-               .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm,'')
-               .trim();
-}
+    // Remove numbers and timestamps
+    let text = data.replace(/\r/g,'')
+                   .replace(/^\d+$/gm,'')
+                   .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm,'')
+                   .trim();
 
+    // Merge short lines into paragraphs
+    const lines = text.split('\n');
+    const merged = [];
+    let buffer = '';
+
+    lines.forEach(line=>{
+        line = line.trim();
+        if(!line){
+            if(buffer) merged.push(buffer);
+            buffer = '';
+        } else {
+            if(buffer){
+                buffer += ' ' + line;
+            } else {
+                buffer = line;
+            }
+        }
+    });
+    if(buffer) merged.push(buffer);
+
+    return merged.join('\n\n'); // double line break for paragraphs
+}
 </script>
