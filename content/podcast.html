@@ -252,33 +252,34 @@ document.getElementById('transcriptModal').addEventListener('click',function(e){
 });
 
 /* Clean and merge SRT into readable paragraphs */
-function formatSRT(data){
-    // Remove numbers and timestamps
+function formatSRT(data) {
+    // Remove SRT numbering and timestamps
     let text = data.replace(/\r/g,'')
                    .replace(/^\d+$/gm,'')
                    .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm,'')
                    .trim();
 
-    // Merge short lines into paragraphs
+    // Split into lines
     const lines = text.split('\n');
-    const merged = [];
-    let buffer = '';
 
-    lines.forEach(line=>{
+    const paragraphs = [];
+    let buffer = [];
+
+    lines.forEach(line => {
         line = line.trim();
-        if(!line){
-            if(buffer) merged.push(buffer);
-            buffer = '';
-        } else {
-            if(buffer){
-                buffer += ' ' + line;
-            } else {
-                buffer = line;
+        if (!line) {
+            // empty line -> paragraph break
+            if (buffer.length) {
+                paragraphs.push(buffer.join(' '));
+                buffer = [];
             }
+        } else {
+            buffer.push(line);
         }
     });
-    if(buffer) merged.push(buffer);
+    if (buffer.length) paragraphs.push(buffer.join(' '));
 
-    return merged.join('\n\n'); // double line break for paragraphs
+    // Join paragraphs with double line breaks
+    return paragraphs.join('\n\n');
 }
 </script>
