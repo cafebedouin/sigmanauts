@@ -106,17 +106,17 @@ draft: false
 <!-- Transcript Modal -->
 <div class="modal-overlay" id="transcriptModal">
     <div class="modal">
-        <span class="modal-close" id="closeModalBtn">✖</span>
+        <span class="modal-close" id="modalClose">✖</span>
         <div id="transcriptContent"></div>
     </div>
 </div>
 
 <script>
-function openTranscriptModal(srtUrl) {
+function openTranscript(srtUrl) {
     const proxyUrl = 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(srtUrl);
 
     fetch(proxyUrl)
-        .then(response => response.text())
+        .then(res => res.text())
         .then(data => {
             const cleaned = data
                 .replace(/^\d+\s*$/gm, '')
@@ -133,11 +133,16 @@ function openTranscriptModal(srtUrl) {
         });
 }
 
-function closeModal() {
-    document.getElementById('transcriptModal').style.display = 'none';
-}
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('transcript-button')) {
+        const srtUrl = e.target.getAttribute('data-srt');
+        if (srtUrl) openTranscript(srtUrl);
+    }
 
-document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    if (e.target.id === 'modalClose' || e.target.id === 'transcriptModal') {
+        document.getElementById('transcriptModal').style.display = 'none';
+    }
+});
 
 function fetchAndDisplayEpisodes(feedUrl) {
     return fetch(feedUrl)
@@ -211,11 +216,7 @@ Promise.all([
         const transcriptButton = document.createElement('button');
         transcriptButton.className = 'button transcript-button';
         transcriptButton.textContent = 'Transcript';
-
-        transcriptButton.addEventListener('click', function() {
-            const srtUrl = episode.enclosureUrl.replace('.mp3', '.srt');
-            openTranscriptModal(srtUrl);
-        });
+        transcriptButton.setAttribute('data-srt', episode.enclosureUrl.replace('.mp3', '.srt'));
 
         const buttonContainer = document.createElement('div');
         buttonContainer.appendChild(listenButton);
