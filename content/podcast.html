@@ -10,12 +10,19 @@ draft: false
 <title>Welcome To The Sigmacast</title>
 
 <style>
+
+/* Enable proper system theme handling */
+:root {
+    color-scheme: light dark;
+}
+
+/* Buttons */
 .button {
     display: inline-block;
     padding: 8px 15px;
     margin: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     color: white;
     cursor: pointer;
     text-align: center;
@@ -23,6 +30,11 @@ draft: false
     background-color: #1DB954;
     font-size: 14px;
     vertical-align: middle;
+    transition: opacity 0.2s ease;
+}
+
+.button:hover {
+    opacity: 0.85;
 }
 
 .button.spotify, .button.apple {
@@ -47,30 +59,48 @@ draft: false
 }
 
 .button.transcript {
-    background-color: #444;
+    background-color: #555;
 }
 
 /* Transcript Modal */
 #transcriptModal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    backdrop-filter: blur(4px);
 }
 
 #transcriptContent {
-    background: #fff;
     width: 90%;
     max-width: 900px;
     max-height: 85vh;
-    border-radius: 12px;
+    border-radius: 14px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    background: var(--modal-bg);
+    color: var(--modal-text);
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+    :root {
+        --modal-bg: #ffffff;
+        --modal-text: #111111;
+    }
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --modal-bg: #1c1c1e;
+        --modal-text: #f2f2f7;
+    }
 }
 
 #transcriptHeader {
@@ -99,6 +129,7 @@ draft: false
     font-size: 20px;
     cursor: pointer;
 }
+
 </style>
 </head>
 
@@ -186,14 +217,7 @@ Promise.all([
         titleElem.textContent = episode.title;
 
         const descriptionElem = document.createElement('div');
-
-        let cleanedDescription = episode.description
-            .replace(/<p>\s*(<br\s*\/?>\s*)*\s*<\/p>/gi, '')
-            .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
-            .replace(/^(\s|<br\s*\/?>)+|(\s|<br\s*\/?>)+$/gi, '')
-            .trim();
-
-        descriptionElem.innerHTML = cleanedDescription;
+        descriptionElem.innerHTML = episode.description;
 
         const listenButton = document.createElement('a');
         listenButton.className = 'button spotify';
@@ -213,7 +237,6 @@ Promise.all([
         downloadButton.className = 'button';
         downloadButton.textContent = 'Download';
         downloadButton.href = episode.enclosureUrl;
-        downloadButton.download = episode.title + '.mp3';
 
         const buttonContainer = document.createElement('div');
         buttonContainer.appendChild(listenButton);
@@ -232,13 +255,13 @@ Promise.all([
         episodeDiv.appendChild(titleElem);
         episodeDiv.appendChild(descriptionElem);
         episodeDiv.appendChild(buttonContainer);
-
         episodesDiv.appendChild(episodeDiv);
     });
 
-}).catch(error => console.error('Error:', error));
+});
 
 function openTranscript(title, url) {
+
     const modal = document.getElementById('transcriptModal');
     const body = document.getElementById('transcriptBody');
     const titleElem = document.getElementById('transcriptTitle');
@@ -246,24 +269,31 @@ function openTranscript(title, url) {
 
     titleElem.textContent = title;
     body.textContent = 'Loading transcript...';
-    downloadBtn.href = url;
+
+    const proxiedUrl = 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(url);
+
+    downloadBtn.href = proxiedUrl;
     downloadBtn.download = title + '.srt';
 
     modal.style.display = 'flex';
 
-    fetch(url)
+    fetch(proxiedUrl)
         .then(res => res.text())
         .then(text => {
             body.textContent = formatSRT(text);
         })
         .catch(() => {
-            body.textContent = 'Unable to load transcript.';
+            body.textContent = 'Failed to load transcript.';
         });
 }
 
 function closeTranscript() {
     document.getElementById('transcriptModal').style.display = 'none';
 }
+
+document.getElementById('transcriptModal').addEventListener('click', function(e) {
+    if (e.target === this) closeTranscript();
+});
 
 function formatSRT(data) {
     return data
