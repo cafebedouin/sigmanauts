@@ -4,88 +4,6 @@ date: 2024-04-15
 draft: false
 ---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome To The Sigmacast</title>
-    <style>
-        .button {
-            display: inline-block;
-            padding: 8px 15px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            background-color: #1DB954;
-            font-size: 14px;
-            vertical-align: middle;
-        }
-        .button.spotify, .button.apple {
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            padding: 0;
-            margin-right: 5px;
-            background-color: transparent;
-        }
-        .button.spotify {
-            background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
-            width: 24px;
-            height: 24px;
-        }
-        .button.apple {
-            background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
-            width: 37.5px;
-            height: 37.5px;
-        }
-
-        /* Transcript Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .modal {
-            background: #ffffff;
-            color: #000000;
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border-radius: 8px;
-            padding: 20px;
-            white-space: pre-wrap;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .modal {
-                background: #1e1e1e;
-                color: #ffffff;
-            }
-        }
-
-        .modal-close {
-            float: right;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .transcript-button {
-            background-color: #444;
-        }
-    </style>
-</head>
-
-<body>
 <div id="introduction">
     <p>Your hub for Ergo content across two channels. The Ergo Podcast delivers audio from the Ergo Platform YouTube channel, featuring weekly AMAs and dev updates. The Sigmacast brings you community content, including the Peer 2 Peer podcast on YouTube and Twitter spaces - all focused on the Ergo ecosystem.</p>
 
@@ -111,32 +29,105 @@ draft: false
     </div>
 </div>
 
-<script>
-function openTranscript(srtUrl) {
-    const proxyUrl = 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(srtUrl);
-
-    fetch(proxyUrl)
-        .then(res => res.text())
-        .then(data => {
-            const cleaned = data
-                .replace(/^\d+\s*$/gm, '')
-                .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm, '')
-                .replace(/\n{2,}/g, '\n')
-                .trim();
-
-            document.getElementById('transcriptContent').textContent = cleaned;
-            document.getElementById('transcriptModal').style.display = 'flex';
-        })
-        .catch(() => {
-            document.getElementById('transcriptContent').textContent = 'Transcript unavailable.';
-            document.getElementById('transcriptModal').style.display = 'flex';
-        });
+<style>
+.button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    background-color: #1DB954;
+    font-size: 14px;
+    vertical-align: middle;
+}
+.button.spotify, .button.apple {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding: 0;
+    margin-right: 5px;
+    background-color: transparent;
+}
+.button.spotify {
+    background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
+    width: 24px;
+    height: 24px;
+}
+.button.apple {
+    background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
+    width: 37.5px;
+    height: 37.5px;
 }
 
+/* Transcript Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.modal {
+    background: #ffffff;
+    color: #000000;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    padding: 20px;
+    white-space: pre-wrap;
+}
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background: #1e1e1e;
+        color: #ffffff;
+    }
+}
+.modal-close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+}
+.transcript-button {
+    background-color: #444;
+}
+</style>
+
+<script>
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('transcript-button')) {
         const srtUrl = e.target.getAttribute('data-srt');
-        if (srtUrl) openTranscript(srtUrl);
+        if (!srtUrl) return;
+
+        const modal = document.getElementById('transcriptModal');
+        const content = document.getElementById('transcriptContent');
+
+        modal.style.display = 'flex';
+        content.textContent = 'Loading transcript...';
+
+        // Fetch transcript
+        fetch(srtUrl)
+            .then(res => res.text())
+            .then(data => {
+                const cleaned = data
+                    .replace(/^\d+\s*$/gm, '')
+                    .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm, '')
+                    .replace(/\n{2,}/g, '\n')
+                    .trim();
+                content.textContent = cleaned || 'Transcript empty.';
+            })
+            .catch(err => {
+                console.error(err);
+                content.textContent = 'Transcript unavailable.';
+            });
     }
 
     if (e.target.id === 'modalClose' || e.target.id === 'transcriptModal') {
@@ -150,11 +141,14 @@ function fetchAndDisplayEpisodes(feedUrl) {
         .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
         .then(data => {
             return Array.from(data.querySelectorAll('item')).map(item => {
+                const transcriptTag = item.querySelector('podcast\\:transcript');
+
                 return {
                     title: item.querySelector('title').textContent,
                     description: item.querySelector('description').textContent,
                     listenLink: item.querySelector('link').textContent,
                     enclosureUrl: item.querySelector('enclosure').getAttribute('url'),
+                    transcriptUrl: transcriptTag ? transcriptTag.getAttribute('url') : null,
                     pubDate: new Date(item.querySelector('pubDate').textContent)
                 };
             });
@@ -184,13 +178,11 @@ Promise.all([
         titleElem.textContent = episode.title;
 
         const descriptionElem = document.createElement('div');
-
         let cleanedDescription = episode.description
             .replace(/<p>\s*(<br\s*\/?>\s*)*\s*<\/p>/gi, '')
             .replace(/(<br\s*\/?>\s*){2,}/gi, '<br>')
             .replace(/^(\s|<br\s*\/?>)+|(\s|<br\s*\/?>)+$/gi, '')
             .trim();
-
         descriptionElem.innerHTML = cleanedDescription;
 
         const listenButton = document.createElement('a');
@@ -201,7 +193,6 @@ Promise.all([
         const appleButton = document.createElement('a');
         appleButton.className = 'button apple';
         appleButton.target = '_blank';
-
         const podcastName = extractPodcastName(episode.listenLink);
         appleButton.href = podcastName === 'Ergo Podcast'
             ? 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
@@ -215,8 +206,13 @@ Promise.all([
 
         const transcriptButton = document.createElement('button');
         transcriptButton.className = 'button transcript-button';
-        transcriptButton.textContent = 'Transcript';
-        transcriptButton.setAttribute('data-srt', episode.enclosureUrl.replace('.mp3', '.srt'));
+        if (episode.transcriptUrl) {
+            transcriptButton.textContent = 'Transcript';
+            transcriptButton.setAttribute('data-srt', episode.transcriptUrl);
+        } else {
+            transcriptButton.textContent = 'No Transcript';
+            transcriptButton.disabled = true;
+        }
 
         const buttonContainer = document.createElement('div');
         buttonContainer.appendChild(listenButton);
@@ -231,6 +227,5 @@ Promise.all([
         episodesDiv.appendChild(episodeDiv);
     });
 
-}).catch(error => console.error('Error:', error));
+}).catch(error => console.error('Error fetching episodes:', error));
 </script>
-</body>
