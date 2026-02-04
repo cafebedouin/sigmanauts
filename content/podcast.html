@@ -36,7 +36,6 @@ draft: false
 </div>
 
 <style>
-/* ---------- THEME SYSTEM ---------- */
 :root {
     color-scheme: light dark;
     --modal-bg: #1c1c1e;
@@ -51,7 +50,6 @@ draft: false
     }
 }
 
-/* ---------- BUTTONS ---------- */
 .button {
     display: inline-block;
     padding: 8px 15px;
@@ -63,9 +61,10 @@ draft: false
     color: white;
     background: #1DB954;
     transition: opacity 0.2s ease;
-    vertical-align: middle; /* fix Apple button alignment */
+    vertical-align: middle;
 }
 .button:hover { opacity: 0.85; }
+
 .button.spotify, .button.apple {
     background-repeat: no-repeat;
     background-position: center;
@@ -86,7 +85,6 @@ draft: false
 }
 .button.transcript { background: #555; }
 
-/* ---------- MODAL ---------- */
 #transcriptModal {
     position: fixed;
     inset: 0;
@@ -136,6 +134,13 @@ draft: false
 </style>
 
 <script>
+/* ---------- HELPERS ---------- */
+function slugify(text) {
+    return text.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+}
+
 /* ---------- RSS ---------- */
 function fetchAndDisplayEpisodes(feedUrl) {
     return fetch(feedUrl)
@@ -143,10 +148,12 @@ function fetchAndDisplayEpisodes(feedUrl) {
         .then(str => new DOMParser().parseFromString(str, 'text/xml'))
         .then(data => {
             return Array.from(data.querySelectorAll('item')).map(item => {
-                // Correctly parse transcript using namespace fallback
                 let transcriptUrl = null;
-                const nsTags = item.getElementsByTagNameNS("https://podcastindex.org/namespace/1.0","transcript");
-                if(nsTags.length>0) transcriptUrl = nsTags[0].getAttribute('url');
+                const nsTags = item.getElementsByTagNameNS(
+                    "https://podcastindex.org/namespace/1.0",
+                    "transcript"
+                );
+                if (nsTags.length > 0) transcriptUrl = nsTags[0].getAttribute('url');
 
                 return {
                     title: item.querySelector('title').textContent,
@@ -154,7 +161,7 @@ function fetchAndDisplayEpisodes(feedUrl) {
                     listenLink: item.querySelector('link').textContent,
                     enclosureUrl: item.querySelector('enclosure').getAttribute('url'),
                     pubDate: new Date(item.querySelector('pubDate').textContent),
-                    transcriptUrl: transcriptUrl
+                    transcriptUrl
                 };
             });
         });
@@ -163,50 +170,70 @@ function fetchAndDisplayEpisodes(feedUrl) {
 Promise.all([
     fetchAndDisplayEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'),
     fetchAndDisplayEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')
-]).then(([a,b])=>{
-    const all = a.concat(b).sort((x,y)=> y.pubDate - x.pubDate);
+]).then(([a, b]) => {
+    const all = a.concat(b).sort((x, y) => y.pubDate - x.pubDate);
     const container = document.getElementById('episodes');
 
-    all.forEach(ep=>{
+    all.forEach(ep => {
+        const episodeId = 'episode-' + slugify(ep.title);
+
         const div = document.createElement('div');
-        const h2 = document.createElement('h2'); h2.textContent = ep.title;
-        const desc = document.createElement('div'); desc.innerHTML = ep.description;
+        div.id = episodeId;
+
+        const h2 = document.createElement('h2');
+        h2.textContent = ep.title;
+
+        const desc = document.createElement('div');
+        desc.innerHTML = ep.description;
 
         const btnWrap = document.createElement('div');
 
-        // Spotify listen button
         const spotifyBtn = document.createElement('a');
         spotifyBtn.className = 'button spotify';
         spotifyBtn.href = ep.listenLink;
-        spotifyBtn.target='_blank';
+        spotifyBtn.target = '_blank';
         btnWrap.appendChild(spotifyBtn);
 
-        // Apple link button (aligned properly)
         const appleBtn = document.createElement('a');
-        appleBtn.className='button apple';
-        appleBtn.target='_blank';
+        appleBtn.className = 'button apple';
+        appleBtn.target = '_blank';
         appleBtn.href = ep.listenLink.includes('ergopodcast')
             ? 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
             : 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
         btnWrap.appendChild(appleBtn);
 
-        // Download button
         const dl = document.createElement('a');
         dl.className = 'button';
         dl.textContent = 'Download';
         dl.href = ep.enclosureUrl;
-        dl.download = ep.title+'.mp3';
+        dl.download = ep.title + '.mp3';
         btnWrap.appendChild(dl);
 
-        // Transcript button
-        if(ep.transcriptUrl){
+        if (ep.transcriptUrl) {
             const tbtn = document.createElement('a');
             tbtn.className = 'button transcript';
-            tbtn.textContent='Read Transcript';
-            tbtn.href='javascript:void(0)';
-            tbtn.onclick = ()=>openTranscript(ep.title, ep.transcriptUrl);
+            tbtn.textContent = 'Read Transcript';
+            tbtn.href = 'javascript:void(0)';
+            tbtn.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
             btnWrap.appendChild(tbtn);
         }
+
+        /* ---------- SHARE BUTTON ---------- */
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'button transcript';
+        shareBtn.textContent = 'Share';
+        shareBtn.onclick = () => {
+            const url = `${location.origin}${location.pathname}#${episodeId}`;
+
+            if (navigator.share) {
+                navigator.share({ title: ep.title, url });
+            } else {
+                navigator.clipboard.writeText(url);
+                shareBtn.textContent = 'Copied!';
+                setTimeout(() => shareBtn.textContent = 'Share', 1500);
+            }
+        };
+        btnWrap.appendChild(shareBtn);
 
         div.appendChild(h2);
         div.appendChild(desc);
@@ -216,70 +243,67 @@ Promise.all([
 });
 
 /* ---------- TRANSCRIPT ---------- */
-function openTranscript(title,url){
-    const modal=document.getElementById('transcriptModal');
-    const body=document.getElementById('transcriptBody');
-    const titleElem=document.getElementById('transcriptTitle');
-    const downloadBtn=document.getElementById('downloadTranscriptBtn');
+function openTranscript(title, url) {
+    const modal = document.getElementById('transcriptModal');
+    const body = document.getElementById('transcriptBody');
+    const titleElem = document.getElementById('transcriptTitle');
+    const downloadBtn = document.getElementById('downloadTranscriptBtn');
 
-    titleElem.textContent=title;
-    body.textContent='Loading transcript...';
+    titleElem.textContent = title;
+    body.textContent = 'Loading transcript...';
 
-    const proxied='https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(url);
+    const proxied = 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(url);
+    downloadBtn.href = proxied;
+    downloadBtn.download = title + '.srt';
 
-    downloadBtn.href=proxied;
-    downloadBtn.download=title+'.srt';
-
-    modal.style.display='flex';
+    modal.style.display = 'flex';
 
     fetch(proxied)
-        .then(res=>res.text())
-        .then(txt=>{
-            body.textContent=formatSRT(txt);
-        })
-        .catch(err=>{
-            body.textContent='Failed to load transcript via proxy.';
-            console.error(err);
-        });
+        .then(res => res.text())
+        .then(txt => body.textContent = formatSRT(txt))
+        .catch(() => body.textContent = 'Failed to load transcript.');
 }
 
-function closeTranscript(){
-    document.getElementById('transcriptModal').style.display='none';
+function closeTranscript() {
+    document.getElementById('transcriptModal').style.display = 'none';
 }
 
-document.getElementById('transcriptModal').addEventListener('click',function(e){
-    if(e.target===this) closeTranscript();
+document.getElementById('transcriptModal').addEventListener('click', e => {
+    if (e.target.id === 'transcriptModal') closeTranscript();
 });
 
-/* Clean and merge SRT into readable paragraphs */
+/* ---------- SRT CLEANUP ---------- */
 function formatSRT(data) {
-    // Remove SRT numbering and timestamps
-    let text = data.replace(/\r/g,'')
-                   .replace(/^\d+$/gm,'')
-                   .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm,'')
-                   .trim();
+    let text = data.replace(/\r/g, '')
+        .replace(/^\d+$/gm, '')
+        .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm, '')
+        .trim();
 
-    // Split into lines
     const lines = text.split('\n');
-
     const paragraphs = [];
     let buffer = [];
 
     lines.forEach(line => {
         line = line.trim();
         if (!line) {
-            // empty line -> paragraph break
             if (buffer.length) {
                 paragraphs.push(buffer.join(' '));
                 buffer = [];
             }
-        } else {
-            buffer.push(line);
-        }
+        } else buffer.push(line);
     });
     if (buffer.length) paragraphs.push(buffer.join(' '));
 
-    // Join paragraphs with double line breaks
     return paragraphs.join('\n\n');
 }
+
+/* ---------- DEEP LINK SCROLL ---------- */
+window.addEventListener('load', () => {
+    if (location.hash) {
+        const target = document.querySelector(location.hash);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+});
 </script>
