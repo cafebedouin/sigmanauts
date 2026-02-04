@@ -51,6 +51,7 @@ draft: false
 </div>
 
 <style>
+/* ---------- THEME SYSTEM ---------- */
 :root {
     color-scheme: light dark;
     --modal-bg: #1c1c1e;
@@ -76,7 +77,11 @@ draft: false
     cursor: pointer;
     color: white;
     background: #1DB954;
+    transition: opacity 0.2s ease;
+    vertical-align: middle; /* 🔑 restored */
 }
+.button:hover { opacity: 0.85; }
+
 .button.spotify,
 .button.apple {
     background-repeat: no-repeat;
@@ -84,17 +89,24 @@ draft: false
     background-size: contain;
     background-color: transparent;
     padding: 0;
+    margin-right: 5px;
+    vertical-align: middle; /* 🔑 restored */
 }
+
+/* Spotify */
 .button.spotify {
     background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
     width: 24px;
     height: 24px;
 }
+
+/* Apple Podcasts — original sizing */
 .button.apple {
     background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
     width: 37.5px;
     height: 37.5px;
 }
+
 .button.transcript { background:#555; }
 
 /* ---------- DESCRIPTION CLAMP ---------- */
@@ -122,6 +134,7 @@ draft: false
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    backdrop-filter: blur(4px);
 }
 #episodeModalContent,
 #transcriptContent {
@@ -144,167 +157,181 @@ draft: false
 </style>
 
 <script>
-function slugify(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+function slugify(t){
+    return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
 
+/* ---------- EPISODE MODAL ---------- */
 function openEpisodeModal(ep){
     document.getElementById('episodeModalTitle').textContent = ep.title;
     document.getElementById('episodeModalDescription').innerHTML = ep.description;
 
-    const player=document.getElementById('episodePlayer');
-    player.src=ep.enclosureUrl;
+    const player = document.getElementById('episodePlayer');
+    player.src = ep.enclosureUrl;
     player.load();
 
-    const b=document.getElementById('episodeModalButtons');
-    b.innerHTML='';
+    const b = document.getElementById('episodeModalButtons');
+    b.innerHTML = '';
 
-    const spotify=document.createElement('a');
-    spotify.className='button spotify';
-    spotify.href=ep.listenLink;
-    spotify.target='_blank';
+    const spotify = document.createElement('a');
+    spotify.className = 'button spotify';
+    spotify.href = ep.listenLink;
+    spotify.target = '_blank';
     b.appendChild(spotify);
 
-    const apple=document.createElement('a');
-    apple.className='button apple';
-    apple.href=ep.listenLink.includes('ergopodcast')
+    const apple = document.createElement('a');
+    apple.className = 'button apple';
+    apple.href = ep.listenLink.includes('ergopodcast')
         ? 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
         : 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
-    apple.target='_blank';
+    apple.target = '_blank';
     b.appendChild(apple);
 
-    const dl=document.createElement('a');
-    dl.className='button';
-    dl.textContent='Download';
-    dl.href=ep.enclosureUrl;
-    dl.download=ep.title+'.mp3';
+    const dl = document.createElement('a');
+    dl.className = 'button';
+    dl.textContent = 'Download';
+    dl.href = ep.enclosureUrl;
+    dl.download = ep.title + '.mp3';
     b.appendChild(dl);
 
     if(ep.transcriptUrl){
-        const t=document.createElement('button');
-        t.className='button transcript';
-        t.textContent='Read Transcript';
-        t.onclick=()=>openTranscript(ep.title,ep.transcriptUrl);
+        const t = document.createElement('button');
+        t.className = 'button transcript';
+        t.textContent = 'Read Transcript';
+        t.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
         b.appendChild(t);
     }
 
-    const share=document.createElement('button');
-    share.className='button transcript';
-    share.textContent='Share';
-    share.onclick=()=>{
-        navigator.clipboard.writeText(location.href.split('#')[0]+'#'+ep.id);
-        share.textContent='Copied!';
-        setTimeout(()=>share.textContent='Share',1200);
+    const share = document.createElement('button');
+    share.className = 'button transcript';
+    share.textContent = 'Share';
+    share.onclick = () => {
+        navigator.clipboard.writeText(location.href.split('#')[0] + '#' + ep.id);
+        share.textContent = 'Copied!';
+        setTimeout(() => share.textContent = 'Share', 1200);
     };
     b.appendChild(share);
 
-    document.getElementById('episodeModal').style.display='flex';
+    document.getElementById('episodeModal').style.display = 'flex';
 }
 
 function closeEpisodeModal(){
-    document.getElementById('episodeModal').style.display='none';
+    document.getElementById('episodeModal').style.display = 'none';
     document.getElementById('episodePlayer').pause();
 }
 
+/* ---------- RSS ---------- */
 function fetchAndDisplayEpisodes(feed){
-    return fetch(feed).then(r=>r.text()).then(t=>{
-        const x=new DOMParser().parseFromString(t,'text/xml');
-        return [...x.querySelectorAll('item')].map(i=>{
-            const ns=i.getElementsByTagNameNS("https://podcastindex.org/namespace/1.0","transcript");
-            return {
-                id:'episode-'+slugify(i.querySelector('title').textContent),
-                title:i.querySelector('title').textContent,
-                description:i.querySelector('description').textContent,
-                listenLink:i.querySelector('link').textContent,
-                enclosureUrl:i.querySelector('enclosure').getAttribute('url'),
-                pubDate:new Date(i.querySelector('pubDate').textContent),
-                transcriptUrl:ns.length?ns[0].getAttribute('url'):null
-            };
+    return fetch(feed)
+        .then(r => r.text())
+        .then(t => {
+            const x = new DOMParser().parseFromString(t,'text/xml');
+            return [...x.querySelectorAll('item')].map(i => {
+                const ns = i.getElementsByTagNameNS(
+                    "https://podcastindex.org/namespace/1.0","transcript"
+                );
+                return {
+                    id: 'episode-' + slugify(i.querySelector('title').textContent),
+                    title: i.querySelector('title').textContent,
+                    description: i.querySelector('description').textContent,
+                    listenLink: i.querySelector('link').textContent,
+                    enclosureUrl: i.querySelector('enclosure').getAttribute('url'),
+                    pubDate: new Date(i.querySelector('pubDate').textContent),
+                    transcriptUrl: ns.length ? ns[0].getAttribute('url') : null
+                };
+            });
         });
-    });
 }
 
 Promise.all([
     fetchAndDisplayEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'),
     fetchAndDisplayEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')
 ]).then(([a,b])=>{
-    const all=a.concat(b).sort((x,y)=>y.pubDate-x.pubDate);
-    const c=document.getElementById('episodes');
+    const all = a.concat(b).sort((x,y)=>y.pubDate - x.pubDate);
+    const c = document.getElementById('episodes');
 
     all.forEach(ep=>{
-        const d=document.createElement('div');
+        const d = document.createElement('div');
 
-        const h=document.createElement('h2');
-        h.textContent=ep.title;
-        h.style.cursor='pointer';
-        h.onclick=()=>openEpisodeModal(ep);
+        const h = document.createElement('h2');
+        h.textContent = ep.title;
+        h.style.cursor = 'pointer';
+        h.onclick = () => openEpisodeModal(ep);
 
-        const desc=document.createElement('div');
-        desc.className='episode-desc';
-        desc.innerHTML=ep.description;
+        const desc = document.createElement('div');
+        desc.className = 'episode-desc';
+        desc.innerHTML = ep.description;
 
-        const more=document.createElement('div');
-        more.className='read-more';
-        more.textContent='Read more';
-        more.onclick=()=>openEpisodeModal(ep);
+        const more = document.createElement('div');
+        more.className = 'read-more';
+        more.textContent = 'Read more';
+        more.onclick = () => openEpisodeModal(ep);
 
-        const bw=document.createElement('div');
+        const bw = document.createElement('div');
 
-        const s=document.createElement('a');
-        s.className='button spotify';
-        s.href=ep.listenLink;
-        s.target='_blank';
+        const s = document.createElement('a');
+        s.className = 'button spotify';
+        s.href = ep.listenLink;
+        s.target = '_blank';
         bw.appendChild(s);
 
-        const aBtn=document.createElement('a');
-        aBtn.className='button apple';
-        aBtn.href=ep.listenLink.includes('ergopodcast')
+        const aBtn = document.createElement('a');
+        aBtn.className = 'button apple';
+        aBtn.href = ep.listenLink.includes('ergopodcast')
             ? 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
             : 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
-        aBtn.target='_blank';
+        aBtn.target = '_blank';
         bw.appendChild(aBtn);
 
-        const dl=document.createElement('a');
-        dl.className='button';
-        dl.textContent='Download';
-        dl.href=ep.enclosureUrl;
-        dl.download=ep.title+'.mp3';
+        const dl = document.createElement('a');
+        dl.className = 'button';
+        dl.textContent = 'Download';
+        dl.href = ep.enclosureUrl;
+        dl.download = ep.title + '.mp3';
         bw.appendChild(dl);
 
         if(ep.transcriptUrl){
-            const t=document.createElement('a');
-            t.className='button transcript';
-            t.textContent='Read Transcript';
-            t.href='javascript:void(0)';
-            t.onclick=()=>openTranscript(ep.title,ep.transcriptUrl);
+            const t = document.createElement('a');
+            t.className = 'button transcript';
+            t.textContent = 'Read Transcript';
+            t.href = 'javascript:void(0)';
+            t.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
             bw.appendChild(t);
         }
 
-        d.append(h,desc,more,bw);
+        d.append(h, desc, more, bw);
         c.appendChild(d);
 
         requestAnimationFrame(()=>{
-            if(desc.scrollHeight>desc.clientHeight) more.style.display='inline-block';
+            if(desc.scrollHeight > desc.clientHeight){
+                more.style.display = 'inline-block';
+            }
         });
     });
 });
 
 /* ---------- TRANSCRIPT ---------- */
 function openTranscript(title,url){
-    const m=document.getElementById('transcriptModal');
-    const b=document.getElementById('transcriptBody');
-    const t=document.getElementById('transcriptTitle');
-    const d=document.getElementById('downloadTranscriptBtn');
+    const modal = document.getElementById('transcriptModal');
+    const body = document.getElementById('transcriptBody');
+    const titleElem = document.getElementById('transcriptTitle');
+    const downloadBtn = document.getElementById('downloadTranscriptBtn');
 
-    t.textContent=title;
-    b.textContent='Loading transcript...';
+    titleElem.textContent = title;
+    body.textContent = 'Loading transcript...';
 
-    const p='https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(url);
-    d.href=p; d.download=title+'.srt';
-    m.style.display='flex';
+    const proxied = 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(url);
+    downloadBtn.href = proxied;
+    downloadBtn.download = title + '.srt';
 
-    fetch(p).then(r=>r.text()).then(x=>b.textContent=x);
+    modal.style.display = 'flex';
+
+    fetch(proxied)
+        .then(res => res.text())
+        .then(txt => body.textContent = txt);
 }
 
 function closeTranscript(){
-    document.getElementById('transcriptModal').style.display='none';
+    document.getElementById('transcriptModal').style.display = 'none';
 }
 </script>
