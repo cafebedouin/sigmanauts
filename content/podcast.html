@@ -206,7 +206,8 @@ function openEpisodeModal(ep){
     share.className = 'button transcript';
     share.textContent = 'Share';
     share.onclick = () => {
-        navigator.clipboard.writeText(location.href.split('#')[0] + '#' + ep.id);
+        const shareUrl = window.location.origin + window.location.pathname + '#' + ep.id;
+        navigator.clipboard.writeText(shareUrl);
         share.textContent = 'Copied!';
         setTimeout(() => share.textContent = 'Share', 1200);
     };
@@ -243,14 +244,16 @@ function fetchAndDisplayEpisodes(feed){
         });
 }
 
+let allEpisodes = [];
+
 Promise.all([
     fetchAndDisplayEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'),
     fetchAndDisplayEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')
 ]).then(([a,b])=>{
-    const all = a.concat(b).sort((x,y)=>y.pubDate - x.pubDate);
+    allEpisodes = a.concat(b).sort((x,y)=>y.pubDate - x.pubDate);
     const c = document.getElementById('episodes');
 
-    all.forEach(ep=>{
+    allEpisodes.forEach(ep=>{
         const d = document.createElement('div');
 
         const h = document.createElement('h2');
@@ -308,6 +311,13 @@ Promise.all([
             }
         });
     });
+
+    // ✅ Open modal if URL has hash
+    const hash = location.hash.slice(1);
+    if(hash){
+        const ep = allEpisodes.find(e => e.id === hash);
+        if(ep) openEpisodeModal(ep);
+    }
 });
 
 /* ---------- TRANSCRIPT ---------- */
