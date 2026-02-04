@@ -5,12 +5,7 @@ draft: false
 ---
 
 <div id="introduction">
-  <p>
-    Your hub for Ergo content across two channels. The Ergo Podcast delivers audio
-    from the Ergo Platform YouTube channel, featuring weekly AMAs and dev updates.
-    The Sigmacast brings you community content, including the Peer 2 Peer podcast
-    on YouTube and Twitter spaces — all focused on the Ergo ecosystem.
-  </p>
+<p>Your hub for Ergo content across two channels. The Ergo Podcast delivers audio from the Ergo Platform YouTube channel, featuring weekly AMAs and dev updates. The Sigmacast brings you community content, including the Peer 2 Peer podcast on YouTube and Twitter spaces - all focused on the Ergo ecosystem.</p>
 </div>
 
 <div id="episodes"></div>
@@ -40,46 +35,33 @@ draft: false
 </div>
 
 <style>
-/* ---------- EPISODE LIST ---------- */
-.episode-card {
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.episode-title {
-  cursor: pointer;
-  margin-bottom: 6px;
-}
-
-.episode-title:hover {
-  text-decoration: underline;
-}
-
+/* ---------- DESCRIPTION CLAMP ---------- */
 .episode-desc {
   max-width: 900px;
   line-height: 1.55;
-  opacity: 0.85;
-
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  opacity: 0.9;
 }
 
-/* ---------- BUTTONS ---------- */
-.button {
+.continue-link {
   display: inline-block;
-  padding: 6px 14px;
-  margin: 8px 8px 0 0;
-  border-radius: 6px;
-  background: #1DB954;
-  color: white;
-  font-size: 13px;
-  text-decoration: none;
+  margin-top: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/* ---------- CLICKABLE TITLE ---------- */
+.episode-title {
   cursor: pointer;
 }
-
-.button.secondary { background: #444; }
+.episode-title:hover {
+  text-decoration: underline;
+}
 
 /* ---------- MODALS ---------- */
 #episodeModal,
@@ -116,6 +98,20 @@ draft: false
   color: white;
   cursor: pointer;
 }
+
+/* ---------- BUTTONS (unchanged) ---------- */
+.button {
+  display: inline-block;
+  padding: 8px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  background: #1DB954;
+}
+.button.transcript { background: #555; }
 </style>
 
 <script>
@@ -130,8 +126,7 @@ function slugify(text) {
 const episodeMap = {};
 
 function openEpisodeModal(ep) {
-  const id = ep.id;
-  location.hash = id;
+  location.hash = ep.id;
 
   document.getElementById('modalTitle').textContent = ep.title;
   document.getElementById('modalDescription').innerHTML = ep.description;
@@ -139,23 +134,13 @@ function openEpisodeModal(ep) {
   const btns = document.getElementById('modalButtons');
   btns.innerHTML = '';
 
-  btns.appendChild(btn('Spotify', ep.listenLink));
-  btns.appendChild(btn('Apple', ep.appleLink));
-  btns.appendChild(btn('Download', ep.enclosureUrl, true));
-
-  if (ep.transcriptUrl) {
-    const t = document.createElement('button');
-    t.className = 'button secondary';
-    t.textContent = 'Read Transcript';
-    t.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
-    btns.appendChild(t);
-  }
-
+  // Share ONLY in modal
   const share = document.createElement('button');
-  share.className = 'button secondary';
+  share.className = 'button transcript';
   share.textContent = 'Share';
   share.onclick = () => {
-    navigator.clipboard.writeText(location.href);
+    const url = `${location.origin}${location.pathname}#${ep.id}`;
+    navigator.clipboard.writeText(url);
     share.textContent = 'Copied!';
     setTimeout(() => share.textContent = 'Share', 1200);
   };
@@ -169,18 +154,8 @@ function closeEpisodeModal() {
   history.pushState("", document.title, location.pathname);
 }
 
-function btn(label, href, download=false) {
-  const a = document.createElement('a');
-  a.className = 'button';
-  a.textContent = label;
-  a.href = href;
-  a.target = '_blank';
-  if (download) a.download = '';
-  return a;
-}
-
 /* ---------- RSS ---------- */
-function fetchEpisodes(feedUrl, appleLink) {
+function fetchEpisodes(feedUrl) {
   return fetch(feedUrl)
     .then(r => r.text())
     .then(t => new DOMParser().parseFromString(t, 'text/xml'))
@@ -199,7 +174,6 @@ function fetchEpisodes(feedUrl, appleLink) {
           title,
           description: item.querySelector('description').textContent,
           listenLink: item.querySelector('link').textContent,
-          appleLink,
           enclosureUrl: item.querySelector('enclosure').getAttribute('url'),
           transcriptUrl: t.length ? t[0].getAttribute('url') : null,
           pubDate: new Date(item.querySelector('pubDate').textContent)
@@ -212,21 +186,14 @@ function fetchEpisodes(feedUrl, appleLink) {
 }
 
 Promise.all([
-  fetchEpisodes(
-    'https://anchor.fm/s/f21c6414/podcast/rss',
-    'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
-  ),
-  fetchEpisodes(
-    'https://anchor.fm/s/d094dce0/podcast/rss',
-    'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659'
-  )
+  fetchEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'),
+  fetchEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')
 ]).then(([a,b]) => {
   const all = a.concat(b).sort((x,y)=>y.pubDate-x.pubDate);
   const container = document.getElementById('episodes');
 
   all.forEach(ep => {
-    const card = document.createElement('div');
-    card.className = 'episode-card';
+    const div = document.createElement('div');
 
     const h2 = document.createElement('h2');
     h2.textContent = ep.title;
@@ -237,23 +204,37 @@ Promise.all([
     desc.className = 'episode-desc';
     desc.innerHTML = ep.description;
 
-    const share = document.createElement('button');
-    share.className = 'button secondary';
-    share.textContent = 'Share';
-    share.onclick = () => {
-      const url = `${location.origin}${location.pathname}#${ep.id}`;
-      navigator.clipboard.writeText(url);
-      share.textContent = 'Copied!';
-      setTimeout(() => share.textContent = 'Share', 1200);
-    };
+    const continueLink = document.createElement('span');
+    continueLink.className = 'continue-link';
+    continueLink.textContent = 'Continue reading';
+    continueLink.onclick = () => openEpisodeModal(ep);
 
-    card.appendChild(h2);
-    card.appendChild(desc);
-    card.appendChild(share);
-    container.appendChild(card);
+    const btnWrap = document.createElement('div');
+
+    const dl = document.createElement('a');
+    dl.className = 'button';
+    dl.textContent = 'Download';
+    dl.href = ep.enclosureUrl;
+    dl.download = ep.title + '.mp3';
+    btnWrap.appendChild(dl);
+
+    if (ep.transcriptUrl) {
+      const tbtn = document.createElement('a');
+      tbtn.className = 'button transcript';
+      tbtn.textContent = 'Read Transcript';
+      tbtn.href = 'javascript:void(0)';
+      tbtn.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
+      btnWrap.appendChild(tbtn);
+    }
+
+    div.appendChild(h2);
+    div.appendChild(desc);
+    div.appendChild(continueLink);
+    div.appendChild(btnWrap);
+    container.appendChild(div);
   });
 
-  // auto-open shared modal
+  // Auto-open modal from shared link
   if (location.hash && episodeMap[location.hash.substring(1)]) {
     openEpisodeModal(episodeMap[location.hash.substring(1)]);
   }
