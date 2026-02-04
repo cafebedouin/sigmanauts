@@ -1,161 +1,3 @@
----
-title: "The Sigmacast"
-date: 2024-04-15
-draft: false
----
-
-<div id="introduction">
-<p>Your hub for Ergo content across two channels. The Ergo Podcast delivers audio from the Ergo Platform YouTube channel, featuring weekly AMAs and dev updates. The Sigmacast brings you community content, including the Peer 2 Peer podcast on YouTube and Twitter spaces - all focused on the Ergo ecosystem.</p>
-
-<h2>Ergo Podcast</h2>
-<p>Listen on <a href="https://podcasters.spotify.com/pod/show/ergopodcast" target="_blank">Spotify</a> or <a href="https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451" target="_blank">Apple Podcasts</a>, or add this RSS feed to your preferred podcast app:</p>
-<code>https://anchor.fm/s/f21c6414/podcast/rss</code>
-
-<h2>The Sigmacast</h2>
-<p>Listen on <a href="https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659" target="_blank">Apple Podcasts</a> or <a href="https://podcasters.spotify.com/pod/show/thesigmacast" target="_blank">Spotify</a>, or add this RSS feed to your preferred podcast app:</p>
-<code>https://anchor.fm/s/d094dce0/podcast/rss</code>
-
-<br><br>
-<p>Episodes are available to listen to or download (by right-clicking and saving) right on this page.</p>
-</div>
-
-<div id="episodes"></div>
-
-<!-- ================= EPISODE MODAL ================= -->
-<div id="episodeModal">
-  <div id="episodeModalContent">
-    <button class="close-btn" onclick="closeEpisodeModal()">✕</button>
-
-    <h2 id="episodeModalTitle"></h2>
-
-    <audio id="episodePlayer" controls style="width:100%; margin:15px 0;"></audio>
-
-    <div id="episodeModalDescription"></div>
-
-    <div id="episodeModalButtons"></div>
-  </div>
-</div>
-
-<!-- ================= TRANSCRIPT MODAL ================= -->
-<div id="transcriptModal">
-    <div id="transcriptContent">
-        <div id="transcriptHeader">
-            <span id="transcriptTitle">Transcript</span>
-            <div>
-                <a id="downloadTranscriptBtn" class="button" target="_blank">Download</a>
-                <button class="close-btn" onclick="closeTranscript()">✕</button>
-            </div>
-        </div>
-        <div id="transcriptBody"></div>
-    </div>
-</div>
-
-<style>
-/* ---------- THEME SYSTEM ---------- */
-:root {
-    color-scheme: light dark;
-    --modal-bg: #1c1c1e;
-    --modal-text: #f2f2f7;
-    --modal-overlay: rgba(0,0,0,0.7);
-}
-@media (prefers-color-scheme: light) {
-    :root {
-        --modal-bg: #ffffff;
-        --modal-text: #111111;
-        --modal-overlay: rgba(0,0,0,0.5);
-    }
-}
-
-/* ---------- BUTTONS ---------- */
-.button {
-    display: inline-block;
-    padding: 8px 15px;
-    margin: 5px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
-    cursor: pointer;
-    color: white;
-    background: #1DB954;
-    transition: opacity 0.2s ease;
-    vertical-align: middle; /* 🔑 restored */
-}
-.button:hover { opacity: 0.85; }
-
-.button.spotify,
-.button.apple {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    background-color: transparent;
-    padding: 0;
-    margin-right: 5px;
-    vertical-align: middle; /* 🔑 restored */
-}
-
-/* Spotify */
-.button.spotify {
-    background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
-    width: 24px;
-    height: 24px;
-}
-
-/* Apple Podcasts — original sizing */
-.button.apple {
-    background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
-    width: 37.5px;
-    height: 37.5px;
-}
-
-.button.transcript { background:#555; }
-
-/* ---------- DESCRIPTION CLAMP ---------- */
-.episode-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.read-more {
-    font-size:14px;
-    text-decoration: underline;
-    cursor:pointer;
-    opacity:0.8;
-    display:none;
-}
-
-/* ---------- MODALS ---------- */
-#episodeModal,
-#transcriptModal {
-    position: fixed;
-    inset: 0;
-    background: var(--modal-overlay);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(4px);
-}
-#episodeModalContent,
-#transcriptContent {
-    width: 90%;
-    max-width: 900px;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 25px;
-    border-radius: 14px;
-    background: var(--modal-bg);
-    color: var(--modal-text);
-}
-.close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-</style>
-
 <script>
 function slugify(t){
     return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -206,7 +48,8 @@ function openEpisodeModal(ep){
     share.className = 'button transcript';
     share.textContent = 'Share';
     share.onclick = () => {
-        navigator.clipboard.writeText(location.href.split('#')[0] + '#' + ep.id);
+        const shareUrl = window.location.origin + window.location.pathname + '#' + ep.id;
+        navigator.clipboard.writeText(shareUrl);
         share.textContent = 'Copied!';
         setTimeout(() => share.textContent = 'Share', 1200);
     };
@@ -243,14 +86,16 @@ function fetchAndDisplayEpisodes(feed){
         });
 }
 
+let allEpisodes = []; // ✅ Make global for hash handling
+
 Promise.all([
     fetchAndDisplayEpisodes('https://anchor.fm/s/f21c6414/podcast/rss'),
     fetchAndDisplayEpisodes('https://anchor.fm/s/d094dce0/podcast/rss')
 ]).then(([a,b])=>{
-    const all = a.concat(b).sort((x,y)=>y.pubDate - x.pubDate);
+    allEpisodes = a.concat(b).sort((x,y)=>y.pubDate - x.pubDate);
     const c = document.getElementById('episodes');
 
-    all.forEach(ep=>{
+    allEpisodes.forEach(ep=>{
         const d = document.createElement('div');
 
         const h = document.createElement('h2');
@@ -308,6 +153,13 @@ Promise.all([
             }
         });
     });
+
+    // ✅ Open modal if URL has hash
+    const hash = location.hash.slice(1);
+    if(hash){
+        const ep = allEpisodes.find(e => e.id === hash);
+        if(ep) openEpisodeModal(ep);
+    }
 });
 
 /* ---------- TRANSCRIPT ---------- */
