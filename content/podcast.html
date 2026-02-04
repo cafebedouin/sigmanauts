@@ -25,13 +25,9 @@ draft: false
 <div id="episodeModal">
   <div id="episodeModalContent">
     <button class="close-btn" onclick="closeEpisodeModal()">✕</button>
-
     <h2 id="episodeModalTitle"></h2>
-
     <audio id="episodePlayer" controls style="width:100%; margin:15px 0;"></audio>
-
     <div id="episodeModalDescription"></div>
-
     <div id="episodeModalButtons"></div>
   </div>
 </div>
@@ -51,7 +47,6 @@ draft: false
 </div>
 
 <style>
-/* ---------- THEME SYSTEM ---------- */
 :root {
     color-scheme: light dark;
     --modal-bg: #1c1c1e;
@@ -78,7 +73,7 @@ draft: false
     color: white;
     background: #1DB954;
     transition: opacity 0.2s ease;
-    vertical-align: middle; /* 🔑 restored */
+    vertical-align: middle;
 }
 .button:hover { opacity: 0.85; }
 
@@ -90,23 +85,18 @@ draft: false
     background-color: transparent;
     padding: 0;
     margin-right: 5px;
-    vertical-align: middle; /* 🔑 restored */
+    vertical-align: middle;
 }
-
-/* Spotify */
 .button.spotify {
     background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
     width: 24px;
     height: 24px;
 }
-
-/* Apple Podcasts — original sizing */
 .button.apple {
     background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
     width: 37.5px;
     height: 37.5px;
 }
-
 .button.transcript { background:#555; }
 
 /* ---------- DESCRIPTION CLAMP ---------- */
@@ -290,6 +280,7 @@ Promise.all([
         dl.download = ep.title + '.mp3';
         bw.appendChild(dl);
 
+        /* ✅ TRANSCRIPT BUTTON RESTORED HERE */
         if(ep.transcriptUrl){
             const t = document.createElement('a');
             t.className = 'button transcript';
