@@ -25,15 +25,20 @@ draft: false
 <div id="episodeModal">
   <div id="episodeModalContent">
     <button class="close-btn" onclick="closeEpisodeModal()">✕</button>
+
     <h2 id="episodeModalTitle"></h2>
+
+    <!-- Audio Player -->
+    <audio id="episodePlayer" controls style="width:100%; margin:15px 0;"></audio>
+
     <div id="episodeModalDescription"></div>
-    <div style="margin-top:15px;">
-      <button id="episodeShareBtn" class="button transcript">Share</button>
-    </div>
+
+    <!-- Modal Buttons -->
+    <div id="episodeModalButtons" style="margin-top:15px;"></div>
   </div>
 </div>
 
-<!-- ================= TRANSCRIPT MODAL (UNCHANGED) ================= -->
+<!-- ================= TRANSCRIPT MODAL ================= -->
 <div id="transcriptModal">
     <div id="transcriptContent">
         <div id="transcriptHeader">
@@ -74,27 +79,6 @@ draft: false
     cursor: pointer;
     color: white;
     background: #1DB954;
-    transition: opacity 0.2s ease;
-    vertical-align: middle;
-}
-.button:hover { opacity: 0.85; }
-.button.spotify, .button.apple {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    padding: 0;
-    margin-right: 5px;
-    background-color: transparent;
-}
-.button.spotify {
-    background-image: url('https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png');
-    width: 24px;
-    height: 24px;
-}
-.button.apple {
-    background-image: url('https://logodownload.org/wp-content/uploads/2019/08/apple-podcasts-logo-0.png');
-    width: 37.5px;
-    height: 37.5px;
 }
 .button.transcript { background: #555; }
 
@@ -105,7 +89,6 @@ draft: false
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-
 .read-more {
     display: none;
     cursor: pointer;
@@ -114,8 +97,9 @@ draft: false
     opacity: 0.8;
 }
 
-/* ---------- EPISODE MODAL ---------- */
-#episodeModal {
+/* ---------- MODALS ---------- */
+#episodeModal,
+#transcriptModal {
     position: fixed;
     inset: 0;
     background: var(--modal-overlay);
@@ -124,7 +108,8 @@ draft: false
     align-items: center;
     z-index: 9999;
 }
-#episodeModalContent {
+#episodeModalContent,
+#transcriptContent {
     width: 90%;
     max-width: 900px;
     max-height: 85vh;
@@ -134,46 +119,6 @@ draft: false
     background: var(--modal-bg);
     color: var(--modal-text);
     position: relative;
-}
-
-/* ---------- TRANSCRIPT MODAL ---------- */
-#transcriptModal {
-    position: fixed;
-    inset: 0;
-    background: var(--modal-overlay);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(4px);
-}
-#transcriptContent {
-    width: 90%;
-    max-width: 900px;
-    max-height: 85vh;
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: var(--modal-bg);
-    color: var(--modal-text);
-}
-#transcriptHeader {
-    padding: 15px 20px;
-    background: #1DB954;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-#transcriptBody {
-    padding: 20px;
-    overflow-y: auto;
-    font-family: system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    white-space: pre-wrap;
 }
 .close-btn {
     background: none;
@@ -195,19 +140,67 @@ function openEpisodeModal(ep){
     document.getElementById('episodeModalTitle').textContent = ep.title;
     document.getElementById('episodeModalDescription').innerHTML = ep.description;
 
-    const shareBtn = document.getElementById('episodeShareBtn');
-    const url = `${location.origin}${location.pathname}#${ep.id}`;
-    shareBtn.onclick = () => {
+    // Audio player
+    const player = document.getElementById('episodePlayer');
+    player.src = ep.enclosureUrl;
+    player.load();
+
+    const btnWrap = document.getElementById('episodeModalButtons');
+    btnWrap.innerHTML = '';
+
+    // Spotify
+    const spotify = document.createElement('a');
+    spotify.className = 'button';
+    spotify.textContent = 'Spotify';
+    spotify.href = ep.listenLink;
+    spotify.target = '_blank';
+    btnWrap.appendChild(spotify);
+
+    // Apple
+    const apple = document.createElement('a');
+    apple.className = 'button';
+    apple.textContent = 'Apple Podcasts';
+    apple.href = ep.listenLink.includes('ergopodcast')
+        ? 'https://podcasts.apple.com/gb/podcast/ergo-podcast/id1631767451'
+        : 'https://podcasts.apple.com/us/podcast/the-sigmacast/id1656621659';
+    apple.target = '_blank';
+    btnWrap.appendChild(apple);
+
+    // Download
+    const dl = document.createElement('a');
+    dl.className = 'button';
+    dl.textContent = 'Download';
+    dl.href = ep.enclosureUrl;
+    dl.download = ep.title + '.mp3';
+    btnWrap.appendChild(dl);
+
+    // Transcript
+    if(ep.transcriptUrl){
+        const t = document.createElement('button');
+        t.className = 'button transcript';
+        t.textContent = 'Read Transcript';
+        t.onclick = () => openTranscript(ep.title, ep.transcriptUrl);
+        btnWrap.appendChild(t);
+    }
+
+    // Share (modal only)
+    const share = document.createElement('button');
+    share.className = 'button transcript';
+    share.textContent = 'Share';
+    share.onclick = () => {
+        const url = `${location.origin}${location.pathname}#${ep.id}`;
         navigator.clipboard.writeText(url);
-        shareBtn.textContent = 'Copied!';
-        setTimeout(()=>shareBtn.textContent='Share',1200);
+        share.textContent = 'Copied!';
+        setTimeout(()=>share.textContent='Share',1200);
     };
+    btnWrap.appendChild(share);
 
     document.getElementById('episodeModal').style.display='flex';
 }
 
 function closeEpisodeModal(){
     document.getElementById('episodeModal').style.display='none';
+    document.getElementById('episodePlayer').pause();
 }
 
 /* ---------- RSS ---------- */
@@ -298,7 +291,6 @@ Promise.all([
         div.appendChild(btnWrap);
         container.appendChild(div);
 
-        // show Read more only if truncated
         requestAnimationFrame(()=>{
             if(desc.scrollHeight > desc.clientHeight){
                 readMore.style.display='inline-block';
@@ -325,21 +317,10 @@ function openTranscript(title,url){
 
     fetch(proxied)
         .then(res=>res.text())
-        .then(txt=>body.textContent=formatSRT(txt));
+        .then(txt=>body.textContent=txt);
 }
 
 function closeTranscript(){
     document.getElementById('transcriptModal').style.display='none';
-}
-
-document.getElementById('transcriptModal').addEventListener('click',e=>{
-    if(e.target===transcriptModal) closeTranscript();
-});
-
-function formatSRT(data) {
-    return data.replace(/\r/g,'')
-        .replace(/^\d+$/gm,'')
-        .replace(/\d{2}:\d{2}:\d{2},\d{3} --> .*$/gm,'')
-        .trim();
 }
 </script>
