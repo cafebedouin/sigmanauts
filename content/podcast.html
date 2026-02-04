@@ -164,7 +164,15 @@ function slugify(t){
 /* ---------- EPISODE MODAL ---------- */
 function openEpisodeModal(ep){
     document.getElementById('episodeModalTitle').textContent = ep.title;
-    document.getElementById('episodeModalDescription').innerHTML = ep.description;
+
+    // ✅ Remove "Executive Summary" and everything before it
+    let desc = ep.description;
+    const idx = desc.indexOf('Executive Summary');
+    if(idx !== -1){
+        desc = desc.slice(idx + 'Executive Summary'.length).trim();
+    }
+
+    document.getElementById('episodeModalDescription').innerHTML = desc;
 
     const player = document.getElementById('episodePlayer');
     player.src = ep.enclosureUrl;
@@ -261,9 +269,16 @@ Promise.all([
         h.style.cursor = 'pointer';
         h.onclick = () => openEpisodeModal(ep);
 
+        // ✅ Remove "Executive Summary" in episode list as well
+        let descText = ep.description;
+        const idx = descText.indexOf('Executive Summary');
+        if(idx !== -1){
+            descText = descText.slice(idx + 'Executive Summary'.length).trim();
+        }
+
         const desc = document.createElement('div');
         desc.className = 'episode-desc';
-        desc.innerHTML = ep.description;
+        desc.innerHTML = descText;
 
         const more = document.createElement('div');
         more.className = 'read-more';
